@@ -72,7 +72,9 @@ def valid_budget_data():
                         )
                     ],
                     subcategories=[
-                        Subcategory(id="fire-salaries", name="Salaries and Wages", amount=900000000),
+                        Subcategory(
+                            id="fire-salaries", name="Salaries and Wages", amount=900000000
+                        ),
                         Subcategory(id="fire-equipment", name="Equipment", amount=100000000),
                     ],
                     simulation=SimulationConfig(

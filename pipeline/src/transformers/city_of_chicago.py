@@ -66,7 +66,6 @@ class CityOfChicagoTransformer(BaseTransformer):
             ValueError: If amount column cannot be detected
         """
         year_num = fiscal_year.replace("fy", "")
-        lowercase_cols = df.columns.str.lower()
 
         # Try patterns in order of specificity
         patterns = [
@@ -198,9 +197,7 @@ class CityOfChicagoTransformer(BaseTransformer):
         # Get column names from config
         dept_col = self.transform_config["department_column"].lower()
         dept_code_col = self.transform_config["department_code_column"].lower()
-        fund_type_col = self.transform_config["fund_type_column"].lower()
         fund_desc_col = self.transform_config["fund_description_column"].lower()
-        acct_col = self.transform_config["appropriation_account_column"].lower()
         acct_desc_col = self.transform_config["appropriation_account_description_column"].lower()
 
         # Convert amount to numeric, drop zeros

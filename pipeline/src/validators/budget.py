@@ -1,6 +1,5 @@
 """Budget data validator for checking data quality."""
 
-
 from ..models.schema import BudgetData
 
 

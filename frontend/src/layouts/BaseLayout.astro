@@ -1,0 +1,113 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Explore Chicago's budget interactively" } = Astro.props;
+const fullTitle = `${title} | Chicago Budget Explorer`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+
+    <title>{fullTitle}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
+    <!-- Skip to main content (accessibility) -->
+    <a href="#main-content" class="skip-to-content">
+      Skip to main content
+    </a>
+
+    <!-- Header -->
+    <header class="bg-chicago-blue text-white shadow-md">
+      <div class="container mx-auto px-4 py-4">
+        <nav class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <a href="/" class="text-2xl font-bold hover:text-gray-200 transition-colors">
+              Chicago Budget Explorer
+            </a>
+          </div>
+          <div class="flex items-center gap-6">
+            <a href="/" class="hover:text-gray-200 transition-colors">Home</a>
+            <a href="/about" class="hover:text-gray-200 transition-colors">About</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main id="main-content" class="flex-1 container mx-auto px-4 py-8">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+      <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="font-bold text-lg mb-3">About</h3>
+            <p class="text-gray-300 text-sm">
+              An open-source tool for exploring and simulating Chicago's budget.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg mb-3">Data Sources</h3>
+            <p class="text-gray-300 text-sm">
+              <a
+                href="https://data.cityofchicago.org"
+                class="hover:text-white underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                City of Chicago Open Data Portal
+              </a>
+            </p>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg mb-3">Project</h3>
+            <p class="text-gray-300 text-sm">
+              Maintained by <a
+                href="https://strongtownschicago.org"
+                class="hover:text-white underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Strong Towns Chicago
+              </a>
+            </p>
+            <p class="text-gray-300 text-sm mt-2">
+              <a
+                href="https://github.com/strongtownschicago/chicago-budget-tool"
+                class="hover:text-white underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on GitHub
+              </a>
+            </p>
+          </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
+          © {new Date().getFullYear()} Strong Towns Chicago. Open source under MIT
+          License.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -3,7 +3,7 @@
 from typing import Any
 
 import pandas as pd
-from sodapy import Socrata
+from sodapy import Socrata  # type: ignore[import-untyped]
 
 from .base import BaseExtractor
 

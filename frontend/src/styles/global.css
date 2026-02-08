@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-chicago-blue: #0051A5;
+  --color-chicago-red: #CE1126;
+  --color-chicago-light-blue: #6CACE4;
+}
+
+/* Custom scrollbar for webkit browsers */
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500;
+  }
+}
+
+/* Custom button styles */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-chicago-blue text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition-colors;
+  }
+
+  .btn-link {
+    @apply text-chicago-blue hover:text-blue-700 underline;
+  }
+}
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Skip to main content link (accessibility) */
+.skip-to-content {
+  @apply absolute left-0 top-0 bg-chicago-blue text-white px-4 py-2 -translate-y-full focus:translate-y-0 transition-transform;
+}
+
+/* Focus visible (better than default outline) */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-chicago-blue;
+}

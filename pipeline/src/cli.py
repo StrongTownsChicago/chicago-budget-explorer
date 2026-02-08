@@ -5,6 +5,7 @@ import json
 import sys
 from datetime import datetime
 from pathlib import Path
+from typing import Any, cast
 
 import yaml
 
@@ -15,7 +16,7 @@ from .transformers.city_of_chicago import CityOfChicagoTransformer
 from .validators.budget import BudgetValidator
 
 
-def load_config() -> dict:
+def load_config() -> dict[Any, Any]:
     """Load entities configuration from YAML.
 
     Returns:
@@ -23,10 +24,10 @@ def load_config() -> dict:
     """
     config_path = Path(__file__).parent.parent / "config" / "entities.yaml"
     with open(config_path) as f:
-        return yaml.safe_load(f)
+        return cast(dict[Any, Any], yaml.safe_load(f))
 
 
-def get_entity_config(entity_id: str) -> dict:
+def get_entity_config(entity_id: str) -> dict[Any, Any]:
     """Get configuration for a specific entity.
 
     Args:
@@ -45,7 +46,7 @@ def get_entity_config(entity_id: str) -> dict:
             f"Entity '{entity_id}' not found in config. Available: {', '.join(available)}"
         )
 
-    entity_config = config["entities"][entity_id].copy()
+    entity_config = cast(dict[Any, Any], config["entities"][entity_id].copy())
     entity_config["id"] = entity_id
     return entity_config
 
