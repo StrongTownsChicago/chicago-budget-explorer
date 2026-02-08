@@ -221,26 +221,54 @@ class CityOfChicagoTransformer(BaseTransformer):
             description="This department can be adjusted within standard constraints.",
         )
 
-    def categorize_revenue_source(self, source_name: str) -> str:
-        """Categorize a revenue source into a high-level category.
+    def categorize_revenue_row(
+        self, revenue_category: str, fund_name: str, revenue_source: str
+    ) -> tuple[str, str]:
+        """Categorize a revenue row using multi-level strategy.
 
-        Uses configuration from entities.yaml to classify revenue sources.
-        Matching is case-insensitive and uses substring matching.
+        Strategy order:
+        1. Check revenue_source against source_overrides (cross-fund patterns
+           like property tax, utility tax, TIF)
+        2. If revenue_category is populated, map it via category_field_mapping
+        3. If empty, use fund_name via fund_based_categories
+        4. Fallback: "uncategorized"
 
         Args:
-            source_name: Revenue source name from data
+            revenue_category: The revenue_category field from the dataset (may be empty)
+            fund_name: The fund_name field from the dataset
+            revenue_source: The revenue_source field from the dataset
 
         Returns:
-            Category key (e.g., "property_tax", "sales_tax", "other")
+            Tuple of (category_key, revenue_type)
         """
-        revenue_categories = self.transform_config.get("revenue_categories", {})
+        rev_config = self.transform_config.get("revenue_categorization", {})
+        display_categories = rev_config.get("display_categories", {})
 
-        for category, patterns in revenue_categories.items():
-            for pattern in patterns:
-                if pattern.lower() in source_name.lower():
-                    return str(category)
+        # Strategy 1: Check source_overrides (cross-fund patterns like property tax)
+        source_overrides = rev_config.get("source_overrides", {})
+        for category_key, patterns in source_overrides.items():
+            if self._matches_fund_list(revenue_source, patterns):
+                if category_key in display_categories:
+                    revenue_type = display_categories[category_key].get("revenue_type", "other")
+                    return category_key, revenue_type
 
-        return "other"
+        # Strategy 2: Use revenue_category field if populated
+        if revenue_category and revenue_category.strip():
+            category_mapping = rev_config.get("category_field_mapping", {})
+            category_key = category_mapping.get(revenue_category.strip())
+            if category_key and category_key in display_categories:
+                revenue_type = display_categories[category_key].get("revenue_type", "other")
+                return category_key, revenue_type
+
+        # Strategy 3: Use fund_name mapping
+        fund_categories = rev_config.get("fund_based_categories", {})
+        for category_key, fund_patterns in fund_categories.items():
+            if self._matches_fund_list(fund_name, fund_patterns):
+                if category_key in display_categories:
+                    revenue_type = display_categories[category_key].get("revenue_type", "other")
+                    return category_key, revenue_type
+
+        return "uncategorized", "other"
 
     def transform_revenue(
         self,
@@ -249,8 +277,9 @@ class CityOfChicagoTransformer(BaseTransformer):
     ) -> Revenue:
         """Transform revenue data to Revenue schema.
 
-        Aggregates raw revenue line items into categories, computes fund breakdowns
-        and subcategories for each category, and returns a complete Revenue model.
+        Aggregates raw revenue line items into categories using multi-level
+        categorization (source overrides -> revenue_category field -> fund_name),
+        computes fund breakdowns and subcategories, and returns a Revenue model.
 
         Args:
             df: Raw revenue DataFrame from Socrata
@@ -273,9 +302,14 @@ class CityOfChicagoTransformer(BaseTransformer):
         amount_col = self.detect_amount_column(df, fiscal_year)
 
         # Get column names from config
-        rev_config = self.transform_config.get("revenue_columns", {})
-        source_col = rev_config.get("source_column", "revenue_source").lower()
-        fund_col = rev_config.get("fund_column", "fund_description").lower()
+        rev_col_config = self.transform_config.get("revenue_columns", {})
+        source_col = rev_col_config.get("source_column", "revenue_source").lower()
+        fund_col = rev_col_config.get("fund_column", "fund_name").lower()
+        category_col = "revenue_category"
+
+        # Ensure revenue_category column exists (some datasets may not have it)
+        if category_col not in df.columns:
+            df[category_col] = ""
 
         # Convert amount to numeric
         df[amount_col] = pd.to_numeric(df[amount_col], errors="coerce")
@@ -284,30 +318,32 @@ class CityOfChicagoTransformer(BaseTransformer):
         # Filter out zero amounts
         df = df[df[amount_col] != 0].copy()
 
-        # Categorize each source
-        df["source_category"] = df[source_col].apply(self.categorize_revenue_source)
+        # Categorize each row using multi-level strategy
+        categories_and_types = df.apply(
+            lambda row: self.categorize_revenue_row(
+                str(row.get(category_col, "")),
+                str(row.get(fund_col, "")),
+                str(row.get(source_col, "")),
+            ),
+            axis=1,
+        )
+        df["source_category"] = [ct[0] for ct in categories_and_types]
+        df["revenue_type"] = [ct[1] for ct in categories_and_types]
 
-        # Human-friendly category display names
-        category_display_names = {
-            "property_tax": "Property Tax",
-            "sales_tax": "Sales Tax",
-            "state_sharing": "State Shared Revenue",
-            "utility_tax": "Utility Taxes",
-            "transaction_tax": "Transaction Taxes",
-            "transportation_tax": "Transportation Taxes",
-            "fines_forfeitures": "Fines and Forfeitures",
-            "licenses_permits": "Licenses and Permits",
-            "charges_for_services": "Charges for Services",
-            "debt_proceeds": "Debt Proceeds",
-            "tif": "TIF Surplus",
-            "other": "Other Revenue",
-        }
+        # Get display names from config
+        rev_categorization = self.transform_config.get("revenue_categorization", {})
+        display_categories = rev_categorization.get("display_categories", {})
 
         # Aggregate by category
         sources: list[RevenueSource] = []
 
         for category, cat_group in df.groupby("source_category", dropna=False):
             cat_total = int(cat_group[amount_col].sum())
+            revenue_type = cat_group["revenue_type"].iloc[0]
+
+            # Get display name from config
+            cat_config = display_categories.get(str(category), {})
+            category_name = cat_config.get("name", str(category).replace("_", " ").title())
 
             # Fund breakdown for this category
             fund_breakdown: list[FundBreakdown] = []
@@ -334,15 +370,12 @@ class CityOfChicagoTransformer(BaseTransformer):
                     )
                 )
 
-            category_name = category_display_names.get(
-                str(category), str(category).replace("_", " ").title()
-            )
-
             sources.append(
                 RevenueSource(
                     id=slugify(f"revenue-{category}"),
                     name=category_name,
                     amount=cat_total,
+                    revenue_type=revenue_type,
                     subcategories=sorted(subcategories, key=lambda x: x.amount, reverse=True),
                     fund_breakdown=sorted(fund_breakdown, key=lambda x: x.amount, reverse=True),
                 )

@@ -137,11 +137,21 @@ class RevenueSource(BaseModel):
     Revenue sources are aggregated from raw line items into user-friendly categories.
     Each source contains subcategories for detailed breakdown and fund breakdown
     showing which funds receive this revenue.
+
+    The revenue_type field classifies sources into high-level groups for frontend
+    display: tax, fee, enterprise, internal_transfer, debt_proceeds, or other.
     """
 
     id: str = Field(..., description="Unique source identifier (e.g., 'revenue-property-tax')")
     name: str = Field(..., description="Revenue source name (e.g., 'Property Tax')")
     amount: int = Field(..., ge=0, description="Total revenue from this source")
+    revenue_type: str = Field(
+        "other",
+        description=(
+            "High-level revenue type for grouping: "
+            "'tax', 'fee', 'enterprise', 'internal_transfer', 'debt_proceeds', 'other'"
+        ),
+    )
     subcategories: list[Subcategory] = Field(
         default_factory=list, description="Detailed breakdown within this source"
     )
