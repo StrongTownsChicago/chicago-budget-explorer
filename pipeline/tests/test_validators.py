@@ -28,7 +28,10 @@ def valid_budget_data():
             fiscal_year_label="FY2025",
             fiscal_year_start=date(2025, 1, 1),
             fiscal_year_end=date(2025, 12, 31),
+            gross_appropriations=3000000000,
             total_appropriations=3000000000,
+            operating_appropriations=3000000000,
+            fund_category_breakdown={"operating": 3000000000},
             data_source="test",
             source_dataset_id="test",
             extraction_date=date.today(),
@@ -148,7 +151,8 @@ class TestBudgetValidator:
         valid_budget_data.appropriations.by_department.append(
             valid_budget_data.appropriations.by_department[0]
         )
-        # Adjust total to match
+        # Adjust totals to match
+        valid_budget_data.metadata.gross_appropriations = 5000000000
         valid_budget_data.metadata.total_appropriations = 5000000000
         valid_budget_data.appropriations.by_fund[0].amount = 5000000000
 
@@ -168,3 +172,89 @@ class TestBudgetValidator:
 
         # Should pass with tolerance
         assert result is True
+
+    def test_validator_accepts_negative_amounts(self):
+        """Test that validator allows negative amounts (accounting adjustments)."""
+        budget_data = BudgetData(
+            metadata=Metadata(
+                entity_id="test",
+                entity_name="Test Entity",
+                fiscal_year="fy2025",
+                fiscal_year_label="FY2025",
+                fiscal_year_start=date(2025, 1, 1),
+                fiscal_year_end=date(2025, 12, 31),
+                gross_appropriations=1000000,
+                accounting_adjustments=-50000,
+                total_appropriations=950000,
+                operating_appropriations=800000,
+                fund_category_breakdown={"operating": 800000, "enterprise": 150000},
+                data_source="test",
+                source_dataset_id="test",
+                extraction_date=date.today(),
+                pipeline_version="1.0.0",
+            ),
+            appropriations=Appropriations(
+                by_department=[
+                    Department(
+                        id="dept-a",
+                        name="Department A",
+                        code="001",
+                        amount=1000000,
+                        fund_breakdown=[
+                            FundBreakdown(
+                                fund_id="fund-local",
+                                fund_name="Corporate Fund",
+                                amount=1000000,
+                            )
+                        ],
+                        subcategories=[
+                            Subcategory(id="a-salaries", name="Salaries", amount=1000000)
+                        ],
+                        simulation=SimulationConfig(
+                            adjustable=True,
+                            description="Test dept",
+                        ),
+                    ),
+                    Department(
+                        id="dept-adjustments",
+                        name="Adjustments",
+                        code="999",
+                        amount=-50000,
+                        fund_breakdown=[
+                            FundBreakdown(
+                                fund_id="fund-local",
+                                fund_name="Corporate Fund",
+                                amount=-50000,
+                            )
+                        ],
+                        subcategories=[
+                            Subcategory(
+                                id="adj-reductions",
+                                name="Budget Reductions",
+                                amount=-50000,
+                            )
+                        ],
+                        simulation=SimulationConfig(
+                            adjustable=False,
+                            min_pct=1.0,
+                            max_pct=1.0,
+                            description="Budget adjustments",
+                        ),
+                    ),
+                ],
+                by_fund=[
+                    FundSummary(
+                        id="fund-local",
+                        name="Corporate Fund",
+                        amount=950000,
+                        fund_type="operating",
+                    )
+                ],
+            ),
+        )
+
+        validator = BudgetValidator()
+        result = validator.validate(budget_data)
+
+        assert result is True
+        assert len(validator.errors) == 0

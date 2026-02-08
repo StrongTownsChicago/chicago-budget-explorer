@@ -11,7 +11,9 @@ class FundBreakdown(BaseModel):
 
     fund_id: str = Field(..., description="Slugified fund identifier (e.g., 'fund-local')")
     fund_name: str = Field(..., description="Human-readable fund name (e.g., 'Corporate Fund')")
-    amount: int = Field(..., ge=0, description="Dollar amount in this fund")
+    amount: int = Field(
+        ..., description="Dollar amount in this fund (can be negative for adjustments)"
+    )
 
 
 class Subcategory(BaseModel):
@@ -19,7 +21,7 @@ class Subcategory(BaseModel):
 
     id: str = Field(..., description="Unique subcategory identifier (slugified)")
     name: str = Field(..., description="Subcategory name")
-    amount: int = Field(..., ge=0, description="Dollar amount")
+    amount: int = Field(..., description="Dollar amount (can be negative for reductions)")
 
 
 class SimulationConfig(BaseModel):
@@ -49,9 +51,9 @@ class Department(BaseModel):
     id: str = Field(..., description="Unique department identifier (e.g., 'dept-police')")
     name: str = Field(..., description="Department name (e.g., 'Police')")
     code: str = Field(..., description="Department code from source data (e.g., '057')")
-    amount: int = Field(..., ge=0, description="Total budget amount in dollars")
+    amount: int = Field(..., description="Total budget amount in dollars (can be negative)")
     prior_year_amount: int | None = Field(
-        None, ge=0, description="Prior year amount for year-over-year comparison"
+        None, description="Prior year amount for year-over-year comparison"
     )
     change_pct: float | None = Field(None, description="Year-over-year change percentage")
     fund_breakdown: list[FundBreakdown] = Field(
@@ -68,7 +70,7 @@ class FundSummary(BaseModel):
 
     id: str = Field(..., description="Fund identifier (e.g., 'fund-corporate')")
     name: str = Field(..., description="Fund name (e.g., 'Corporate Fund')")
-    amount: int = Field(..., ge=0, description="Total amount across all departments")
+    amount: int = Field(..., description="Total amount across all departments")
     fund_type: Literal["operating", "restricted", "capital", "grant"] = Field(
         ..., description="Fund type category"
     )
@@ -92,10 +94,31 @@ class Metadata(BaseModel):
     fiscal_year_label: str = Field(..., description="Display label (e.g., 'FY2025')")
     fiscal_year_start: date = Field(..., description="Fiscal year start date")
     fiscal_year_end: date = Field(..., description="Fiscal year end date")
-    total_appropriations: int = Field(..., ge=0, description="Total gross budget amount")
-    net_appropriations: int | None = Field(
-        None, ge=0, description="Net after interfund transfers (if applicable)"
+
+    # Comprehensive budget totals (all in dollars)
+    gross_appropriations: int = Field(..., ge=0, description="Sum of all positive appropriations")
+    accounting_adjustments: int = Field(
+        0, description="Sum of negative amounts (budget reductions, typically <= 0)"
     )
+    total_appropriations: int = Field(
+        ..., description="Net total after adjustments (gross + adjustments)"
+    )
+
+    # Operating budget (excludes enterprise/grants/pensions)
+    operating_appropriations: int | None = Field(
+        None,
+        description="Operating funds only (typically Corporate Fund + local operating funds)",
+    )
+
+    # Flexible breakdown by fund category (entity-specific categories defined in config)
+    fund_category_breakdown: dict[str, int] = Field(
+        default_factory=dict,
+        description=(
+            "Breakdown by fund category. Categories are entity-specific "
+            "(e.g., Chicago: operating/enterprise/pension; CPS: operating/title_i/special_education)"
+        ),
+    )
+
     data_source: str = Field(..., description="Source of data (e.g., 'socrata_api', 'pdf')")
     source_dataset_id: str = Field(..., description="Source dataset identifier")
     extraction_date: date = Field(..., description="When data was extracted")

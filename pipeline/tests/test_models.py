@@ -27,10 +27,10 @@ class TestFundBreakdown:
         assert fb.fund_name == "Corporate Fund"
         assert fb.amount == 1000000
 
-    def test_negative_amount_rejected(self):
-        """Test that negative amounts are rejected."""
-        with pytest.raises(ValidationError):
-            FundBreakdown(fund_id="corporate", fund_name="Corporate Fund", amount=-1000)
+    def test_negative_amount_allowed(self):
+        """Test that negative amounts are allowed (accounting adjustments)."""
+        fb = FundBreakdown(fund_id="corporate", fund_name="Corporate Fund", amount=-1000)
+        assert fb.amount == -1000
 
 
 class TestSubcategory:
@@ -43,10 +43,10 @@ class TestSubcategory:
         assert sub.name == "Salaries and Wages"
         assert sub.amount == 500000
 
-    def test_negative_amount_rejected(self):
-        """Test that negative amounts are rejected."""
-        with pytest.raises(ValidationError):
-            Subcategory(id="test", name="Test", amount=-100)
+    def test_negative_amount_allowed(self):
+        """Test that negative amounts are allowed (budget reductions)."""
+        sub = Subcategory(id="test", name="Test", amount=-100)
+        assert sub.amount == -100
 
 
 class TestSimulationConfig:
@@ -162,21 +162,21 @@ class TestDepartment:
         assert dept.prior_year_amount == 1800000
         assert dept.change_pct == 11.11
 
-    def test_negative_amount_rejected(self):
-        """Test that negative amounts are rejected."""
-        with pytest.raises(ValidationError):
-            Department(
-                id="dept-test",
-                name="Test",
-                code="999",
-                amount=-1000,
-                simulation=SimulationConfig(
-                    adjustable=True,
-                    min_pct=0.5,
-                    max_pct=1.5,
-                    description="Test",
-                ),
-            )
+    def test_negative_amount_allowed(self):
+        """Test that negative amounts are allowed (budget adjustments)."""
+        dept = Department(
+            id="dept-test",
+            name="Test",
+            code="999",
+            amount=-1000,
+            simulation=SimulationConfig(
+                adjustable=True,
+                min_pct=0.5,
+                max_pct=1.5,
+                description="Test",
+            ),
+        )
+        assert dept.amount == -1000
 
 
 class TestFundSummary:
@@ -217,7 +217,7 @@ class TestMetadata:
     """Tests for Metadata model."""
 
     def test_valid_metadata(self):
-        """Test creating valid metadata."""
+        """Test creating valid metadata with comprehensive totals."""
         metadata = Metadata(
             entity_id="city-of-chicago",
             entity_name="City of Chicago",
@@ -225,7 +225,11 @@ class TestMetadata:
             fiscal_year_label="FY2025",
             fiscal_year_start=date(2025, 1, 1),
             fiscal_year_end=date(2025, 12, 31),
+            gross_appropriations=16700000000,
+            accounting_adjustments=-100000000,
             total_appropriations=16600000000,
+            operating_appropriations=14000000000,
+            fund_category_breakdown={"operating": 14000000000, "enterprise": 2600000000},
             data_source="socrata_api",
             source_dataset_id="test-id",
             extraction_date=date.today(),
@@ -233,7 +237,32 @@ class TestMetadata:
         )
         assert metadata.entity_id == "city-of-chicago"
         assert metadata.fiscal_year == "fy2025"
+        assert metadata.gross_appropriations == 16700000000
+        assert metadata.accounting_adjustments == -100000000
         assert metadata.total_appropriations == 16600000000
+        assert metadata.operating_appropriations == 14000000000
+        assert metadata.fund_category_breakdown["operating"] == 14000000000
+
+    def test_metadata_defaults(self):
+        """Test that optional fields have correct defaults."""
+        metadata = Metadata(
+            entity_id="test",
+            entity_name="Test",
+            fiscal_year="fy2025",
+            fiscal_year_label="FY2025",
+            fiscal_year_start=date(2025, 1, 1),
+            fiscal_year_end=date(2025, 12, 31),
+            gross_appropriations=1000000,
+            total_appropriations=1000000,
+            data_source="test",
+            source_dataset_id="test-id",
+            extraction_date=date.today(),
+            pipeline_version="1.0.0",
+        )
+        assert metadata.accounting_adjustments == 0
+        assert metadata.operating_appropriations is None
+        assert metadata.fund_category_breakdown == {}
+        assert metadata.notes is None
 
     def test_fiscal_year_pattern_validation(self):
         """Test that fiscal year must match pattern."""
@@ -245,6 +274,7 @@ class TestMetadata:
                 fiscal_year_label="FY2025",
                 fiscal_year_start=date(2025, 1, 1),
                 fiscal_year_end=date(2025, 12, 31),
+                gross_appropriations=1000000,
                 total_appropriations=1000000,
                 data_source="test",
                 source_dataset_id="test-id",
@@ -252,8 +282,8 @@ class TestMetadata:
                 pipeline_version="1.0.0",
             )
 
-    def test_negative_total_rejected(self):
-        """Test that negative total is rejected."""
+    def test_negative_gross_rejected(self):
+        """Test that negative gross_appropriations is rejected."""
         with pytest.raises(ValidationError):
             Metadata(
                 entity_id="city-of-chicago",
@@ -262,12 +292,51 @@ class TestMetadata:
                 fiscal_year_label="FY2025",
                 fiscal_year_start=date(2025, 1, 1),
                 fiscal_year_end=date(2025, 12, 31),
-                total_appropriations=-1000000,  # Negative
+                gross_appropriations=-1000000,  # Negative gross not allowed
+                total_appropriations=1000000,
                 data_source="test",
                 source_dataset_id="test-id",
                 extraction_date=date.today(),
                 pipeline_version="1.0.0",
             )
+
+    def test_negative_total_allowed(self):
+        """Test that negative total_appropriations is allowed (rare but valid)."""
+        metadata = Metadata(
+            entity_id="test",
+            entity_name="Test",
+            fiscal_year="fy2025",
+            fiscal_year_label="FY2025",
+            fiscal_year_start=date(2025, 1, 1),
+            fiscal_year_end=date(2025, 12, 31),
+            gross_appropriations=0,
+            accounting_adjustments=-50000,
+            total_appropriations=-50000,
+            data_source="test",
+            source_dataset_id="test-id",
+            extraction_date=date.today(),
+            pipeline_version="1.0.0",
+        )
+        assert metadata.total_appropriations == -50000
+
+    def test_negative_accounting_adjustments_allowed(self):
+        """Test that negative accounting_adjustments is allowed."""
+        metadata = Metadata(
+            entity_id="test",
+            entity_name="Test",
+            fiscal_year="fy2025",
+            fiscal_year_label="FY2025",
+            fiscal_year_start=date(2025, 1, 1),
+            fiscal_year_end=date(2025, 12, 31),
+            gross_appropriations=1000000,
+            accounting_adjustments=-50000,
+            total_appropriations=950000,
+            data_source="test",
+            source_dataset_id="test-id",
+            extraction_date=date.today(),
+            pipeline_version="1.0.0",
+        )
+        assert metadata.accounting_adjustments == -50000
 
 
 class TestBudgetData:
@@ -283,6 +352,7 @@ class TestBudgetData:
                 fiscal_year_label="FY2025",
                 fiscal_year_start=date(2025, 1, 1),
                 fiscal_year_end=date(2025, 12, 31),
+                gross_appropriations=3000000,
                 total_appropriations=3000000,
                 data_source="test",
                 source_dataset_id="test-id",
@@ -341,6 +411,7 @@ class TestBudgetData:
                 fiscal_year_label="FY2025",
                 fiscal_year_start=date(2025, 1, 1),
                 fiscal_year_end=date(2025, 12, 31),
+                gross_appropriations=1000000,
                 total_appropriations=1000000,
                 data_source="test",
                 source_dataset_id="test-id",

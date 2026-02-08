@@ -65,10 +65,9 @@ export interface Metadata {
   accounting_adjustments: number;
   total_appropriations: number;
   operating_appropriations: number | null;
-  enterprise_fund_total: number;
-  pension_fund_total: number;
-  grant_fund_total: number;
-  debt_service_total: number;
+
+  // Flexible fund category breakdown (entity-specific)
+  fund_category_breakdown: Record<string, number>;
 
   data_source: string;
   source_dataset_id: string;

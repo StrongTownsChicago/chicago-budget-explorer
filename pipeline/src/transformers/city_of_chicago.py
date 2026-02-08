@@ -119,6 +119,49 @@ class CityOfChicagoTransformer(BaseTransformer):
         end = date(year, 12, 31)
         return start, end
 
+    @staticmethod
+    def _matches_fund_list(fund_name: str, fund_list: list[str]) -> bool:
+        """Check if a fund name matches any entry in a fund list.
+
+        Supports exact matches and wildcard patterns (e.g., "*Grant*").
+
+        Args:
+            fund_name: Fund name to check
+            fund_list: List of fund names or wildcard patterns
+
+        Returns:
+            True if fund_name matches any entry
+        """
+        for pattern in fund_list:
+            if "*" in pattern:
+                pattern_text = pattern.strip("*").lower()
+                if pattern_text in fund_name.lower():
+                    return True
+            elif fund_name == pattern:
+                return True
+        return False
+
+    def categorize_fund(self, fund_name: str) -> str:
+        """Categorize a fund into an entity-specific category.
+
+        Uses configuration from entities.yaml to classify funds into categories.
+        Supports exact matches and wildcard patterns (e.g., "*Grant*").
+
+        Args:
+            fund_name: Fund name from data (e.g., "Corporate Fund")
+
+        Returns:
+            Category string (e.g., "operating", "enterprise", "pension")
+        """
+        fund_categories = self.transform_config.get("fund_categories", {})
+
+        for category, fund_list in fund_categories.items():
+            if self._matches_fund_list(fund_name, fund_list):
+                return category
+
+        # Default to operating if uncategorized
+        return "operating"
+
     def determine_simulation_config(
         self, dept_name: str, fund_breakdown: list[FundBreakdown], total_amount: int
     ) -> SimulationConfig:
@@ -200,9 +243,9 @@ class CityOfChicagoTransformer(BaseTransformer):
         fund_desc_col = self.transform_config["fund_description_column"].lower()
         acct_desc_col = self.transform_config["appropriation_account_description_column"].lower()
 
-        # Convert amount to numeric, drop zeros
+        # Convert amount to numeric, drop NaN (keep negatives as legitimate adjustments)
         df[amount_col] = pd.to_numeric(df[amount_col], errors="coerce")
-        df = df[df[amount_col] > 0].copy()
+        df = df[df[amount_col].notna()].copy()
 
         # Normalize department names
         df["dept_name_normalized"] = df[dept_col].apply(self.title_case_with_acronyms)
@@ -300,8 +343,34 @@ class CityOfChicagoTransformer(BaseTransformer):
             for fund_name, amount in sorted(fund_summary.items(), key=lambda x: x[1], reverse=True)
         ]
 
-        # Metadata
+        # Calculate comprehensive budget totals
+        gross_appropriations = sum(d.amount for d in departments if d.amount > 0)
+        accounting_adjustments = sum(d.amount for d in departments if d.amount < 0)
         total_appropriations = sum(d.amount for d in departments)
+
+        # Calculate totals by fund category (dynamically based on config)
+        category_breakdown: dict[str, int] = {}
+        for dept in departments:
+            for fb in dept.fund_breakdown:
+                category = self.categorize_fund(fb.fund_name)
+                category_breakdown[category] = category_breakdown.get(category, 0) + fb.amount
+
+        # Operating appropriations = total minus explicitly non-operating funds.
+        # For Chicago, the reported ~$16.6B operating budget excludes only airport funds.
+        non_operating_funds = self.transform_config.get("non_operating_funds", [])
+        if non_operating_funds:
+            non_operating_total = 0
+            for dept in departments:
+                for fb in dept.fund_breakdown:
+                    if self._matches_fund_list(fb.fund_name, non_operating_funds):
+                        non_operating_total += fb.amount
+            operating_total: int | None = total_appropriations - non_operating_total
+        elif category_breakdown:
+            # Fallback: use "operating" category if no non_operating_funds config
+            operating_total = category_breakdown.get("operating")
+        else:
+            operating_total = None
+
         fy_start, fy_end = self.calculate_fiscal_year_dates(fiscal_year)
 
         metadata = Metadata(
@@ -311,8 +380,11 @@ class CityOfChicagoTransformer(BaseTransformer):
             fiscal_year_label=fiscal_year.upper(),
             fiscal_year_start=fy_start,
             fiscal_year_end=fy_end,
+            gross_appropriations=gross_appropriations,
+            accounting_adjustments=accounting_adjustments,
             total_appropriations=total_appropriations,
-            net_appropriations=None,  # TODO: Calculate by subtracting interfund transfers
+            operating_appropriations=operating_total,
+            fund_category_breakdown=category_breakdown,
             data_source="socrata_api",
             source_dataset_id=self.config.get("socrata", {})
             .get("datasets", {})
@@ -320,7 +392,11 @@ class CityOfChicagoTransformer(BaseTransformer):
             .get("appropriations", "unknown"),
             extraction_date=date.today(),
             pipeline_version="1.0.0",
-            notes=None,
+            notes=(
+                "Total appropriations include accounting adjustments. "
+                "Operating appropriations exclude non-operating funds (e.g., airports). "
+                "Fund categories are entity-specific."
+            ),
         )
 
         return BudgetData(
