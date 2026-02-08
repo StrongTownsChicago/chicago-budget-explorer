@@ -51,42 +51,50 @@ const createMockBudgetData = (year: string, total: number): BudgetData => ({
     entity_name: "City of Chicago",
     fiscal_year: year,
     fiscal_year_label: `FY${year.substring(2)}`,
+    fiscal_year_start: `${year.substring(2)}-01-01`,
+    fiscal_year_end: `${year.substring(2)}-12-31`,
+    gross_appropriations: total + 100000000,
+    accounting_adjustments: -100000000,
     total_appropriations: total,
+    operating_appropriations: total,
+    fund_category_breakdown: { operating: total },
     data_source: "City of Chicago Open Data Portal",
     source_dataset_id: "test-dataset",
     extraction_date: "2026-02-07T00:00:00Z",
     pipeline_version: "1.0.0",
+    notes: null,
   },
   appropriations: {
     by_department: [
       {
         id: "dept-finance",
         name: "Finance",
-        appropriations: {
-          total: 500000000,
-          by_fund: {},
-          by_appropriation_type: {},
+        code: "FIN",
+        amount: 500000000,
+        prior_year_amount: 450000000,
+        change_pct: 11.1,
+        fund_breakdown: [{ fund_id: "0100", fund_name: "Corporate", amount: 500000000 }],
+        subcategories: [{ id: "personnel", name: "Personnel", amount: 500000000 }],
+        simulation: {
+          adjustable: true,
+          min_pct: 50,
+          max_pct: 150,
+          step_pct: 1,
+          constraints: [],
+          description: "",
         },
-        year_over_year_change: {
-          amount: 50000000,
-          percent: 10.0,
-        },
-        adjustable: true,
-        min_adjustment: 0.5,
-        max_adjustment: 1.5,
       },
     ],
     by_fund: [
       {
-        fund: "Corporate",
-        appropriations: 1000000000,
-        year_over_year_change: {
-          amount: 100000000,
-          percent: 10.0,
-        },
+        id: "corporate",
+        name: "Corporate",
+        amount: 1000000000,
+        fund_type: "operating" as const,
       },
     ],
   },
+  schema_version: "1.0.0",
 });
 
 describe("BudgetExplorer", () => {
@@ -108,7 +116,8 @@ describe("BudgetExplorer", () => {
 
   it("displays budget total for default year", () => {
     render(<BudgetExplorer {...defaultProps} />);
-    expect(screen.getByText(/\$16\.6B/)).toBeInTheDocument();
+    const matches = screen.getAllByText(/\$16\.6B/);
+    expect(matches.length).toBeGreaterThan(0);
   });
 
   it("renders year selector with available years", () => {
@@ -141,19 +150,19 @@ describe("BudgetExplorer", () => {
     render(<BudgetExplorer {...defaultProps} />);
 
     // Initially shows FY2025 data
-    expect(screen.getByText(/\$16\.6B/)).toBeInTheDocument();
+    expect(screen.getAllByText(/\$16\.6B/).length).toBeGreaterThan(0);
 
     // Change to FY2024
     const yearSelector = screen.getByTestId("year-selector");
     await user.selectOptions(yearSelector, "fy2024");
 
     // Should now show FY2024 data
-    expect(screen.getByText(/\$16\.1B/)).toBeInTheDocument();
+    expect(screen.getAllByText(/\$16\.1B/).length).toBeGreaterThan(0);
   });
 
   it("displays fiscal year label", () => {
     render(<BudgetExplorer {...defaultProps} />);
-    expect(screen.getByText(/FY2025 Budget/)).toBeInTheDocument();
+    expect(screen.getByText(/FY2025 Operating Budget/)).toBeInTheDocument();
   });
 
   it("renders data source attribution", () => {

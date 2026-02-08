@@ -26,6 +26,8 @@ export default function BudgetExplorer({
   const [selectedYear, setSelectedYear] = useState(defaultYear);
   const data = budgetDataByYear[selectedYear];
 
+  if (!data) return null;
+
   return (
     <div className="space-y-12">
       {/* Header */}
