@@ -1,7 +1,7 @@
 """Pydantic models for Chicago Budget Explorer JSON schema."""
 
 from datetime import date
-from typing import Literal, Optional
+from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -50,10 +50,10 @@ class Department(BaseModel):
     name: str = Field(..., description="Department name (e.g., 'Police')")
     code: str = Field(..., description="Department code from source data (e.g., '057')")
     amount: int = Field(..., ge=0, description="Total budget amount in dollars")
-    prior_year_amount: Optional[int] = Field(
+    prior_year_amount: int | None = Field(
         None, ge=0, description="Prior year amount for year-over-year comparison"
     )
-    change_pct: Optional[float] = Field(None, description="Year-over-year change percentage")
+    change_pct: float | None = Field(None, description="Year-over-year change percentage")
     fund_breakdown: list[FundBreakdown] = Field(
         default_factory=list, description="Breakdown by fund type (Local, Grant, etc.)"
     )
@@ -93,14 +93,14 @@ class Metadata(BaseModel):
     fiscal_year_start: date = Field(..., description="Fiscal year start date")
     fiscal_year_end: date = Field(..., description="Fiscal year end date")
     total_appropriations: int = Field(..., ge=0, description="Total gross budget amount")
-    net_appropriations: Optional[int] = Field(
+    net_appropriations: int | None = Field(
         None, ge=0, description="Net after interfund transfers (if applicable)"
     )
     data_source: str = Field(..., description="Source of data (e.g., 'socrata_api', 'pdf')")
     source_dataset_id: str = Field(..., description="Source dataset identifier")
     extraction_date: date = Field(..., description="When data was extracted")
     pipeline_version: str = Field(..., description="Pipeline version (for schema migrations)")
-    notes: Optional[str] = Field(None, description="Additional context or caveats")
+    notes: str | None = Field(None, description="Additional context or caveats")
 
 
 class BudgetData(BaseModel):

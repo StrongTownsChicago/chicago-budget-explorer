@@ -1,8 +1,8 @@
 """Transformer for City of Chicago budget data from Socrata."""
 
 import re
-from datetime import date, timedelta
-from typing import Any, Optional
+from datetime import date
+from typing import Any
 
 import pandas as pd
 
@@ -47,9 +47,7 @@ class CityOfChicagoTransformer(BaseTransformer):
 
         self.transform_config = config["transform"]
         self.acronyms = self.transform_config.get("acronyms", {})
-        self.non_adjustable = set(
-            self.transform_config.get("non_adjustable_departments", [])
-        )
+        self.non_adjustable = set(self.transform_config.get("non_adjustable_departments", []))
         self.grant_threshold = self.transform_config.get("grant_funded_threshold", 0.9)
 
     def detect_amount_column(self, df: pd.DataFrame, fiscal_year: str) -> str:
@@ -152,9 +150,7 @@ class CityOfChicagoTransformer(BaseTransformer):
             )
 
         # Check if grant-funded
-        grant_amount = sum(
-            fb.amount for fb in fund_breakdown if "grant" in fb.fund_name.lower()
-        )
+        grant_amount = sum(fb.amount for fb in fund_breakdown if "grant" in fb.fund_name.lower())
         grant_pct = grant_amount / total_amount if total_amount > 0 else 0
 
         if grant_pct > self.grant_threshold:
@@ -184,7 +180,7 @@ class CityOfChicagoTransformer(BaseTransformer):
         self,
         df: pd.DataFrame,
         fiscal_year: str,
-        prior_df: Optional[pd.DataFrame] = None,
+        prior_df: pd.DataFrame | None = None,
     ) -> BudgetData:
         """Transform City of Chicago Socrata data to BudgetData schema.
 
@@ -252,12 +248,16 @@ class CityOfChicagoTransformer(BaseTransformer):
             )
 
             # Year-over-year comparison (if prior year provided)
-            prior_year_amount: Optional[int] = None
-            change_pct: Optional[float] = None
+            prior_year_amount: int | None = None
+            change_pct: float | None = None
 
             if prior_df is not None:
-                prior_amount_col = self.detect_amount_column(prior_df, "fy" + str(int(fiscal_year.replace("fy", "")) - 1))
-                prior_df[prior_amount_col] = pd.to_numeric(prior_df[prior_amount_col], errors="coerce")
+                prior_amount_col = self.detect_amount_column(
+                    prior_df, "fy" + str(int(fiscal_year.replace("fy", "")) - 1)
+                )
+                prior_df[prior_amount_col] = pd.to_numeric(
+                    prior_df[prior_amount_col], errors="coerce"
+                )
                 prior_df["dept_name_normalized"] = prior_df[dept_col].apply(
                     self.title_case_with_acronyms
                 )
@@ -300,9 +300,7 @@ class CityOfChicagoTransformer(BaseTransformer):
                 amount=amount,
                 fund_type="grant" if "grant" in fund_name.lower() else "operating",
             )
-            for fund_name, amount in sorted(
-                fund_summary.items(), key=lambda x: x[1], reverse=True
-            )
+            for fund_name, amount in sorted(fund_summary.items(), key=lambda x: x[1], reverse=True)
         ]
 
         # Metadata

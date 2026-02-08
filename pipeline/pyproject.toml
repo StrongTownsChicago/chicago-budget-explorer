@@ -49,3 +49,8 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
 addopts = "-v --cov=src --cov-report=html --cov-report=term"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.0",
+]

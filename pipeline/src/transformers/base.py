@@ -1,7 +1,7 @@
 """Abstract base transformer for entity-specific transformations."""
 
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
 import pandas as pd
 
@@ -29,7 +29,7 @@ class BaseTransformer(ABC):
         self,
         df: pd.DataFrame,
         fiscal_year: str,
-        prior_df: Optional[pd.DataFrame] = None,
+        prior_df: pd.DataFrame | None = None,
     ) -> BudgetData:
         """Transform raw DataFrame to BudgetData schema.
 
