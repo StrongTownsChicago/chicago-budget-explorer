@@ -396,10 +396,10 @@ class TestCityOfChicagoTransformer:
     def test_comprehensive_budget_totals(self, config):
         """Test calculation of comprehensive budget totals with multiple fund types."""
         config["transform"]["fund_categories"] = {
-            "operating": ["Corporate Fund"],
-            "enterprise": ["Water Fund"],
+            "enterprise": ["Airport Fund"],
             "grant": ["*Grant*"],
         }
+        config["transform"]["non_operating_funds"] = ["Airport Fund"]
 
         df = pd.DataFrame(
             [
@@ -411,9 +411,9 @@ class TestCityOfChicagoTransformer:
                     "2025_ordinance": "1000000",
                 },
                 {
-                    "department_name": "WATER",
+                    "department_name": "AIRPORT",
                     "department_code": "100",
-                    "fund_description": "Water Fund",
+                    "fund_description": "Airport Fund",
                     "appropriation_account_description": "Operations",
                     "2025_ordinance": "500000",
                 },
@@ -433,7 +433,8 @@ class TestCityOfChicagoTransformer:
         # Comprehensive totals
         assert result.metadata.gross_appropriations == 1800000
         assert result.metadata.total_appropriations == 1800000
-        assert result.metadata.operating_appropriations == 1000000
+        # Operating = total minus airport (non-operating) funds
+        assert result.metadata.operating_appropriations == 1300000
 
         # Fund category breakdown
         assert result.metadata.fund_category_breakdown["operating"] == 1000000

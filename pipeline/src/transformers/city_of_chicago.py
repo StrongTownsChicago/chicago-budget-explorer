@@ -119,6 +119,28 @@ class CityOfChicagoTransformer(BaseTransformer):
         end = date(year, 12, 31)
         return start, end
 
+    @staticmethod
+    def _matches_fund_list(fund_name: str, fund_list: list[str]) -> bool:
+        """Check if a fund name matches any entry in a fund list.
+
+        Supports exact matches and wildcard patterns (e.g., "*Grant*").
+
+        Args:
+            fund_name: Fund name to check
+            fund_list: List of fund names or wildcard patterns
+
+        Returns:
+            True if fund_name matches any entry
+        """
+        for pattern in fund_list:
+            if "*" in pattern:
+                pattern_text = pattern.strip("*").lower()
+                if pattern_text in fund_name.lower():
+                    return True
+            elif fund_name == pattern:
+                return True
+        return False
+
     def categorize_fund(self, fund_name: str) -> str:
         """Categorize a fund into an entity-specific category.
 
@@ -134,14 +156,8 @@ class CityOfChicagoTransformer(BaseTransformer):
         fund_categories = self.transform_config.get("fund_categories", {})
 
         for category, fund_list in fund_categories.items():
-            for pattern in fund_list:
-                if "*" in pattern:
-                    # Wildcard pattern match (case-insensitive)
-                    pattern_text = pattern.strip("*").lower()
-                    if pattern_text in fund_name.lower():
-                        return category
-                elif fund_name == pattern:
-                    return category
+            if self._matches_fund_list(fund_name, fund_list):
+                return category
 
         # Default to operating if uncategorized
         return "operating"
@@ -339,8 +355,21 @@ class CityOfChicagoTransformer(BaseTransformer):
                 category = self.categorize_fund(fb.fund_name)
                 category_breakdown[category] = category_breakdown.get(category, 0) + fb.amount
 
-        # Operating appropriations = sum of "operating" category if it exists
-        operating_total = category_breakdown.get("operating") if category_breakdown else None
+        # Operating appropriations = total minus explicitly non-operating funds.
+        # For Chicago, the reported ~$16.6B operating budget excludes only airport funds.
+        non_operating_funds = self.transform_config.get("non_operating_funds", [])
+        if non_operating_funds:
+            non_operating_total = 0
+            for dept in departments:
+                for fb in dept.fund_breakdown:
+                    if self._matches_fund_list(fb.fund_name, non_operating_funds):
+                        non_operating_total += fb.amount
+            operating_total: int | None = total_appropriations - non_operating_total
+        elif category_breakdown:
+            # Fallback: use "operating" category if no non_operating_funds config
+            operating_total = category_breakdown.get("operating")
+        else:
+            operating_total = None
 
         fy_start, fy_end = self.calculate_fiscal_year_dates(fiscal_year)
 
@@ -365,7 +394,7 @@ class CityOfChicagoTransformer(BaseTransformer):
             pipeline_version="1.0.0",
             notes=(
                 "Total appropriations include accounting adjustments. "
-                "Operating appropriations sum funds in 'operating' category. "
+                "Operating appropriations exclude non-operating funds (e.g., airports). "
                 "Fund categories are entity-specific."
             ),
         )

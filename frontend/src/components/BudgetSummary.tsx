@@ -14,11 +14,10 @@ export default function BudgetSummary({ metadata }: Props) {
         </h2>
         <p className="text-sm text-gray-600 mb-4">
           The <strong>operating budget</strong> (
-          {formatCurrency(metadata.operating_appropriations || 0)}) covers
-          day-to-day operations and matches figures in budget reports. The{" "}
-          <strong>total appropriations</strong> include all funds, including
-          self-funded enterprise operations, pension contributions, and grant
-          programs.
+          {formatCurrency(metadata.operating_appropriations || 0)}) matches
+          the figure in official budget reports and excludes self-funded
+          airport operations. The <strong>total appropriations</strong>{" "}
+          include all funds.
         </p>
       </div>
 
@@ -32,7 +31,7 @@ export default function BudgetSummary({ metadata }: Props) {
             {formatCurrency(metadata.operating_appropriations || 0)}
           </p>
           <p className="text-xs text-gray-600 mt-1">
-            Corporate &amp; local operating funds
+            Excludes airport enterprise funds
           </p>
         </div>
 
@@ -44,7 +43,7 @@ export default function BudgetSummary({ metadata }: Props) {
             {formatCurrency(metadata.total_appropriations)}
           </p>
           <p className="text-xs text-gray-600 mt-1">
-            All funds including enterprise &amp; pensions
+            All funds including airports
           </p>
         </div>
       </div>
