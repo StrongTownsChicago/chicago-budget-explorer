@@ -30,7 +30,7 @@ export default function SimulatorPanel({ data }: Props) {
   return (
     <div className="space-y-6">
       {/* Budget balance indicator */}
-      <BudgetBalance state={state} />
+      <BudgetBalance state={state} totalRevenue={data.revenue?.total_revenue} />
 
       {/* Controls header */}
       <div className="flex justify-between items-center">

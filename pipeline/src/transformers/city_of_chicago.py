@@ -13,6 +13,8 @@ from ..models.schema import (
     FundBreakdown,
     FundSummary,
     Metadata,
+    Revenue,
+    RevenueSource,
     SimulationConfig,
     Subcategory,
 )
@@ -218,18 +220,176 @@ class CityOfChicagoTransformer(BaseTransformer):
             description="This department can be adjusted within standard constraints.",
         )
 
+    def categorize_revenue_source(self, source_name: str) -> str:
+        """Categorize a revenue source into a high-level category.
+
+        Uses configuration from entities.yaml to classify revenue sources.
+        Matching is case-insensitive and uses substring matching.
+
+        Args:
+            source_name: Revenue source name from data
+
+        Returns:
+            Category key (e.g., "property_tax", "sales_tax", "other")
+        """
+        revenue_categories = self.transform_config.get("revenue_categories", {})
+
+        for category, patterns in revenue_categories.items():
+            for pattern in patterns:
+                if pattern.lower() in source_name.lower():
+                    return str(category)
+
+        return "other"
+
+    def transform_revenue(
+        self,
+        df: pd.DataFrame,
+        fiscal_year: str,
+    ) -> Revenue:
+        """Transform revenue data to Revenue schema.
+
+        Aggregates raw revenue line items into categories, computes fund breakdowns
+        and subcategories for each category, and returns a complete Revenue model.
+
+        Args:
+            df: Raw revenue DataFrame from Socrata
+            fiscal_year: Fiscal year (e.g., 'fy2025')
+
+        Returns:
+            Revenue model with categorized sources
+        """
+        # Handle empty DataFrame
+        if df.empty:
+            return Revenue(
+                by_source=[],
+                by_fund=[],
+                total_revenue=0,
+                local_revenue_only=True,
+                grant_revenue_estimated=None,
+            )
+
+        # Detect amount column
+        amount_col = self.detect_amount_column(df, fiscal_year)
+
+        # Get column names from config
+        rev_config = self.transform_config.get("revenue_columns", {})
+        source_col = rev_config.get("source_column", "revenue_source").lower()
+        fund_col = rev_config.get("fund_column", "fund_description").lower()
+
+        # Convert amount to numeric
+        df[amount_col] = pd.to_numeric(df[amount_col], errors="coerce")
+        df = df[df[amount_col].notna()].copy()
+
+        # Filter out zero amounts
+        df = df[df[amount_col] != 0].copy()
+
+        # Categorize each source
+        df["source_category"] = df[source_col].apply(self.categorize_revenue_source)
+
+        # Human-friendly category display names
+        category_display_names = {
+            "property_tax": "Property Tax",
+            "sales_tax": "Sales Tax",
+            "state_sharing": "State Shared Revenue",
+            "utility_tax": "Utility Taxes",
+            "transaction_tax": "Transaction Taxes",
+            "transportation_tax": "Transportation Taxes",
+            "fines_forfeitures": "Fines and Forfeitures",
+            "licenses_permits": "Licenses and Permits",
+            "charges_for_services": "Charges for Services",
+            "debt_proceeds": "Debt Proceeds",
+            "tif": "TIF Surplus",
+            "other": "Other Revenue",
+        }
+
+        # Aggregate by category
+        sources: list[RevenueSource] = []
+
+        for category, cat_group in df.groupby("source_category", dropna=False):
+            cat_total = int(cat_group[amount_col].sum())
+
+            # Fund breakdown for this category
+            fund_breakdown: list[FundBreakdown] = []
+            if fund_col in cat_group.columns:
+                for fund_name, fund_group in cat_group.groupby(fund_col, dropna=False):
+                    fund_amount = int(fund_group[amount_col].sum())
+                    fund_breakdown.append(
+                        FundBreakdown(
+                            fund_id=slugify(str(fund_name)),
+                            fund_name=str(fund_name),
+                            amount=fund_amount,
+                        )
+                    )
+
+            # Subcategories (individual sources within category)
+            subcategories: list[Subcategory] = []
+            for source_name, source_group in cat_group.groupby(source_col, dropna=False):
+                source_amount = int(source_group[amount_col].sum())
+                subcategories.append(
+                    Subcategory(
+                        id=slugify(f"{category}-{source_name}"),
+                        name=str(source_name),
+                        amount=source_amount,
+                    )
+                )
+
+            category_name = category_display_names.get(
+                str(category), str(category).replace("_", " ").title()
+            )
+
+            sources.append(
+                RevenueSource(
+                    id=slugify(f"revenue-{category}"),
+                    name=category_name,
+                    amount=cat_total,
+                    subcategories=sorted(subcategories, key=lambda x: x.amount, reverse=True),
+                    fund_breakdown=sorted(fund_breakdown, key=lambda x: x.amount, reverse=True),
+                )
+            )
+
+        # Sort sources by amount (descending)
+        sources.sort(key=lambda x: x.amount, reverse=True)
+
+        # Fund summary (aggregate across all sources)
+        fund_totals: dict[str, int] = {}
+        for source in sources:
+            for fb in source.fund_breakdown:
+                fund_totals[fb.fund_name] = fund_totals.get(fb.fund_name, 0) + fb.amount
+
+        by_fund = [
+            FundSummary(
+                id=slugify(fund_name),
+                name=fund_name,
+                amount=amount,
+                fund_type="operating",
+            )
+            for fund_name, amount in sorted(fund_totals.items(), key=lambda x: x[1], reverse=True)
+        ]
+
+        total_revenue = sum(s.amount for s in sources)
+
+        return Revenue(
+            by_source=sources,
+            by_fund=by_fund,
+            total_revenue=total_revenue,
+            local_revenue_only=True,
+            grant_revenue_estimated=None,
+        )
+
     def transform(
         self,
         df: pd.DataFrame,
         fiscal_year: str,
         prior_df: pd.DataFrame | None = None,
+        revenue_df: pd.DataFrame | None = None,
     ) -> BudgetData:
         """Transform City of Chicago Socrata data to BudgetData schema.
 
         Args:
-            df: Raw Socrata DataFrame
+            df: Raw Socrata DataFrame (appropriations)
             fiscal_year: Fiscal year (e.g., 'fy2025')
             prior_df: Optional prior year DataFrame for year-over-year comparison
+            revenue_df: Optional revenue DataFrame for revenue processing
 
         Returns:
             Complete BudgetData model
@@ -373,6 +533,9 @@ class CityOfChicagoTransformer(BaseTransformer):
 
         fy_start, fy_end = self.calculate_fiscal_year_dates(fiscal_year)
 
+        # Calculate grant fund total for revenue transparency
+        grant_total = sum(f.amount for f in by_fund if "grant" in f.name.lower())
+
         metadata = Metadata(
             entity_id=self.config.get("id", "city-of-chicago"),
             entity_name=self.config.get("name", "City of Chicago"),
@@ -399,8 +562,17 @@ class CityOfChicagoTransformer(BaseTransformer):
             ),
         )
 
+        # Process revenue if provided
+        revenue: Revenue | None = None
+        if revenue_df is not None and not revenue_df.empty:
+            revenue = self.transform_revenue(revenue_df, fiscal_year)
+            revenue.grant_revenue_estimated = grant_total if grant_total > 0 else None
+            metadata.total_revenue = revenue.total_revenue
+            metadata.revenue_surplus_deficit = revenue.total_revenue - total_appropriations
+
         return BudgetData(
             metadata=metadata,
             appropriations=Appropriations(by_department=departments, by_fund=by_fund),
+            revenue=revenue,
             schema_version="1.0.0",
         )

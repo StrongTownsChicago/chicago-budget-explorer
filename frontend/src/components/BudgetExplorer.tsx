@@ -7,6 +7,9 @@ import DepartmentBar from "@/components/charts/DepartmentBar";
 import FundPie from "@/components/charts/FundPie";
 import AppropriationBreakdown from "@/components/charts/AppropriationBreakdown";
 import BudgetTreemap from "@/components/charts/BudgetTreemap";
+import RevenueBreakdown from "@/components/charts/RevenueBreakdown";
+import RevenueVsSpending from "@/components/charts/RevenueVsSpending";
+import TransparencyCallout from "@/components/charts/TransparencyCallout";
 
 export interface Props {
   entityId: string;
@@ -100,6 +103,44 @@ export default function BudgetExplorer({
         </p>
         <BudgetTreemap departments={data.appropriations.by_department} />
       </section>
+
+      {/* Revenue Section (v1.5+) */}
+      {data.revenue && (
+        <section>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Revenue</h2>
+          <p className="text-gray-600 mb-4">
+            Where the money comes from: a breakdown of revenue by source.
+          </p>
+
+          <TransparencyCallout
+            localRevenue={data.revenue.total_revenue}
+            grantRevenueEstimated={data.revenue.grant_revenue_estimated}
+            totalBudget={data.metadata.total_appropriations}
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Revenue by Source
+              </h3>
+              <RevenueBreakdown
+                sources={data.revenue.by_source}
+                totalRevenue={data.revenue.total_revenue}
+              />
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Revenue vs. Spending
+              </h3>
+              <RevenueVsSpending
+                totalRevenue={data.revenue.total_revenue}
+                totalAppropriations={data.metadata.total_appropriations}
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Data Source Attribution */}
       <footer className="mt-12 pt-6 border-t border-gray-200">

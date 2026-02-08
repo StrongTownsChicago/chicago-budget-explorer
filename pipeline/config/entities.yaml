@@ -14,8 +14,10 @@ entities:
       datasets:
         fy2025:
           appropriations: "t59y-fr3k"  # Budget - 2025 Budget Ordinance - Appropriations
+          revenue: "e5cq-t86i"  # Budget - 2025 Budget Ordinance - Revenue
         fy2024:
           appropriations: "x394-e874"  # Budget - 2024 Budget Ordinance - Appropriations
+          revenue: "ebjf-2w7t"  # Budget - 2024 Budget Ordinance - Revenue
         fy2023:
           appropriations: "3kky-uezs"  # Budget - 2023 Budget Ordinance - Appropriations
 
@@ -81,6 +83,61 @@ entities:
       non_operating_funds:
         - "Chicago O'Hare Airport Fund"
         - "Chicago Midway Airport Fund"
+
+      # Revenue source categorization (maps raw source names to user-friendly categories)
+      revenue_categories:
+        property_tax:
+          - "Property Tax"
+          - "Tax Levy"
+        sales_tax:
+          - "Sales Tax"
+        state_sharing:
+          - "State Income Tax"
+          - "Use Tax"
+          - "Personal Property Replacement Tax"
+        utility_tax:
+          - "Electricity Tax"
+          - "Gas Tax"
+          - "Telecommunications Tax"
+          - "Utility Tax"
+        transaction_tax:
+          - "Personal Property Lease Transaction Tax"
+          - "Real Estate Transfer Tax"
+          - "Amusement Tax"
+          - "Transaction Tax"
+        transportation_tax:
+          - "Ground Transportation Tax"
+          - "Parking Tax"
+          - "Chicago Casino Tax"
+          - "Transportation Tax"
+        fines_forfeitures:
+          - "Fines"
+          - "Forfeitures"
+          - "Penalties"
+          - "Red Light Camera"
+          - "Parking Fines"
+        licenses_permits:
+          - "Licenses"
+          - "Permits"
+          - "Building Permits"
+          - "Business Licenses"
+        charges_for_services:
+          - "Charges for Services"
+          - "Water"
+          - "Sewer"
+          - "Airport"
+          - "Concession"
+        debt_proceeds:
+          - "Proceeds from Debt"
+          - "Bond Proceeds"
+        tif:
+          - "TIF"
+          - "Tax Increment"
+
+      # Column mappings for revenue dataset
+      revenue_columns:
+        source_column: "revenue_source"
+        fund_column: "fund_description"
 
   # Future entities (coming soon)
   chicago-public-schools:

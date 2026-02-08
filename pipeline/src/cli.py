@@ -54,6 +54,9 @@ def get_entity_config(entity_id: str) -> dict[Any, Any]:
 def fetch_command(args: argparse.Namespace) -> int:
     """Fetch raw data from source.
 
+    Fetches all available dataset types (appropriations, revenue, etc.)
+    for the specified entity and fiscal year.
+
     Args:
         args: Parsed command-line arguments
 
@@ -66,15 +69,22 @@ def fetch_command(args: argparse.Namespace) -> int:
         entity_config = get_entity_config(args.entity)
         extractor = SocrataExtractor(entity_config)
 
-        df = extractor.extract(args.year)
+        # Fetch all available datasets for this fiscal year
+        all_data = extractor.extract_all(args.year)
 
-        # Save raw data
+        # Save raw data for each dataset type
         output_dir = Path("output") / args.entity / "raw"
         output_dir.mkdir(parents=True, exist_ok=True)
-        output_file = output_dir / f"{args.year}.csv"
 
-        df.to_csv(output_file, index=False)
-        print(f"✅ Saved raw data to {output_file} ({len(df)} rows)")
+        for dataset_type, df in all_data.items():
+            if dataset_type == "appropriations":
+                output_file = output_dir / f"{args.year}.csv"
+            else:
+                output_file = output_dir / f"{args.year}_{dataset_type}.csv"
+            df.to_csv(output_file, index=False)
+            print(f"  Saved {dataset_type} to {output_file} ({len(df)} rows)")
+
+        print(f"✅ Fetched {len(all_data)} dataset(s) for {args.year}")
 
         return 0
 
@@ -97,31 +107,34 @@ def transform_command(args: argparse.Namespace) -> int:
 
         entity_config = get_entity_config(args.entity)
 
-        # Load raw data (fetch if needed)
+        import pandas as pd
+
+        # Load raw appropriations data (fetch if needed)
         raw_file = Path("output") / args.entity / "raw" / f"{args.year}.csv"
         if not raw_file.exists():
             print("Raw data not found, fetching...")
             extractor = SocrataExtractor(entity_config)
-            df = extractor.extract(args.year)
+            all_data = extractor.extract_all(args.year)
+            df = all_data["appropriations"]
+            revenue_df = all_data.get("revenue")
         else:
-            import pandas as pd
-
             df = pd.read_csv(raw_file)
+            # Load revenue data if available
+            revenue_raw_file = Path("output") / args.entity / "raw" / f"{args.year}_revenue.csv"
+            revenue_df = pd.read_csv(revenue_raw_file) if revenue_raw_file.exists() else None
 
         # Load prior year data if requested
         prior_df = None
         if args.prior_year:
             prior_raw_file = Path("output") / args.entity / "raw" / f"{args.prior_year}.csv"
             if prior_raw_file.exists():
-                import pandas as pd
-
                 prior_df = pd.read_csv(prior_raw_file)
             else:
                 print(f"Warning: Prior year {args.prior_year} not found, skipping comparison")
 
-        # Transform
+        # Transform (with optional revenue)
         transformer = CityOfChicagoTransformer(entity_config)
-        budget_data = transformer.transform(df, args.year, prior_df)
+        budget_data = transformer.transform(df, args.year, prior_df, revenue_df=revenue_df)
 
         # Validate
         validator = BudgetValidator()
@@ -147,6 +160,9 @@ def transform_command(args: argparse.Namespace) -> int:
         print(f"\n✅ Saved transformed data to {output_file}")
         print(f"   Total appropriations: ${budget_data.metadata.total_appropriations:,}")
         print(f"   Departments: {len(budget_data.appropriations.by_department)}")
+        if budget_data.revenue is not None:
+            print(f"   Total revenue: ${budget_data.revenue.total_revenue:,}")
+            print(f"   Revenue sources: {len(budget_data.revenue.by_source)}")
 
         return 0
 

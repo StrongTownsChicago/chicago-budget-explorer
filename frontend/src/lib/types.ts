@@ -52,6 +52,22 @@ export interface Appropriations {
   by_fund: FundSummary[];
 }
 
+export interface RevenueSource {
+  id: string;
+  name: string;
+  amount: number;
+  subcategories: Subcategory[];
+  fund_breakdown: FundBreakdown[];
+}
+
+export interface Revenue {
+  by_source: RevenueSource[];
+  by_fund: FundSummary[];
+  total_revenue: number;
+  local_revenue_only: boolean;
+  grant_revenue_estimated: number | null;
+}
+
 export interface Metadata {
   entity_id: string;
   entity_name: string;
@@ -69,6 +85,10 @@ export interface Metadata {
   // Flexible fund category breakdown (entity-specific)
   fund_category_breakdown: Record<string, number>;
 
+  // Revenue summary (available from v1.5+)
+  total_revenue: number | null;
+  revenue_surplus_deficit: number | null;
+
   data_source: string;
   source_dataset_id: string;
   extraction_date: string; // ISO date
@@ -79,6 +99,7 @@ export interface Metadata {
 export interface BudgetData {
   metadata: Metadata;
   appropriations: Appropriations;
+  revenue?: Revenue; // Optional (v1.5+)
   schema_version: string;
 }
 

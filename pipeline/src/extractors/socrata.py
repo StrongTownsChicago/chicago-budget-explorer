@@ -37,18 +37,21 @@ class SocrataExtractor(BaseExtractor):
             self.client = Socrata(self.domain, None)
         return self.client
 
-    def extract(self, fiscal_year: str, **kwargs: Any) -> pd.DataFrame:
+    def extract(
+        self, fiscal_year: str, dataset_type: str = "appropriations", **kwargs: Any
+    ) -> pd.DataFrame:
         """Extract budget data from Socrata API.
 
         Args:
             fiscal_year: Fiscal year (e.g., 'fy2025')
+            dataset_type: Type of dataset ('appropriations' or 'revenue')
             **kwargs: Additional arguments (unused)
 
         Returns:
             DataFrame with raw Socrata data
 
         Raises:
-            ValueError: If fiscal year not in config or fetch fails
+            ValueError: If fiscal year not in config or dataset type not available
         """
         if fiscal_year not in self.datasets:
             available = list(self.datasets.keys())
@@ -57,7 +60,16 @@ class SocrataExtractor(BaseExtractor):
                 f"Available years: {', '.join(available)}"
             )
 
-        dataset_id = self.datasets[fiscal_year]["appropriations"]
+        year_config = self.datasets[fiscal_year]
+
+        if dataset_type not in year_config:
+            available_types = list(year_config.keys())
+            raise ValueError(
+                f"Dataset type '{dataset_type}' not available for {fiscal_year}. "
+                f"Available types: {', '.join(available_types)}"
+            )
+
+        dataset_id = year_config[dataset_type]
         client = self._get_client()
 
         # Fetch data with high limit to avoid pagination issues
@@ -72,6 +84,34 @@ class SocrataExtractor(BaseExtractor):
         df.columns = df.columns.str.lower()
 
         return df
+
+    def extract_all(self, fiscal_year: str) -> dict[str, pd.DataFrame]:
+        """Extract all available datasets for a fiscal year.
+
+        Args:
+            fiscal_year: Fiscal year (e.g., 'fy2025')
+
+        Returns:
+            Dictionary mapping dataset type to DataFrame.
+            Example: {"appropriations": df1, "revenue": df2}
+
+        Raises:
+            ValueError: If fiscal year not configured
+        """
+        if fiscal_year not in self.datasets:
+            available = list(self.datasets.keys())
+            raise ValueError(
+                f"Fiscal year '{fiscal_year}' not configured. "
+                f"Available years: {', '.join(available)}"
+            )
+
+        year_config = self.datasets[fiscal_year]
+        result: dict[str, pd.DataFrame] = {}
+
+        for dataset_type in year_config:
+            result[dataset_type] = self.extract(fiscal_year, dataset_type)
+
+        return result
 
     def available_years(self) -> list[str]:
         """Get list of available fiscal years from config.

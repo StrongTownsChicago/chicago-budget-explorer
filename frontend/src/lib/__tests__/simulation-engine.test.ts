@@ -54,6 +54,8 @@ const createMockBudgetData = (departments: Department[]): BudgetData => ({
     total_appropriations: departments.reduce((sum, d) => sum + d.amount, 0),
     operating_appropriations: null,
     fund_category_breakdown: {},
+    total_revenue: null,
+    revenue_surplus_deficit: null,
     data_source: "test",
     source_dataset_id: "test",
     extraction_date: "2025-01-01",
