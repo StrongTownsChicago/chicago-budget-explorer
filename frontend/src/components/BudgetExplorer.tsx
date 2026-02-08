@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { BudgetData } from "@/lib/types";
 import { formatCurrency } from "@/lib/format";
 import YearSelector from "@/components/ui/YearSelector";
+import BudgetSummary from "@/components/BudgetSummary";
 import DepartmentBar from "@/components/charts/DepartmentBar";
 import FundPie from "@/components/charts/FundPie";
 import AppropriationBreakdown from "@/components/charts/AppropriationBreakdown";
@@ -33,8 +34,11 @@ export default function BudgetExplorer({
           <div>
             <h1 className="text-4xl font-bold text-gray-900">{entityName}</h1>
             <p className="text-xl text-gray-600 mt-2">
-              {data.metadata.fiscal_year_label} Budget:{" "}
-              {formatCurrency(data.metadata.total_appropriations)}
+              {data.metadata.fiscal_year_label} Operating Budget:{" "}
+              {formatCurrency(
+                data.metadata.operating_appropriations ||
+                  data.metadata.total_appropriations,
+              )}
             </p>
           </div>
           <YearSelector
@@ -59,6 +63,11 @@ export default function BudgetExplorer({
           </a>
         </div>
       </header>
+
+      {/* Budget Summary */}
+      <section>
+        <BudgetSummary metadata={data.metadata} />
+      </section>
 
       {/* Department Breakdown */}
       <section>

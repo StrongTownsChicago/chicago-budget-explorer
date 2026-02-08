@@ -272,7 +272,7 @@ class TestCityOfChicagoTransformer:
         assert police.change_pct > 0
 
     def test_transform_metadata_completeness(self, config, sample_df):
-        """Test that metadata is complete."""
+        """Test that metadata is complete with comprehensive totals."""
         transformer = CityOfChicagoTransformer(config)
         result = transformer.transform(sample_df, "fy2025")
 
@@ -283,13 +283,24 @@ class TestCityOfChicagoTransformer:
         assert metadata.fiscal_year_label == "FY2025"
         assert metadata.fiscal_year_start == date(2025, 1, 1)
         assert metadata.fiscal_year_end == date(2025, 12, 31)
+
+        # Comprehensive totals
+        assert metadata.gross_appropriations == 3000000
+        assert metadata.accounting_adjustments == 0
         assert metadata.total_appropriations == 3000000
+        assert metadata.operating_appropriations is not None
+
+        # Fund category breakdown
+        assert isinstance(metadata.fund_category_breakdown, dict)
+        assert len(metadata.fund_category_breakdown) > 0
+        assert sum(metadata.fund_category_breakdown.values()) == metadata.total_appropriations
+
         assert metadata.data_source == "socrata_api"
         assert metadata.extraction_date == date.today()
         assert metadata.pipeline_version == "1.0.0"
 
     def test_transform_handles_zero_amounts(self, config):
-        """Test that zero amounts are filtered out."""
+        """Test that zero amounts are kept (not filtered out)."""
         df = pd.DataFrame(
             [
                 {
@@ -313,6 +324,119 @@ class TestCityOfChicagoTransformer:
         result = transformer.transform(df, "fy2025")
 
         police = result.appropriations.by_department[0]
-        # Should only have 1 subcategory (zero filtered out)
-        assert len(police.subcategories) == 1
-        assert police.subcategories[0].name == "Salaries"
+        # Both subcategories kept (zero amounts no longer filtered)
+        assert len(police.subcategories) == 2
+        assert police.amount == 1000000
+
+    def test_transform_preserves_negative_amounts(self, config):
+        """Test that negative amounts (accounting adjustments) are preserved."""
+        df = pd.DataFrame(
+            [
+                {
+                    "department_name": "POLICE",
+                    "department_code": "057",
+                    "fund_description": "Corporate Fund",
+                    "appropriation_account_description": "Salaries",
+                    "2025_ordinance": "1000000",
+                },
+                {
+                    "department_name": "ADJUSTMENTS",
+                    "department_code": "999",
+                    "fund_description": "Corporate Fund",
+                    "appropriation_account_description": "Budget Reductions",
+                    "2025_ordinance": "-50000",
+                },
+            ]
+        )
+
+        transformer = CityOfChicagoTransformer(config)
+        result = transformer.transform(df, "fy2025")
+
+        # Find adjustments department
+        adjustments_dept = [d for d in result.appropriations.by_department if d.code == "999"]
+        assert len(adjustments_dept) == 1
+        assert adjustments_dept[0].amount == -50000
+
+        # Check metadata calculations
+        assert result.metadata.gross_appropriations == 1000000
+        assert result.metadata.accounting_adjustments == -50000
+        assert result.metadata.total_appropriations == 950000
+
+    def test_categorize_fund(self, config):
+        """Test fund categorization logic."""
+        config["transform"]["fund_categories"] = {
+            "operating": ["Corporate Fund", "Vehicle Tax Fund"],
+            "enterprise": ["Water Fund", "Chicago O'Hare Airport Fund"],
+            "pension": ["Policemen's Annuity and Benefit Fund"],
+            "grant": ["*Grant*"],
+            "debt": ["Bond Redemption*"],
+        }
+
+        transformer = CityOfChicagoTransformer(config)
+
+        # Test exact matches
+        assert transformer.categorize_fund("Corporate Fund") == "operating"
+        assert transformer.categorize_fund("Water Fund") == "enterprise"
+        assert transformer.categorize_fund("Policemen's Annuity and Benefit Fund") == "pension"
+
+        # Test wildcard patterns
+        assert transformer.categorize_fund("Federal Grant Fund") == "grant"
+        assert transformer.categorize_fund("State Grant Program") == "grant"
+        assert transformer.categorize_fund("Bond Redemption Series A") == "debt"
+
+        # Test default (uncategorized -> operating)
+        assert transformer.categorize_fund("Unknown Fund") == "operating"
+
+    def test_categorize_fund_no_config(self, config):
+        """Test fund categorization with no fund_categories config."""
+        transformer = CityOfChicagoTransformer(config)
+        # Should default to operating when no fund_categories defined
+        assert transformer.categorize_fund("Any Fund") == "operating"
+
+    def test_comprehensive_budget_totals(self, config):
+        """Test calculation of comprehensive budget totals with multiple fund types."""
+        config["transform"]["fund_categories"] = {
+            "operating": ["Corporate Fund"],
+            "enterprise": ["Water Fund"],
+            "grant": ["*Grant*"],
+        }
+
+        df = pd.DataFrame(
+            [
+                {
+                    "department_name": "POLICE",
+                    "department_code": "057",
+                    "fund_description": "Corporate Fund",
+                    "appropriation_account_description": "Salaries",
+                    "2025_ordinance": "1000000",
+                },
+                {
+                    "department_name": "WATER",
+                    "department_code": "100",
+                    "fund_description": "Water Fund",
+                    "appropriation_account_description": "Operations",
+                    "2025_ordinance": "500000",
+                },
+                {
+                    "department_name": "GRANTS",
+                    "department_code": "200",
+                    "fund_description": "Federal Grant Fund",
+                    "appropriation_account_description": "Programs",
+                    "2025_ordinance": "300000",
+                },
+            ]
+        )
+
+        transformer = CityOfChicagoTransformer(config)
+        result = transformer.transform(df, "fy2025")
+
+        # Comprehensive totals
+        assert result.metadata.gross_appropriations == 1800000
+        assert result.metadata.total_appropriations == 1800000
+        assert result.metadata.operating_appropriations == 1000000
+
+        # Fund category breakdown
+        assert result.metadata.fund_category_breakdown["operating"] == 1000000
+        assert result.metadata.fund_category_breakdown["enterprise"] == 500000
+        assert result.metadata.fund_category_breakdown["grant"] == 300000
+        assert len(result.metadata.fund_category_breakdown) == 3
