@@ -7,6 +7,7 @@ Astro + React frontend for the Chicago Budget Explorer.
 Static-first website with interactive React islands for charts and simulation.
 
 **Architecture:**
+
 - **Astro 5**: Static site generation, islands architecture
 - **React 19**: Interactive components (charts, simulator)
 - **Tailwind CSS 4**: Utility-first styling
@@ -22,6 +23,7 @@ npm run dev     # Start development server (http://localhost:4321)
 npm run build   # Build for production
 npm run preview # Preview production build locally
 npm test        # Run tests
+npm run test:e2e # Run Playwright tests
 npm run lint    # Run linting
 npm run format  # Format code
 ```
@@ -85,6 +87,7 @@ Astro components are static HTML by default. React components need hydration dir
 - `client:idle` - Hydrate when browser idle (treemap)
 
 Example:
+
 ```astro
 <DepartmentBar data={departments} client:visible />
 <SimulatorPanel data={data} client:load />
@@ -100,6 +103,7 @@ text-chicago-red    # #CE1126 (Chicago flag red)
 ```
 
 Responsive breakpoints:
+
 - `sm`: 640px
 - `md`: 768px
 - `lg`: 1024px
@@ -109,14 +113,17 @@ Responsive breakpoints:
 ## Testing
 
 **Unit tests** (Vitest):
+
 - `simulation-engine.test.ts` - Simulation calculations
 - `format.test.ts` - Formatting utilities
 - `data-loader.test.ts` - Data loading
 
 **Component tests**:
+
 - `simulator-panel.integration.test.tsx` - Simulator interaction
 
 Run tests:
+
 ```bash
 npm test
 ```
@@ -124,6 +131,7 @@ npm test
 ## Accessibility
 
 **Guidelines:**
+
 - Semantic HTML (nav, main, footer, etc.)
 - ARIA labels on interactive elements
 - Keyboard navigation support
@@ -132,6 +140,7 @@ npm test
 - Screen reader tested (NVDA, VoiceOver)
 
 **Testing:**
+
 ```bash
 npm run build
 npx @lhci/cli autorun  # Lighthouse CI
@@ -140,11 +149,13 @@ npx @lhci/cli autorun  # Lighthouse CI
 ## Performance
 
 **Targets:**
+
 - Largest Contentful Paint < 2s
 - Total JavaScript < 200KB gzipped
 - Lighthouse Performance score >= 90
 
 **Optimization strategies:**
+
 - Islands architecture (minimal JS by default)
 - Code splitting per entity/year
 - Lazy loading below-fold charts (`client:visible`)
@@ -153,6 +164,7 @@ npx @lhci/cli autorun  # Lighthouse CI
 ## Deployment
 
 **Cloudflare Pages**:
+
 - Build command: `npm run build`
 - Output directory: `dist`
 - Node.js version: 20
@@ -160,6 +172,7 @@ npx @lhci/cli autorun  # Lighthouse CI
 **Environment variables**: None needed for v1
 
 **Automatic deployments:**
+
 - Push to `main` → production
 - Pull requests → preview deployments
 
@@ -176,17 +189,22 @@ npx @lhci/cli autorun  # Lighthouse CI
 ## Troubleshooting
 
 **"Cannot find module '@/lib/types'"**
+
 - Path aliases configured in `tsconfig.json`. Restart TypeScript server.
 
 **"Chart not interactive"**
+
 - Missing `client:*` directive. Add `client:load` or `client:visible`.
 
 **"Type error in JSON import"**
+
 - Add `"resolveJsonModule": true` to `tsconfig.json`.
 
 **"Build fails with type errors"**
+
 - Run `npm run build` which includes `astro check`.
 
 **"Lighthouse score low"**
+
 - Check bundle size with `npx vite-bundle-visualizer`.
 - Ensure charts use `client:visible` not `client:load`.

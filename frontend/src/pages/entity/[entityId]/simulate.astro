@@ -1,0 +1,68 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { loadBudgetData, getManifest } from "@/lib/data-loader";
+import SimulatorPanel from "@/components/simulator/SimulatorPanel";
+
+export async function getStaticPaths() {
+  const manifest = getManifest();
+  return manifest.entities
+    .filter((e) => e.status === "active")
+    .map((entity) => ({
+      params: { entityId: entity.id },
+      props: { entity },
+    }));
+}
+
+const { entityId } = Astro.params;
+const { entity } = Astro.props;
+
+// Load budget data for default year
+const data = await loadBudgetData(entityId, entity.default_year);
+---
+
+<BaseLayout
+  title={`${entity.name} Budget Simulator`}
+  description={`Adjust ${entity.name}'s budget and see how it affects the total. Try to keep it balanced!`}
+>
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold text-gray-900">Budget Simulator</h1>
+      <p class="text-lg text-gray-600 mt-2">
+        Adjust department budgets to see how it affects the total. Try to keep it balanced!
+      </p>
+      <a
+        href={`/entity/${entityId}`}
+        class="inline-block mt-4 text-blue-600 hover:text-blue-800 hover:underline"
+      >
+        ← Back to {entity.name} Overview
+      </a>
+    </header>
+
+    <!-- Simulator -->
+    <SimulatorPanel data={data} client:load />
+
+    <!-- Instructions -->
+    <div class="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+      <h3 class="font-semibold text-gray-900 mb-2">How to use the simulator:</h3>
+      <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+        <li>Use the sliders to increase or decrease each department's budget</li>
+        <li>Watch the budget balance indicator update in real-time</li>
+        <li>Green = balanced, Red = over budget, Yellow = under budget</li>
+        <li>Locked departments cannot be adjusted (usually debt service or legal obligations)</li>
+        <li>Click "Reset All" to restore the original budget</li>
+      </ul>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+      <h4 class="font-semibold text-yellow-900 mb-2">Important Note</h4>
+      <p class="text-sm text-yellow-800">
+        This is a simplified simulation for educational purposes. Real municipal budgeting
+        involves complex legal constraints, multi-year planning, public input processes,
+        and detailed line-item decisions. Changes to the budget require City Council approval
+        and must comply with state law.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

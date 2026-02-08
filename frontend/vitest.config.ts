@@ -5,6 +5,12 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+    exclude: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/e2e/**", // Exclude Playwright E2E tests
+      "**/.{idea,git,cache,output,temp}/**",
+    ],
   },
   resolve: {
     alias: {
