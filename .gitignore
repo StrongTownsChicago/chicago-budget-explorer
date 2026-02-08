@@ -64,5 +64,10 @@ frontend/.astro/
 logs/
 *.log
 
+# Playwright E2E tests
+playwright-report/
+test-results/
+screenshots/
+
 /docs
 /feature_planning
