@@ -24,15 +24,41 @@ export default function AppropriationBreakdown({ departments }: Props) {
 
   const total = Array.from(categoryMap.values()).reduce((sum, val) => sum + val, 0);
 
-  // Sort by amount descending
-  const chartData = Array.from(categoryMap.entries())
-    .map(([name, amount], index) => ({
-      name,
-      value: amount,
-      percentage: ((amount / total) * 100).toFixed(1),
+  // Group small categories (< 1.5% of total) into "Other"
+  const threshold = total * 0.015;
+  const entries = Array.from(categoryMap.entries());
+  const majorCategories = entries.filter(([_, amount]) => amount >= threshold);
+  const minorCategories = entries.filter(([_, amount]) => amount < threshold);
+
+  const otherAmount = minorCategories.reduce((sum, [_, amount]) => sum + amount, 0);
+  const otherCount = minorCategories.length;
+
+  // Build chart data with "Other" category if needed
+  const baseCategories = majorCategories.map(([name, amount]) => ({
+    name,
+    value: amount,
+    percentage: ((amount / total) * 100).toFixed(1),
+  }));
+
+  const categoriesToDisplay =
+    otherCount > 0
+      ? [
+          ...baseCategories,
+          {
+            name: `Other (${otherCount} categories)`,
+            value: otherAmount,
+            percentage: ((otherAmount / total) * 100).toFixed(1),
+          },
+        ]
+      : baseCategories;
+
+  // Sort by amount descending and assign colors
+  const chartData = categoriesToDisplay
+    .sort((a, b) => b.value - a.value)
+    .map((category, index) => ({
+      ...category,
       color: getDepartmentColor(index),
-    }))
-    .sort((a, b) => b.value - a.value);
+    }));
 
   return (
     <div className="w-full">
@@ -46,9 +72,10 @@ export default function AppropriationBreakdown({ departments }: Props) {
             outerRadius={120}
             paddingAngle={2}
             dataKey="value"
-            label={({ percentage }) => {
-              // Only show label if percentage is significant
-              return parseFloat(percentage) > 5 ? `${percentage}%` : "";
+            label={({ name, percentage }) => {
+              // Only show label if slice is >= 3% to avoid overlap
+              const pct = parseFloat(percentage);
+              return pct >= 3 ? `${name}: ${percentage}%` : "";
             }}
             labelLine={true}
           >
