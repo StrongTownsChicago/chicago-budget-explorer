@@ -18,14 +18,14 @@ Static-first website with interactive React islands for charts and simulation.
 ## Commands
 
 ```bash
-npm install     # Install dependencies
-npm run dev     # Start development server (http://localhost:4321)
-npm run build   # Build for production
-npm run preview # Preview production build locally
-npm test        # Run tests
-npm run test:e2e # Run Playwright tests
-npm run lint    # Run linting
-npm run format  # Format code
+npm install      # Install dependencies
+npm run dev      # Start development server (http://localhost:4321)
+npm run build    # Build for production
+npm run preview  # Preview production build locally
+npm test         # Run unit tests (Vitest)
+npm run test:e2e # Run E2E tests (Playwright)
+npm run lint     # Run ESLint
+npm run format   # Format code (Prettier)
 ```
 
 ## Project Structure
@@ -112,20 +112,25 @@ Responsive breakpoints:
 
 ## Testing
 
-**Unit tests** (Vitest):
+**Unit tests** (Vitest - 72 tests):
 
 - `simulation-engine.test.ts` - Simulation calculations
 - `format.test.ts` - Formatting utilities
-- `data-loader.test.ts` - Data loading
+- `BudgetExplorer.test.tsx` - Budget explorer component
+- `YearSelector.test.tsx` - Year selector component
 
-**Component tests**:
+**E2E tests** (Playwright - 24 tests):
 
-- `simulator-panel.integration.test.tsx` - Simulator interaction
+- Landing page, navigation, accessibility
+- Budget data display and filtering
+- Year selector functionality
+- Simulator interaction
 
 Run tests:
 
 ```bash
-npm test
+npm test         # Unit tests
+npm run test:e2e # E2E tests
 ```
 
 ## Accessibility
@@ -137,14 +142,8 @@ npm test
 - Keyboard navigation support
 - Skip to main content link
 - Color contrast WCAG AA (4.5:1)
-- Screen reader tested (NVDA, VoiceOver)
 
-**Testing:**
-
-```bash
-npm run build
-npx @lhci/cli autorun  # Lighthouse CI
-```
+**Accessibility testing included in E2E tests** (`accessibility.spec.ts`).
 
 ## Performance
 
