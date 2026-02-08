@@ -1,16 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { loadBudgetData } from "@/lib/data-loader";
+import { formatCurrency } from "@/lib/format";
+
+const data = await loadBudgetData("city-of-chicago", "fy2025");
+const totalBudget = data.metadata.total_appropriations;
+const departmentCount = data.appropriations.by_department.length;
+const fiscalYear = data.metadata.fiscal_year_label;
 ---
 
 <BaseLayout
   title="Home"
-  description="Explore and simulate Chicago's $16.6 billion operating budget"
+  description={`Explore and simulate Chicago's ${formatCurrency(totalBudget)} operating budget`}
 >
   <div class="max-w-4xl mx-auto">
     <!-- Hero Section -->
     <section class="text-center py-12">
       <h1 class="text-5xl font-bold text-gray-900 mb-4">
-        Where does Chicago spend $16.6 billion?
+        Where does Chicago spend {formatCurrency(totalBudget)}?
       </h1>
       <p class="text-xl text-gray-600 mb-8">
         Explore the City's budget interactively. Simulate changes. Understand trade-offs.
@@ -30,11 +37,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <h2 class="text-3xl font-bold text-center mb-8">Quick Facts</h2>
       <div class="grid md:grid-cols-3 gap-6">
         <div class="bg-white p-6 rounded-lg shadow">
-          <div class="text-4xl font-bold text-chicago-blue mb-2">$16.6B</div>
-          <div class="text-gray-600">Total Operating Budget (FY2025)</div>
+          <div class="text-4xl font-bold text-chicago-blue mb-2">{formatCurrency(totalBudget)}</div>
+          <div class="text-gray-600">Total Operating Budget ({fiscalYear})</div>
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
-          <div class="text-4xl font-bold text-chicago-blue mb-2">35+</div>
+          <div class="text-4xl font-bold text-chicago-blue mb-2">{departmentCount}</div>
           <div class="text-gray-600">City Departments</div>
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
@@ -75,36 +82,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           href="/entity/city-of-chicago"
           class="block bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow border-2 border-transparent hover:border-chicago-blue"
         >
-          <div class="flex items-start justify-between mb-4">
-            <div>
-              <h3 class="text-xl font-bold mb-2">City of Chicago</h3>
-              <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
-                Active
-              </span>
-            </div>
-            <div class="text-right">
-              <div class="text-2xl font-bold text-chicago-blue">24%</div>
-              <div class="text-sm text-gray-600">of property tax</div>
-            </div>
+          <div class="mb-4">
+            <h3 class="text-xl font-bold mb-2">City of Chicago</h3>
+            <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
+              Active
+            </span>
           </div>
           <p class="text-gray-600 text-sm">
-            $16.6B operating budget · FY2025 & FY2024 available
+            {formatCurrency(totalBudget)} operating budget · FY2025 & FY2024 available
           </p>
         </a>
 
         <!-- Chicago Public Schools (Coming Soon) -->
         <div class="block bg-gray-100 p-6 rounded-lg shadow opacity-60">
-          <div class="flex items-start justify-between mb-4">
-            <div>
-              <h3 class="text-xl font-bold mb-2">Chicago Public Schools</h3>
-              <span class="inline-block px-3 py-1 bg-gray-300 text-gray-700 text-sm font-semibold rounded">
-                Coming Soon
-              </span>
-            </div>
-            <div class="text-right">
-              <div class="text-2xl font-bold text-gray-500">52%</div>
-              <div class="text-sm text-gray-600">of property tax</div>
-            </div>
+          <div class="mb-4">
+            <h3 class="text-xl font-bold mb-2">Chicago Public Schools</h3>
+            <span class="inline-block px-3 py-1 bg-gray-300 text-gray-700 text-sm font-semibold rounded">
+              Coming Soon
+            </span>
           </div>
           <p class="text-gray-600 text-sm">
             Planned for v2.0

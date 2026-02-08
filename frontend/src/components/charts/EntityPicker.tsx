@@ -56,17 +56,9 @@ export default function EntityPicker({ entities, onEntityClick }: Props) {
             <h3 className="text-xl font-bold mb-2">{entity.name}</h3>
 
             {/* Entity type */}
-            <p className="text-sm text-gray-600 mb-3 capitalize">
+            <p className="text-sm text-gray-600 mb-4 capitalize">
               {entity.entity_type.replace(/_/g, " ")}
             </p>
-
-            {/* Property tax share */}
-            <div className="mb-3">
-              <span className="text-2xl font-bold text-blue-600">
-                {entity.property_tax_share_pct.toFixed(1)}%
-              </span>
-              <p className="text-xs text-gray-500">of property tax bill</p>
-            </div>
 
             {/* Available years */}
             {isActive && (

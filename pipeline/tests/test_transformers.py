@@ -158,7 +158,9 @@ class TestCityOfChicagoTransformer:
         transformer = CityOfChicagoTransformer(config)
         from src.models.schema import FundBreakdown
 
-        fund_breakdown = [FundBreakdown(fund_id="corporate", fund_name="Corporate Fund", amount=1000000)]
+        fund_breakdown = [
+            FundBreakdown(fund_id="corporate", fund_name="Corporate Fund", amount=1000000)
+        ]
         sim_config = transformer.determine_simulation_config("Police", fund_breakdown, 1000000)
 
         assert sim_config.adjustable is True
@@ -171,8 +173,12 @@ class TestCityOfChicagoTransformer:
         transformer = CityOfChicagoTransformer(config)
         from src.models.schema import FundBreakdown
 
-        fund_breakdown = [FundBreakdown(fund_id="corporate", fund_name="Corporate Fund", amount=1000000)]
-        sim_config = transformer.determine_simulation_config("Finance General", fund_breakdown, 1000000)
+        fund_breakdown = [
+            FundBreakdown(fund_id="corporate", fund_name="Corporate Fund", amount=1000000)
+        ]
+        sim_config = transformer.determine_simulation_config(
+            "Finance General", fund_breakdown, 1000000
+        )
 
         assert sim_config.adjustable is False
         assert sim_config.min_pct == 1.0

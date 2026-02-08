@@ -86,5 +86,5 @@ class SocrataExtractor(BaseExtractor):
 
     def __del__(self) -> None:
         """Close Socrata client on cleanup."""
-        if self.client is not None:
+        if hasattr(self, "client") and self.client is not None:
             self.client.close()
