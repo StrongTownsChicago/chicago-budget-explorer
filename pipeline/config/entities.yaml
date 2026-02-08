@@ -3,7 +3,7 @@ entities:
     name: "City of Chicago"
     entity_type: "city"
     status: "active"
-    default_year: "fy2025"
+    default_year: "fy2026"
     fiscal_year_start_month: 1  # January
     fiscal_year_start_day: 1
     property_tax_share_pct: 24.0
@@ -12,6 +12,9 @@ entities:
     socrata:
       domain: "data.cityofchicago.org"
       datasets:
+        fy2026:
+          appropriations: "6694-f78c"  # Budget - 2026 Budget Ordinance - Appropriations
+          revenue: "nydj-5nax"  # Budget - 2026 Budget Ordinance - Revenue
         fy2025:
           appropriations: "t59y-fr3k"  # Budget - 2025 Budget Ordinance - Appropriations
           revenue: "e5cq-t86i"  # Budget - 2025 Budget Ordinance - Revenue
@@ -19,7 +22,7 @@ entities:
           appropriations: "x394-e874"  # Budget - 2024 Budget Ordinance - Appropriations
           revenue: "rmi8-cugu"  # Budget - 2024 Budget Ordinance - Revenue
         fy2023:
-          appropriations: "3kky-uezs"  # Budget - 2023 Budget Ordinance - Appropriations
+          appropriations: "xbjh-7zvh"  # Budget - 2023 Budget Ordinance - Appropriations
 
     transform:
       department_column: "department_description"

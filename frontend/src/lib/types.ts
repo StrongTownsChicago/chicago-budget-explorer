@@ -26,6 +26,11 @@ export interface SimulationConfig {
   description: string;
 }
 
+export interface TrendPoint {
+  fiscal_year: string;
+  amount: number;
+}
+
 export interface Department {
   id: string;
   name: string;
@@ -36,6 +41,7 @@ export interface Department {
   fund_breakdown: FundBreakdown[];
   subcategories: Subcategory[];
   simulation: SimulationConfig;
+  trend?: TrendPoint[];
 }
 
 export type FundType = "operating" | "restricted" | "capital" | "grant";

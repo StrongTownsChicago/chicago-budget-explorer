@@ -45,6 +45,13 @@ class SimulationConfig(BaseModel):
         return v
 
 
+class TrendPoint(BaseModel):
+    """A single data point in a department's historical trend."""
+
+    fiscal_year: str = Field(..., description="Fiscal year (e.g., 'fy2025')")
+    amount: int = Field(..., description="Budget amount for this year")
+
+
 class Department(BaseModel):
     """A single department with its budget allocation."""
 
@@ -63,6 +70,9 @@ class Department(BaseModel):
         default_factory=list, description="Breakdown by appropriation account type"
     )
     simulation: SimulationConfig = Field(..., description="Simulation constraints for this dept")
+    trend: list[TrendPoint] | None = Field(
+        None, description="Historical trend data across fiscal years (optional)"
+    )
 
 
 class FundSummary(BaseModel):

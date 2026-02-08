@@ -13,6 +13,7 @@ from .extractors.socrata import SocrataExtractor
 from .models.manifest import EntityEntry, Manifest
 from .models.schema import BudgetData
 from .transformers.city_of_chicago import CityOfChicagoTransformer
+from .transformers.trend_enricher import enrich_entity
 from .validators.budget import BudgetValidator
 
 
@@ -225,6 +226,44 @@ def validate_command(args: argparse.Namespace) -> int:
         return 1
 
 
+def enrich_command(args: argparse.Namespace) -> int:
+    """Enrich transformed JSON files with cross-year trend data.
+
+    Reads all year files for the specified entity, matches departments across
+    years by code, and injects trend arrays into each department.
+
+    Args:
+        args: Parsed command-line arguments (requires entity)
+
+    Returns:
+        Exit code (0 for success, 1 for failure)
+    """
+    try:
+        print(f"Enriching {args.entity} with cross-year trend data...")
+
+        entity_output_dir = Path("output") / args.entity
+
+        if not entity_output_dir.exists():
+            print(f"No output directory found for {args.entity}")
+            return 1
+
+        count = enrich_entity(entity_output_dir)
+
+        if count == 0:
+            print("No JSON files found to enrich")
+            return 0
+
+        print(f"Enriched {count} year file(s) with trend data")
+        return 0
+
+    except Exception as e:
+        print(f"Error enriching data: {e}", file=sys.stderr)
+        import traceback
+
+        traceback.print_exc()
+        return 1
+
+
 def generate_manifest(args: argparse.Namespace) -> int:
     """Generate manifest.json listing all available entities and years.
 
@@ -324,7 +363,7 @@ def all_command(args: argparse.Namespace) -> int:
         # Get available years from config
         datasets = entity_config.get("socrata", {}).get("datasets", {})
         years = list(datasets.keys())
-        years.sort(reverse=True)  # Newest first
+        years.sort()  # Oldest first (ascending) for correct prior-year chaining
 
         # Fetch all years
         for year in years:
@@ -332,12 +371,17 @@ def all_command(args: argparse.Namespace) -> int:
             if fetch_command(fetch_args) != 0:
                 return 1
 
-        # Transform all years (with prior year comparison)
+        # Transform all years in ascending order (with prior year comparison)
         for i, year in enumerate(years):
-            prior_year = years[i + 1] if i + 1 < len(years) else None
+            prior_year = years[i - 1] if i > 0 else None
             transform_args = argparse.Namespace(entity=entity_id, year=year, prior_year=prior_year)
             if transform_command(transform_args) != 0:
                 return 1
+
+        # Enrich with cross-year trend data
+        enrich_args = argparse.Namespace(entity=entity_id)
+        if enrich_command(enrich_args) != 0:
+            return 1
 
     # Generate manifest
     manifest_args = argparse.Namespace()
@@ -349,7 +393,7 @@ def all_command(args: argparse.Namespace) -> int:
     if validate_command(validate_args) != 0:
         return 1
 
-    print("\n✅ Pipeline complete!")
+    print("\nPipeline complete!")
     return 0
 
 
@@ -373,6 +417,10 @@ def main() -> int:
         "--prior-year", help="Prior fiscal year for year-over-year comparison"
     )
 
+    # Enrich command
+    enrich_parser = subparsers.add_parser("enrich", help="Enrich JSON with cross-year trend data")
+    enrich_parser.add_argument("entity", help="Entity ID (e.g., city-of-chicago)")
+
     # Validate command
     subparsers.add_parser("validate", help="Validate all generated JSON files")
 
@@ -388,6 +436,8 @@ def main() -> int:
         return fetch_command(args)
     elif args.command == "transform":
         return transform_command(args)
+    elif args.command == "enrich":
+        return enrich_command(args)
     elif args.command == "validate":
         return validate_command(args)
     elif args.command == "manifest":

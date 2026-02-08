@@ -45,6 +45,10 @@ vi.mock("@/components/charts/BudgetTreemap", () => ({
   default: () => <div data-testid="budget-treemap">Budget Treemap</div>,
 }));
 
+vi.mock("@/components/charts/TrendChart", () => ({
+  default: () => <div data-testid="trend-chart">Trend Chart</div>,
+}));
+
 vi.mock("@/components/charts/RevenueBreakdown", () => ({
   default: () => <div data-testid="revenue-breakdown">Revenue Breakdown</div>,
 }));

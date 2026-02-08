@@ -7,6 +7,7 @@ import DepartmentBar from "@/components/charts/DepartmentBar";
 import FundPie from "@/components/charts/FundPie";
 import AppropriationBreakdown from "@/components/charts/AppropriationBreakdown";
 import BudgetTreemap from "@/components/charts/BudgetTreemap";
+import TrendChart from "@/components/charts/TrendChart";
 import RevenueBreakdown from "@/components/charts/RevenueBreakdown";
 import RevenueVsSpending from "@/components/charts/RevenueVsSpending";
 import TransparencyCallout from "@/components/charts/TransparencyCallout";
@@ -94,6 +95,19 @@ export default function BudgetExplorer({
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Spending by Category</h2>
         <AppropriationBreakdown departments={data.appropriations.by_department} />
       </section>
+
+      {/* Historical Trends */}
+      {data.appropriations.by_department.some((d) => d.trend && d.trend.length > 1) && (
+        <section>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Historical Trends
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Compare department budgets across fiscal years.
+          </p>
+          <TrendChart departments={data.appropriations.by_department} />
+        </section>
+      )}
 
       {/* Treemap */}
       <section>

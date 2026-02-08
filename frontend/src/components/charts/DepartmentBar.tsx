@@ -8,7 +8,7 @@ import {
   Cell,
 } from "recharts";
 import type { Department } from "@/lib/types";
-import { formatCurrency, formatCompact } from "@/lib/format";
+import { formatCurrency, formatCompact, formatPercent } from "@/lib/format";
 import { getDepartmentColor } from "@/lib/colors";
 
 export interface Props {
@@ -18,8 +18,24 @@ export interface Props {
 }
 
 /**
+ * Get CSS classes for a year-over-year change badge.
+ * Green for increases, red for decreases, gray for minimal change.
+ */
+function getChangeBadgeStyle(changePct: number): string {
+  const absPct = Math.abs(changePct);
+  if (absPct < 0.5) {
+    return "text-gray-500 bg-gray-100";
+  }
+  if (changePct > 0) {
+    return "text-green-700 bg-green-100";
+  }
+  return "text-red-700 bg-red-100";
+}
+
+/**
  * Horizontal bar chart showing department budgets.
  * Departments are sorted by amount (largest first).
+ * Shows year-over-year change badges when prior year data is available.
  */
 export default function DepartmentBar({
   departments,
@@ -40,7 +56,10 @@ export default function DepartmentBar({
 
   return (
     <div className="w-full">
-      <ResponsiveContainer width="100%" height={Math.min(600, topDepartments.length * 30)}>
+      <ResponsiveContainer
+        width="100%"
+        height={Math.min(600, topDepartments.length * 30)}
+      >
         <BarChart
           data={chartData}
           layout="vertical"
@@ -79,6 +98,26 @@ export default function DepartmentBar({
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+
+      {/* Year-over-year change badges */}
+      <div className="mt-4 space-y-1">
+        {topDepartments
+          .filter((dept) => dept.change_pct != null)
+          .map((dept) => (
+            <div
+              key={dept.id}
+              className="flex items-center gap-2 text-sm"
+              data-testid={`change-badge-${dept.id}`}
+            >
+              <span className="text-gray-700 w-36 truncate">{dept.name}</span>
+              <span
+                className={`px-2 py-0.5 rounded text-xs font-medium ${getChangeBadgeStyle(dept.change_pct!)}`}
+              >
+                {formatPercent(dept.change_pct!)}
+              </span>
+            </div>
+          ))}
+      </div>
 
       {departments.length > maxDepartments && (
         <p className="text-sm text-gray-600 mt-2">

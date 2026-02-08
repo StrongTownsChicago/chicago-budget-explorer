@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { loadBudgetData, getManifest } from "@/lib/data-loader";
 import SimulatorPanel from "@/components/simulator/SimulatorPanel";
+import type { BudgetData } from "@/lib/types";
 
 export async function getStaticPaths() {
   const manifest = getManifest();
@@ -16,8 +17,11 @@ export async function getStaticPaths() {
 const { entityId } = Astro.params;
 const { entity } = Astro.props;
 
-// Load budget data for default year
-const data = await loadBudgetData(entityId, entity.default_year);
+// Load budget data for all available years (same pattern as entity overview page)
+const budgetDataByYear: Record<string, BudgetData> = {};
+for (const year of entity.available_years) {
+  budgetDataByYear[year] = await loadBudgetData(entityId, year);
+}
 ---
 
 <BaseLayout
@@ -35,12 +39,17 @@ const data = await loadBudgetData(entityId, entity.default_year);
         href={`/entity/${entityId}`}
         class="inline-block mt-4 text-blue-600 hover:text-blue-800 hover:underline"
       >
-        ← Back to {entity.name} Overview
+        &larr; Back to {entity.name} Overview
       </a>
     </header>
 
     <!-- Simulator -->
-    <SimulatorPanel data={data} client:load />
+    <SimulatorPanel
+      budgetDataByYear={budgetDataByYear}
+      availableYears={entity.available_years}
+      defaultYear={entity.default_year}
+      client:load
+    />
 
     <!-- Instructions -->
     <div class="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
