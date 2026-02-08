@@ -35,7 +35,7 @@ const fiscalYear = data.metadata.fiscal_year_label;
     <!-- Quick Stats -->
     <section class="py-12 border-t border-gray-200">
       <h2 class="text-3xl font-bold text-center mb-8">Quick Facts</h2>
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-2 gap-6">
         <div class="bg-white p-6 rounded-lg shadow">
           <div class="text-4xl font-bold text-chicago-blue mb-2">{formatCurrency(totalBudget)}</div>
           <div class="text-gray-600">Total Operating Budget ({fiscalYear})</div>
@@ -43,10 +43,6 @@ const fiscalYear = data.metadata.fiscal_year_label;
         <div class="bg-white p-6 rounded-lg shadow">
           <div class="text-4xl font-bold text-chicago-blue mb-2">{departmentCount}</div>
           <div class="text-gray-600">City Departments</div>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow">
-          <div class="text-4xl font-bold text-chicago-blue mb-2">100%</div>
-          <div class="text-gray-600">Open Source & Free</div>
         </div>
       </div>
     </section>
@@ -73,39 +69,5 @@ const fiscalYear = data.metadata.fiscal_year_label;
       </div>
     </section>
 
-    <!-- Entity Preview (Coming Soon) -->
-    <section class="py-12 border-t border-gray-200">
-      <h2 class="text-3xl font-bold mb-6">Explore Other Entities</h2>
-      <div class="grid md:grid-cols-2 gap-6">
-        <!-- City of Chicago (Active) -->
-        <a
-          href="/entity/city-of-chicago"
-          class="block bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow border-2 border-transparent hover:border-chicago-blue"
-        >
-          <div class="mb-4">
-            <h3 class="text-xl font-bold mb-2">City of Chicago</h3>
-            <span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded">
-              Active
-            </span>
-          </div>
-          <p class="text-gray-600 text-sm">
-            {formatCurrency(totalBudget)} operating budget · FY2025 & FY2024 available
-          </p>
-        </a>
-
-        <!-- Chicago Public Schools (Coming Soon) -->
-        <div class="block bg-gray-100 p-6 rounded-lg shadow opacity-60">
-          <div class="mb-4">
-            <h3 class="text-xl font-bold mb-2">Chicago Public Schools</h3>
-            <span class="inline-block px-3 py-1 bg-gray-300 text-gray-700 text-sm font-semibold rounded">
-              Coming Soon
-            </span>
-          </div>
-          <p class="text-gray-600 text-sm">
-            Planned for v2.0
-          </p>
-        </div>
-      </div>
-    </section>
   </div>
 </BaseLayout>

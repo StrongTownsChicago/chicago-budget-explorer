@@ -1,5 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { loadBudgetData } from "@/lib/data-loader";
+import { formatCurrency } from "@/lib/format";
+
+const data = await loadBudgetData("city-of-chicago", "fy2025");
+const totalBudget = data.metadata.total_appropriations;
 ---
 
 <BaseLayout
@@ -14,7 +19,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <p>
         The Chicago Budget Explorer is an open-source civic tech project that makes
         Chicago's operating budget transparent, interactive, and understandable. Explore
-        where $16.6 billion in tax dollars go and simulate your own budget scenarios.
+        where {formatCurrency(totalBudget)} in tax dollars go and simulate your own budget scenarios.
       </p>
     </section>
 
@@ -62,9 +67,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         <li><strong>Actual Spending</strong>: This shows appropriations (approved budget), not actuals</li>
         <li>
           <strong>Sister Agencies</strong>: Chicago Public Schools, Park District, CTA, and
-          others (coming in future versions)
+          other taxing bodies
         </li>
-        <li><strong>Revenue Details</strong>: Focus is on spending, not taxation (for now)</li>
+        <li><strong>Revenue Details</strong>: Focus is on spending, not taxation</li>
       </ul>
     </section>
 
@@ -110,27 +115,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     </section>
 
     <section>
-      <h2>Roadmap</h2>
-      <h3>v1.0 (Current)</h3>
+      <h2>Features</h2>
       <ul>
         <li>City of Chicago FY2025 and FY2024 data</li>
         <li>Interactive charts and budget simulator</li>
         <li>Open source and free to use</li>
-      </ul>
-
-      <h3>v2.0 (Planned)</h3>
-      <ul>
-        <li>Chicago Public Schools budget</li>
-        <li>Chicago Park District budget</li>
-        <li>Consolidated property tax bill calculator</li>
-      </ul>
-
-      <h3>v3.0+ (Future)</h3>
-      <ul>
-        <li>CTA, MWRD, and other sister agencies</li>
-        <li>Historical trends (FY2011-present)</li>
-        <li>Inflation-adjusted comparisons</li>
-        <li>Revenue analysis and tax impact modeling</li>
       </ul>
     </section>
 
