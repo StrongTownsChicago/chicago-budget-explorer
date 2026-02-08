@@ -75,6 +75,7 @@ class CityOfChicagoTransformer(BaseTransformer):
             f"ordinance_amount_{year_num}",
             f"{year_num}_recommendation",
             "ordinance_amount",
+            "estimated_revenue",
             "amount",
         ]
 
@@ -159,7 +160,7 @@ class CityOfChicagoTransformer(BaseTransformer):
 
         for category, fund_list in fund_categories.items():
             if self._matches_fund_list(fund_name, fund_list):
-                return category
+                return str(category)
 
         # Default to operating if uncategorized
         return "operating"
@@ -560,6 +561,8 @@ class CityOfChicagoTransformer(BaseTransformer):
                 "Operating appropriations exclude non-operating funds (e.g., airports). "
                 "Fund categories are entity-specific."
             ),
+            total_revenue=None,
+            revenue_surplus_deficit=None,
         )
 
         # Process revenue if provided
