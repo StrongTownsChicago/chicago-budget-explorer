@@ -208,3 +208,22 @@ export async function testResponsiveDesign(
     await testCallback(viewport.width, viewport.height);
   }
 }
+
+/**
+ * Navigate to an entity page.
+ */
+export async function gotoEntityPage(page: Page, entityId: string): Promise<void> {
+  await page.goto(`/entity/${entityId}`);
+  await waitForPageLoad(page);
+}
+
+/**
+ * Wait for charts to render (ensures chart elements are present and stable).
+ */
+export async function waitForCharts(page: Page): Promise<void> {
+  // Wait for chart elements to be present
+  await page.waitForSelector("svg, canvas", { timeout: 10000 });
+
+  // Wait for charts to finish rendering and animations
+  await page.waitForTimeout(500);
+}

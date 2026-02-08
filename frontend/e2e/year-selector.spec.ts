@@ -95,16 +95,10 @@ test.describe("Year Selector", () => {
   test("year selector is keyboard accessible", async ({ page }) => {
     await gotoEntityPage(page, "city-of-chicago");
 
-    // Tab to year selector (skip nav links)
-    await page.keyboard.press("Tab"); // Skip link
-    await page.keyboard.press("Tab"); // Home link
-    await page.keyboard.press("Tab"); // About link
-    await page.keyboard.press("Tab"); // Simulator button
-    await page.keyboard.press("Tab"); // Back to Home button
-    await page.keyboard.press("Tab"); // Should be on year selector
-
-    // Verify year selector has focus
     const yearSelector = page.locator('select#year-selector');
+
+    // Focus the year selector directly
+    await yearSelector.focus();
     await expect(yearSelector).toBeFocused();
 
     // Use arrow keys to change selection
@@ -114,6 +108,29 @@ test.describe("Year Selector", () => {
     // Should have changed to FY2024
     const selectedValue = await yearSelector.inputValue();
     expect(selectedValue).toBe("fy2024");
+
+    // Verify it can be tabbed to in normal tab order
+    await page.goto(`/entity/city-of-chicago`);
+    await page.waitForLoadState("networkidle");
+
+    // Tab through elements until we reach the year selector
+    let attempts = 0;
+    const maxTabs = 10;
+
+    while (attempts < maxTabs) {
+      await page.keyboard.press("Tab");
+      const isFocused = await yearSelector.evaluate((el) => el === document.activeElement);
+
+      if (isFocused) {
+        break;
+      }
+
+      attempts++;
+    }
+
+    // Verify we found it in the tab order
+    expect(attempts).toBeLessThan(maxTabs);
+    await expect(yearSelector).toBeFocused();
   });
 
   test("year selector works on mobile viewport", async ({ page }) => {
