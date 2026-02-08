@@ -20,7 +20,7 @@ class TestSocrataExtractor:
             "socrata": {
                 "domain": "data.cityofchicago.org",
                 "datasets": {
-                    "fy2025": {"appropriations": "test-2025"},
+                    "fy2025": {"appropriations": "test-2025", "revenue": "rev-2025"},
                     "fy2024": {"appropriations": "test-2024"},
                 },
             },
@@ -128,3 +128,55 @@ class TestSocrataExtractor:
         extractor.__del__()
 
         mock_client.close.assert_called_once()
+
+    @patch("src.extractors.socrata.Socrata")
+    def test_extract_revenue_dataset(self, mock_socrata_class, config):
+        """Test extracting revenue data with dataset_type parameter."""
+        mock_client = MagicMock()
+        mock_client.get.return_value = [
+            {
+                "REVENUE_SOURCE": "Property Tax",
+                "FUND_DESCRIPTION": "Corporate Fund",
+                "REVENUE_AMOUNT": "500000",
+            },
+        ]
+        mock_socrata_class.return_value = mock_client
+
+        extractor = SocrataExtractor(config)
+        df = extractor.extract("fy2025", dataset_type="revenue")
+
+        # Should use revenue dataset ID
+        mock_client.get.assert_called_once_with("rev-2025", limit=50000)
+        assert isinstance(df, pd.DataFrame)
+        assert len(df) == 1
+        assert "revenue_source" in df.columns
+
+    def test_extract_missing_dataset_type(self, config):
+        """Test error when dataset type not configured for a fiscal year."""
+        extractor = SocrataExtractor(config)
+
+        # fy2024 only has appropriations, not revenue
+        with pytest.raises(ValueError, match="Dataset type 'revenue' not available"):
+            extractor.extract("fy2024", dataset_type="revenue")
+
+    @patch("src.extractors.socrata.Socrata")
+    def test_extract_all(self, mock_socrata_class, config):
+        """Test extracting all datasets for a fiscal year."""
+        mock_client = MagicMock()
+        mock_client.get.side_effect = [
+            # First call: appropriations
+            [{"DEPARTMENT_NAME": "POLICE", "APPROPRIATION_AMOUNT": "1000000"}],
+            # Second call: revenue
+            [{"REVENUE_SOURCE": "Property Tax", "REVENUE_AMOUNT": "500000"}],
+        ]
+        mock_socrata_class.return_value = mock_client
+
+        extractor = SocrataExtractor(config)
+        result = extractor.extract_all("fy2025")
+
+        # Should return both datasets
+        assert "appropriations" in result
+        assert "revenue" in result
+        assert isinstance(result["appropriations"], pd.DataFrame)
+        assert isinstance(result["revenue"], pd.DataFrame)
+        assert mock_client.get.call_count == 2

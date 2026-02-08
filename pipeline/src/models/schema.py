@@ -101,6 +101,51 @@ class Metadata(BaseModel):
     extraction_date: date = Field(..., description="When data was extracted")
     pipeline_version: str = Field(..., description="Pipeline version (for schema migrations)")
     notes: str | None = Field(None, description="Additional context or caveats")
+    total_revenue: int | None = Field(None, description="Total revenue (if revenue data available)")
+    revenue_surplus_deficit: int | None = Field(
+        None,
+        description="Revenue minus appropriations (positive = surplus, negative = deficit)",
+    )
+
+
+class RevenueSource(BaseModel):
+    """A single revenue source category (e.g., Property Tax, Sales Tax).
+
+    Revenue sources are aggregated from raw line items into user-friendly categories.
+    Each source contains subcategories for detailed breakdown and fund breakdown
+    showing which funds receive this revenue.
+    """
+
+    id: str = Field(..., description="Unique source identifier (e.g., 'revenue-property-tax')")
+    name: str = Field(..., description="Revenue source name (e.g., 'Property Tax')")
+    amount: int = Field(..., ge=0, description="Total revenue from this source")
+    subcategories: list[Subcategory] = Field(
+        default_factory=list, description="Detailed breakdown within this source"
+    )
+    fund_breakdown: list[FundBreakdown] = Field(
+        default_factory=list, description="Which funds receive this revenue"
+    )
+
+
+class Revenue(BaseModel):
+    """Complete revenue structure.
+
+    Contains revenue sources sorted by amount, fund summaries, and transparency
+    metadata about data completeness (e.g., whether grant revenue is included).
+    """
+
+    by_source: list[RevenueSource] = Field(
+        ..., description="Revenue sources sorted by amount (largest first)"
+    )
+    by_fund: list[FundSummary] = Field(..., description="Fund summary across all revenue sources")
+    total_revenue: int = Field(..., ge=0, description="Total revenue")
+    local_revenue_only: bool = Field(
+        True, description="Whether this includes only local funds (excludes grants)"
+    )
+    grant_revenue_estimated: int | None = Field(
+        None,
+        description="Estimated grant revenue (not in dataset, calculated from appropriations)",
+    )
 
 
 class BudgetData(BaseModel):
@@ -111,6 +156,9 @@ class BudgetData(BaseModel):
 
     metadata: Metadata = Field(..., description="Metadata about this dataset")
     appropriations: Appropriations = Field(..., description="Appropriations data structure")
+    revenue: Revenue | None = Field(
+        None, description="Revenue data (optional, available from v1.5+)"
+    )
     schema_version: str = Field(
         default="1.0.0", pattern=r"^\d+\.\d+\.\d+$", description="Schema version"
     )

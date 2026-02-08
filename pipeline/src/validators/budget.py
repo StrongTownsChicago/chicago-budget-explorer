@@ -44,7 +44,10 @@ class BudgetValidator:
         # 3. ID uniqueness
         self._validate_unique_ids(data)
 
-        # 4. Cross-year consistency (if prior data provided)
+        # 4. Revenue validation (if revenue data present)
+        self._validate_revenue(data)
+
+        # 5. Cross-year consistency (if prior data provided)
         if prior_data is not None:
             self._validate_cross_year_consistency(data, prior_data)
 
@@ -109,6 +112,65 @@ class BudgetValidator:
             if len(subcat_ids) != len(set(subcat_ids)):
                 duplicates = [sid for sid in subcat_ids if subcat_ids.count(sid) > 1]
                 self.errors.append(f"Duplicate subcategory IDs in {dept.name}: {set(duplicates)}")
+
+    def _validate_revenue(self, data: BudgetData) -> None:
+        """Validate revenue data structure and relationships.
+
+        Checks:
+        1. Revenue sources sum to total_revenue (within tolerance)
+        2. Local revenue approximately matches operating appropriations (warn if >10% gap)
+        3. Grant revenue gap is documented (transparency warning)
+        4. Subcategory sums match source totals
+
+        Args:
+            data: Complete budget data with optional revenue
+        """
+        if data.revenue is None:
+            return
+
+        revenue = data.revenue
+        metadata = data.metadata
+
+        # Check 1: Hierarchical sum (sources -> total)
+        source_total = sum(s.amount for s in revenue.by_source)
+        if abs(source_total - revenue.total_revenue) > self.tolerance:
+            self.errors.append(
+                f"Revenue sources sum ({source_total:,}) does not match "
+                f"total_revenue ({revenue.total_revenue:,})"
+            )
+
+        # Check 2: Revenue vs. appropriations balance
+        if metadata.total_revenue is not None and metadata.total_appropriations > 0:
+            rev = metadata.total_revenue
+            approp = metadata.total_appropriations
+
+            gap_pct = abs((rev - approp) / approp) * 100
+
+            if gap_pct > 10:
+                self.warnings.append(
+                    f"Revenue ({rev:,}) and total appropriations ({approp:,}) "
+                    f"differ by {gap_pct:.1f}%. This may indicate debt financing "
+                    f"or fund balance usage."
+                )
+
+        # Check 3: Grant revenue transparency
+        if revenue.grant_revenue_estimated and revenue.grant_revenue_estimated > 0:
+            grant_amt = revenue.grant_revenue_estimated
+            self.warnings.append(
+                f"Revenue dataset excludes approximately ${grant_amt:,} in grant funding "
+                f"(estimated from appropriations). Total budget including grants: "
+                f"${metadata.total_appropriations:,}"
+            )
+
+        # Check 4: Subcategory sums per source
+        for source in revenue.by_source:
+            if source.subcategories:
+                subcat_total = sum(sc.amount for sc in source.subcategories)
+                if abs(subcat_total - source.amount) > self.tolerance:
+                    self.errors.append(
+                        f"Revenue source '{source.name}' subcategories sum ({subcat_total:,}) "
+                        f"does not match source total ({source.amount:,})"
+                    )
 
     def _validate_cross_year_consistency(self, current: BudgetData, prior: BudgetData) -> None:
         """Check for unusual year-over-year changes.

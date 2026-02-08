@@ -45,6 +45,18 @@ vi.mock("@/components/charts/BudgetTreemap", () => ({
   default: () => <div data-testid="budget-treemap">Budget Treemap</div>,
 }));
 
+vi.mock("@/components/charts/RevenueBreakdown", () => ({
+  default: () => <div data-testid="revenue-breakdown">Revenue Breakdown</div>,
+}));
+
+vi.mock("@/components/charts/RevenueVsSpending", () => ({
+  default: () => <div data-testid="revenue-vs-spending">Revenue vs Spending</div>,
+}));
+
+vi.mock("@/components/charts/TransparencyCallout", () => ({
+  default: () => <div data-testid="transparency-callout">Transparency Callout</div>,
+}));
+
 const createMockBudgetData = (year: string, total: number): BudgetData => ({
   metadata: {
     entity_id: "city-of-chicago",
@@ -187,5 +199,46 @@ describe("BudgetExplorer", () => {
   it("formats extraction date correctly", () => {
     render(<BudgetExplorer {...defaultProps} />);
     expect(screen.getByText(/Extracted: 2\/6\/2026/)).toBeInTheDocument();
+  });
+
+  it("does not render revenue section when revenue is absent", () => {
+    render(<BudgetExplorer {...defaultProps} />);
+    expect(screen.queryByTestId("revenue-breakdown")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("revenue-vs-spending")).not.toBeInTheDocument();
+  });
+
+  it("renders revenue section when revenue data is present", () => {
+    const dataWithRevenue = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      revenue: {
+        by_source: [
+          {
+            id: "revenue-property-tax",
+            name: "Property Tax",
+            amount: 1500000000,
+            subcategories: [],
+            fund_breakdown: [],
+          },
+        ],
+        by_fund: [],
+        total_revenue: 1500000000,
+        local_revenue_only: true,
+        grant_revenue_estimated: 500000000,
+      },
+    };
+
+    const propsWithRevenue = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithRevenue,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithRevenue} />);
+    expect(screen.getByTestId("revenue-breakdown")).toBeInTheDocument();
+    expect(screen.getByTestId("revenue-vs-spending")).toBeInTheDocument();
+    expect(screen.getByTestId("transparency-callout")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^Revenue$/ })).toBeInTheDocument();
   });
 });

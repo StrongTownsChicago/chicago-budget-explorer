@@ -316,3 +316,185 @@ class TestCityOfChicagoTransformer:
         # Should only have 1 subcategory (zero filtered out)
         assert len(police.subcategories) == 1
         assert police.subcategories[0].name == "Salaries"
+
+
+class TestRevenueTransformation:
+    """Tests for revenue-related transformation methods."""
+
+    @pytest.fixture
+    def config_with_revenue(self):
+        """Create test configuration with revenue categories."""
+        return {
+            "id": "city-of-chicago",
+            "name": "City of Chicago",
+            "transform": {
+                "department_column": "DEPARTMENT_NAME",
+                "department_code_column": "DEPARTMENT_CODE",
+                "fund_description_column": "FUND_DESCRIPTION",
+                "appropriation_account_description_column": "APPROPRIATION_ACCOUNT_DESCRIPTION",
+                "acronyms": {},
+                "non_adjustable_departments": [],
+                "grant_funded_threshold": 0.9,
+                "revenue_categories": {
+                    "property_tax": ["Property Tax", "Tax Levy"],
+                    "sales_tax": ["Sales Tax"],
+                    "utility_tax": ["Electricity Tax", "Gas Tax", "Telecommunications Tax"],
+                },
+                "revenue_columns": {
+                    "source_column": "revenue_source",
+                    "fund_column": "fund_description",
+                },
+            },
+            "socrata": {
+                "domain": "data.cityofchicago.org",
+                "datasets": {
+                    "fy2025": {
+                        "appropriations": "test-2025",
+                        "revenue": "test-rev-2025",
+                    },
+                },
+            },
+        }
+
+    def test_categorize_revenue_source_property_tax(self, config_with_revenue):
+        """Categorize property tax sources correctly."""
+        transformer = CityOfChicagoTransformer(config_with_revenue)
+        assert transformer.categorize_revenue_source("Property Tax Levy") == "property_tax"
+
+    def test_categorize_revenue_source_case_insensitive(self, config_with_revenue):
+        """Categorization is case-insensitive."""
+        transformer = CityOfChicagoTransformer(config_with_revenue)
+        assert transformer.categorize_revenue_source("PROPERTY TAX LEVY") == "property_tax"
+        assert transformer.categorize_revenue_source("property tax levy") == "property_tax"
+
+    def test_categorize_revenue_source_unknown_defaults_to_other(self, config_with_revenue):
+        """Unknown revenue sources default to 'other' category."""
+        transformer = CityOfChicagoTransformer(config_with_revenue)
+        assert transformer.categorize_revenue_source("Mystery Revenue Source") == "other"
+
+    def test_transform_revenue_basic(self, config_with_revenue):
+        """Transform revenue DataFrame to Revenue model."""
+        transformer = CityOfChicagoTransformer(config_with_revenue)
+
+        revenue_df = pd.DataFrame(
+            [
+                {
+                    "revenue_source": "Property Tax Levy",
+                    "fund_description": "Corporate Fund",
+                    "2025_ordinance": "1500000000",
+                },
+                {
+                    "revenue_source": "Sales Tax Revenue",
+                    "fund_description": "Corporate Fund",
+                    "2025_ordinance": "800000000",
+                },
+            ]
+        )
+
+        revenue = transformer.transform_revenue(revenue_df, "fy2025")
+
+        assert len(revenue.by_source) == 2
+        assert revenue.total_revenue == 2300000000
+        # Sorted by amount: Property Tax first
+        assert revenue.by_source[0].name == "Property Tax"
+        assert revenue.by_source[0].amount == 1500000000
+        assert revenue.by_source[1].name == "Sales Tax"
+        assert revenue.by_source[1].amount == 800000000
+        assert revenue.local_revenue_only is True
+
+    def test_transform_revenue_aggregates_subcategories(self, config_with_revenue):
+        """Revenue transformation aggregates multiple sources into categories."""
+        transformer = CityOfChicagoTransformer(config_with_revenue)
+
+        revenue_df = pd.DataFrame(
+            [
+                {
+                    "revenue_source": "Electricity Tax",
+                    "fund_description": "Corporate Fund",
+                    "2025_ordinance": "100000000",
+                },
+                {
+                    "revenue_source": "Gas Tax",
+                    "fund_description": "Corporate Fund",
+                    "2025_ordinance": "50000000",
+                },
+                {
+                    "revenue_source": "Telecommunications Tax",
+                    "fund_description": "Corporate Fund",
+                    "2025_ordinance": "75000000",
+                },
+            ]
+        )
+
+        revenue = transformer.transform_revenue(revenue_df, "fy2025")
+
+        assert len(revenue.by_source) == 1
+        utility_category = revenue.by_source[0]
+        assert utility_category.name == "Utility Taxes"
+        assert utility_category.amount == 225000000
+        assert len(utility_category.subcategories) == 3
+
+    def test_transform_revenue_empty_dataframe(self, config_with_revenue):
+        """Handle empty revenue DataFrame gracefully."""
+        transformer = CityOfChicagoTransformer(config_with_revenue)
+        empty_df = pd.DataFrame()
+
+        revenue = transformer.transform_revenue(empty_df, "fy2025")
+        assert revenue.by_source == []
+        assert revenue.total_revenue == 0
+
+    def test_transform_with_revenue_df(self, config_with_revenue):
+        """Transform includes revenue when revenue_df is provided."""
+        transformer = CityOfChicagoTransformer(config_with_revenue)
+
+        # Appropriations DataFrame
+        approp_df = pd.DataFrame(
+            [
+                {
+                    "department_name": "POLICE",
+                    "department_code": "057",
+                    "fund_description": "Corporate Fund",
+                    "appropriation_account_description": "Salaries",
+                    "2025_ordinance": "2000000",
+                },
+            ]
+        )
+
+        # Revenue DataFrame
+        revenue_df = pd.DataFrame(
+            [
+                {
+                    "revenue_source": "Property Tax Levy",
+                    "fund_description": "Corporate Fund",
+                    "2025_ordinance": "1500000",
+                },
+            ]
+        )
+
+        result = transformer.transform(approp_df, "fy2025", revenue_df=revenue_df)
+
+        assert result.revenue is not None
+        assert result.revenue.total_revenue == 1500000
+        assert result.metadata.total_revenue == 1500000
+        assert result.metadata.revenue_surplus_deficit == 1500000 - 2000000
+
+    def test_transform_without_revenue_df(self, config_with_revenue):
+        """Transform works without revenue_df (backward compatibility)."""
+        transformer = CityOfChicagoTransformer(config_with_revenue)
+
+        approp_df = pd.DataFrame(
+            [
+                {
+                    "department_name": "POLICE",
+                    "department_code": "057",
+                    "fund_description": "Corporate Fund",
+                    "appropriation_account_description": "Salaries",
+                    "2025_ordinance": "2000000",
+                },
+            ]
+        )
+
+        result = transformer.transform(approp_df, "fy2025")
+
+        assert result.revenue is None
+        assert result.metadata.total_revenue is None

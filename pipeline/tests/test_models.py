@@ -12,6 +12,8 @@ from src.models.schema import (
     FundBreakdown,
     FundSummary,
     Metadata,
+    Revenue,
+    RevenueSource,
     SimulationConfig,
     Subcategory,
 )
@@ -357,3 +359,163 @@ class TestBudgetData:
         assert isinstance(json_str, str)
         assert "city-of-chicago" in json_str
         assert "fy2025" in json_str
+
+    def test_budget_data_without_revenue(self):
+        """BudgetData validates with revenue=None (v1 compatibility)."""
+        budget = BudgetData(
+            metadata=Metadata(
+                entity_id="city-of-chicago",
+                entity_name="City of Chicago",
+                fiscal_year="fy2025",
+                fiscal_year_label="FY2025",
+                fiscal_year_start=date(2025, 1, 1),
+                fiscal_year_end=date(2025, 12, 31),
+                total_appropriations=1000000,
+                data_source="test",
+                source_dataset_id="test-id",
+                extraction_date=date.today(),
+                pipeline_version="1.0.0",
+            ),
+            appropriations=Appropriations(by_department=[], by_fund=[]),
+            revenue=None,
+        )
+        assert budget.revenue is None
+        assert budget.schema_version == "1.0.0"
+
+    def test_budget_data_with_revenue(self):
+        """BudgetData validates with complete revenue data (v1.5 format)."""
+        revenue = Revenue(
+            by_source=[
+                RevenueSource(
+                    id="revenue-property-tax",
+                    name="Property Tax",
+                    amount=1500000000,
+                    subcategories=[],
+                    fund_breakdown=[],
+                )
+            ],
+            by_fund=[],
+            total_revenue=1500000000,
+            local_revenue_only=True,
+            grant_revenue_estimated=2000000000,
+        )
+        budget = BudgetData(
+            metadata=Metadata(
+                entity_id="city-of-chicago",
+                entity_name="City of Chicago",
+                fiscal_year="fy2025",
+                fiscal_year_label="FY2025",
+                fiscal_year_start=date(2025, 1, 1),
+                fiscal_year_end=date(2025, 12, 31),
+                total_appropriations=3000000000,
+                data_source="test",
+                source_dataset_id="test-id",
+                extraction_date=date.today(),
+                pipeline_version="1.0.0",
+                total_revenue=1500000000,
+                revenue_surplus_deficit=-1500000000,
+            ),
+            appropriations=Appropriations(by_department=[], by_fund=[]),
+            revenue=revenue,
+        )
+        assert budget.revenue is not None
+        assert budget.revenue.total_revenue == 1500000000
+        assert budget.revenue.local_revenue_only is True
+        assert budget.metadata.total_revenue == 1500000000
+
+
+class TestRevenueSource:
+    """Tests for RevenueSource model."""
+
+    def test_valid_revenue_source(self):
+        """Test creating valid RevenueSource."""
+        source = RevenueSource(
+            id="revenue-property-tax",
+            name="Property Tax",
+            amount=1500000000,
+            subcategories=[],
+            fund_breakdown=[],
+        )
+        assert source.id == "revenue-property-tax"
+        assert source.name == "Property Tax"
+        assert source.amount == 1500000000
+
+    def test_revenue_source_with_subcategories(self):
+        """Test RevenueSource with subcategories and fund breakdown."""
+        source = RevenueSource(
+            id="revenue-utility-tax",
+            name="Utility Taxes",
+            amount=225000000,
+            subcategories=[
+                Subcategory(id="utility-electric", name="Electricity Tax", amount=100000000),
+                Subcategory(id="utility-gas", name="Gas Tax", amount=50000000),
+                Subcategory(id="utility-telecom", name="Telecom Tax", amount=75000000),
+            ],
+            fund_breakdown=[
+                FundBreakdown(fund_id="corporate", fund_name="Corporate Fund", amount=225000000),
+            ],
+        )
+        assert len(source.subcategories) == 3
+        assert len(source.fund_breakdown) == 1
+
+    def test_negative_amount_rejected(self):
+        """Test that negative amounts are rejected."""
+        with pytest.raises(ValidationError):
+            RevenueSource(
+                id="revenue-test",
+                name="Test",
+                amount=-100,
+                subcategories=[],
+                fund_breakdown=[],
+            )
+
+
+class TestRevenue:
+    """Tests for Revenue model."""
+
+    def test_valid_revenue(self):
+        """Test creating valid Revenue."""
+        revenue = Revenue(
+            by_source=[
+                RevenueSource(
+                    id="revenue-property-tax",
+                    name="Property Tax",
+                    amount=1500000000,
+                ),
+            ],
+            by_fund=[
+                FundSummary(
+                    id="corporate",
+                    name="Corporate Fund",
+                    amount=1500000000,
+                    fund_type="operating",
+                ),
+            ],
+            total_revenue=1500000000,
+            local_revenue_only=True,
+            grant_revenue_estimated=None,
+        )
+        assert revenue.total_revenue == 1500000000
+        assert revenue.local_revenue_only is True
+        assert revenue.grant_revenue_estimated is None
+
+    def test_revenue_with_grant_estimate(self):
+        """Test Revenue with grant revenue estimate."""
+        revenue = Revenue(
+            by_source=[],
+            by_fund=[],
+            total_revenue=5000000000,
+            local_revenue_only=True,
+            grant_revenue_estimated=2500000000,
+        )
+        assert revenue.grant_revenue_estimated == 2500000000
+
+    def test_negative_total_revenue_rejected(self):
+        """Test that negative total revenue is rejected."""
+        with pytest.raises(ValidationError):
+            Revenue(
+                by_source=[],
+                by_fund=[],
+                total_revenue=-100,
+                local_revenue_only=True,
+            )
