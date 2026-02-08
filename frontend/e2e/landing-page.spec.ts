@@ -20,14 +20,18 @@ test.describe("Landing Page", () => {
     await expect(exploreButton).toBeVisible();
   });
 
-  test("displays entity cards", async ({ page }) => {
-    // Check for City of Chicago card heading
-    const cityCard = page.getByRole("heading", { name: /City of Chicago/i });
-    await expect(cityCard).toBeVisible();
+  test("displays quick facts section", async ({ page }) => {
+    // Check for Quick Facts heading
+    const quickFactsHeading = page.getByRole("heading", { name: /Quick Facts/i });
+    await expect(quickFactsHeading).toBeVisible();
 
-    // Check for Chicago Public Schools card heading
-    const cpsCard = page.getByRole("heading", { name: /Chicago Public Schools/i });
-    await expect(cpsCard).toBeVisible();
+    // Check for budget amount in quick facts
+    const budgetStat = page.locator("text=/\\$.*B/").first();
+    await expect(budgetStat).toBeVisible();
+
+    // Check for department count
+    const deptCount = page.locator("text=/City Departments/i");
+    await expect(deptCount).toBeVisible();
   });
 
   test("has working navigation", async ({ page }) => {
