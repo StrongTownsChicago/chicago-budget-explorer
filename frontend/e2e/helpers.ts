@@ -64,6 +64,7 @@ export function setupConsoleErrorTracking(page: Page): void {
   });
 
   // Return errors array for assertions
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (page as any)._testErrors = errors;
 }
 
@@ -71,6 +72,7 @@ export function setupConsoleErrorTracking(page: Page): void {
  * Get tracked console errors.
  */
 export function getConsoleErrors(page: Page): string[] {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (page as any)._testErrors || [];
 }
 
@@ -85,7 +87,7 @@ export async function assertNoConsoleErrors(page: Page): Promise<void> {
 /**
  * Mock budget data for testing.
  */
-export async function mockBudgetData(page: Page, data: any): Promise<void> {
+export async function mockBudgetData(page: Page, data: unknown): Promise<void> {
   await page.route("**/data/**/*.json", async (route) => {
     await route.fulfill({
       status: 200,
@@ -161,7 +163,7 @@ export async function testKeyboardNavigation(
 export async function checkColorContrast(
   page: Page,
   textSelector: string,
-  bgSelector?: string
+  _bgSelector?: string
 ): Promise<void> {
   const textElement = page.locator(textSelector).first();
   await expect(textElement).toBeVisible();
