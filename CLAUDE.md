@@ -2,6 +2,37 @@
 
 This document contains engineering standards and best practices for the Chicago Budget Tool project.
 
+## Core Architectural Principles
+
+### Entity-Agnostic Design
+
+**Critical**: This tool is designed to be used for multiple government entities (City of Chicago, Chicago Public Schools, Park District, CTA, etc.), not just the City of Chicago budget. All code must be entity-agnostic.
+
+**Rules:**
+
+- **Never hardcode Chicago-specific logic** in core pipeline code (extractors, transformers, validators, schema)
+- **Use configuration for entity-specific details** (`pipeline/config/entities.yaml`)
+- **Schema must accommodate all entities** - avoid fields that only make sense for one entity
+- **Test with multiple entities in mind** - if your code only works for Chicago, it's wrong
+
+### Configuration Over Code
+
+Entity-specific details belong in `pipeline/config/entities.yaml`, not in code. This includes dataset IDs, column mappings, fund categorizations, department rules, and transformation logic.
+
+**When adding a new entity**: Update config, potentially add entity-specific transformer. Never modify core schema or validation logic to accommodate one entity.
+
+### Schema as Contract
+
+The Pydantic schema (`pipeline/src/models/schema.py`) is the contract between backend and frontend. Changes must be:
+
+- **Backward compatible** (add optional fields, never remove required fields without migration)
+- **Entity-agnostic** (works for all entities, not just Chicago)
+- **Well-documented** (docstrings explain what fields mean across entities)
+
+### Strategy Pattern for Extensibility
+
+Use strategy pattern for entity-specific behavior. Different entities may need different extractors (SocrataExtractor, PDFExtractor) or transformers (CityOfChicagoTransformer, CPSTransformer). The pipeline dispatches to the right strategy based on configuration, not hardcoded if/else chains.
+
 ## Engineering Best Practices
 
 When writing or refactoring code in this repository, follow these core principles:
