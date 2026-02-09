@@ -29,22 +29,22 @@ test.describe("Year Selector", () => {
     expect(options.length).toBeGreaterThanOrEqual(2);
   });
 
-  test("defaults to most recent year (FY2025)", async ({ page }) => {
+  test("defaults to most recent year (FY2026)", async ({ page }) => {
     await gotoEntityPage(page, "city-of-chicago");
 
     const yearSelector = page.locator('select#year-selector');
     const selectedValue = await yearSelector.inputValue();
 
-    expect(selectedValue).toBe("fy2025");
+    expect(selectedValue).toBe("fy2026");
   });
 
   test("switches data when year is changed", async ({ page }) => {
     await gotoEntityPage(page, "city-of-chicago");
     await waitForCharts(page);
 
-    // Get initial budget total (FY2025)
+    // Get initial budget total (FY2026)
     const initialBudgetText = await page.locator('p.text-xl.text-gray-600').first().textContent();
-    expect(initialBudgetText).toContain("FY2025 Budget");
+    expect(initialBudgetText).toContain("FY2026 Operating Budget");
 
     // Select FY2024
     const yearSelector = page.locator('select#year-selector');
@@ -55,7 +55,7 @@ test.describe("Year Selector", () => {
 
     // Budget total should now show FY2024
     const updatedBudgetText = await page.locator('p.text-xl.text-gray-600').first().textContent();
-    expect(updatedBudgetText).toContain("FY2024 Budget");
+    expect(updatedBudgetText).toContain("FY2024 Operating Budget");
   });
 
   test("updates all charts when year changes", async ({ page }) => {
@@ -105,9 +105,9 @@ test.describe("Year Selector", () => {
     await page.keyboard.press("ArrowDown");
     await page.waitForTimeout(300);
 
-    // Should have changed to FY2024
+    // Should have changed to FY2025
     const selectedValue = await yearSelector.inputValue();
-    expect(selectedValue).toBe("fy2024");
+    expect(selectedValue).toBe("fy2025");
 
     // Verify it can be tabbed to in normal tab order
     await page.goto(`/entity/city-of-chicago`);
@@ -146,7 +146,7 @@ test.describe("Year Selector", () => {
     await page.waitForTimeout(500);
 
     const updatedBudgetText = await page.locator('p.text-xl.text-gray-600').first().textContent();
-    expect(updatedBudgetText).toContain("FY2024 Budget");
+    expect(updatedBudgetText).toContain("FY2024 Operating Budget");
   });
 
   test("data source attribution updates with year", async ({ page }) => {
@@ -191,6 +191,6 @@ test.describe("Year Selector", () => {
     expect(finalValue).toBe("fy2025");
 
     const budgetText = await page.locator('p.text-xl.text-gray-600').first().textContent();
-    expect(budgetText).toContain("FY2025 Budget");
+    expect(budgetText).toContain("FY2025 Operating Budget");
   });
 });
