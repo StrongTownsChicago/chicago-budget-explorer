@@ -27,9 +27,9 @@ function getChangeBadgeStyle(changePct: number): string {
     return "text-gray-500 bg-gray-100";
   }
   if (changePct > 0) {
-    return "text-green-700 bg-green-100";
+    return "text-green-700 bg-green-50";
   }
-  return "text-red-700 bg-red-100";
+  return "text-red-700 bg-red-50";
 }
 
 /**
@@ -85,9 +85,10 @@ export default function DepartmentBar({
             }}
             contentStyle={{
               backgroundColor: "white",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              padding: "8px",
+              border: "none",
+              borderRadius: "8px",
+              padding: "12px 16px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)",
             }}
             labelFormatter={(label) => label}
           />
@@ -111,7 +112,7 @@ export default function DepartmentBar({
             >
               <span className="text-gray-700 w-36 truncate">{dept.name}</span>
               <span
-                className={`px-2 py-0.5 rounded text-xs font-medium ${getChangeBadgeStyle(dept.change_pct!)}`}
+                className={`px-2 py-0.5 rounded-full text-xs font-medium ${getChangeBadgeStyle(dept.change_pct!)}`}
               >
                 {formatPercent(dept.change_pct!)}
               </span>

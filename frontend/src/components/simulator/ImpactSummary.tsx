@@ -27,7 +27,7 @@ export default function ImpactSummary({ state, data }: Props) {
 
   if (changedDepartments.length === 0) {
     return (
-      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="mt-6 card p-5 bg-blue-50/50 border-blue-200">
         <h3 className="font-semibold text-blue-900 mb-2">Impact Summary</h3>
         <p className="text-blue-800">
           No significant changes have been made yet. Adjust the sliders above to explore
@@ -38,7 +38,7 @@ export default function ImpactSummary({ state, data }: Props) {
   }
 
   return (
-    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+    <div className="mt-6 card p-5 bg-blue-50/50 border-blue-200">
       <h3 className="font-semibold text-blue-900 mb-3">Impact Summary</h3>
 
       <div className="space-y-2 text-blue-800">
@@ -52,7 +52,7 @@ export default function ImpactSummary({ state, data }: Props) {
         ))}
 
         {delta !== 0 && (
-          <div className="mt-4 pt-3 border-t border-blue-300">
+          <div className="mt-4 pt-3 border-t border-blue-200">
             <p className="font-semibold">
               {delta > 0 ? "Budget Shortfall:" : "Budget Surplus:"}{" "}
               {formatCurrency(Math.abs(delta))}
@@ -66,7 +66,7 @@ export default function ImpactSummary({ state, data }: Props) {
         )}
       </div>
 
-      <div className="mt-4 pt-3 border-t border-blue-300 text-xs text-blue-700">
+      <div className="mt-4 pt-3 border-t border-blue-200 text-xs text-blue-700">
         <p>
           Note: This is a simplified simulation. Real budgets involve complex tradeoffs,
           legal constraints, and public input processes.

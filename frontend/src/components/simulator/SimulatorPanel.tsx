@@ -55,8 +55,8 @@ export default function SimulatorPanel({
     <div className="space-y-6">
       {/* Year selector */}
       {availableYears.length > 1 && (
-        <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <span className="text-sm text-gray-700">
+        <div className="card flex items-center gap-3 p-4">
+          <span className="text-sm text-gray-700 font-medium">
             Simulating budget for:
           </span>
           <YearSelector

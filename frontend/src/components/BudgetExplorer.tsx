@@ -33,51 +33,62 @@ export default function BudgetExplorer({
   if (!data) return null;
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-10">
       {/* Header */}
-      <header>
-        <div className="flex items-start justify-between gap-6 flex-wrap">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900">{entityName}</h1>
-            <p className="text-xl text-gray-600 mt-2">
-              {data.metadata.fiscal_year_label} Operating Budget:{" "}
-              {formatCurrency(
-                data.metadata.operating_appropriations ||
-                  data.metadata.total_appropriations,
-              )}
-            </p>
+      <header
+        className="gradient-hero text-white -mx-4 -mt-8 px-4 py-10"
+        style={{
+          background:
+            "linear-gradient(135deg, #0051A5 0%, #003B7A 100%)",
+        }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-start justify-between gap-6 flex-wrap">
+            <div>
+              <h1 className="text-4xl font-extrabold tracking-tight">
+                {entityName}
+              </h1>
+              <p className="text-xl text-white/80 mt-2">
+                {data.metadata.fiscal_year_label} Operating Budget:{" "}
+                {formatCurrency(
+                  data.metadata.operating_appropriations ||
+                    data.metadata.total_appropriations,
+                )}
+              </p>
+            </div>
+            <YearSelector
+              availableYears={availableYears}
+              defaultYear={defaultYear}
+              onYearChange={setSelectedYear}
+            />
           </div>
-          <YearSelector
-            availableYears={availableYears}
-            defaultYear={defaultYear}
-            onYearChange={setSelectedYear}
-          />
-        </div>
 
-        <div className="mt-4 flex gap-3">
-          <a
-            href={`/entity/${entityId}/simulate`}
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-          >
-            Try the Simulator →
-          </a>
-          <a
-            href="/"
-            className="inline-block px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
-          >
-            ← Back to Home
-          </a>
+          <div className="mt-5 flex gap-3">
+            <a
+              href={`/entity/${entityId}/simulate`}
+              className="inline-block px-6 py-3 bg-white text-chicago-blue rounded-lg hover:bg-gray-100 transition-all font-semibold shadow-lg"
+              style={{ color: "#0051A5" }}
+            >
+              Try the Simulator &rarr;
+            </a>
+            <a
+              href="/"
+              className="inline-block px-6 py-3 bg-white/15 text-white rounded-lg hover:bg-white/25 transition-all font-semibold border border-white/30"
+            >
+              &larr; Back to Home
+            </a>
+          </div>
         </div>
       </header>
 
       {/* Budget Summary */}
-      <section>
+      <section className="card p-6">
         <BudgetSummary metadata={data.metadata} />
       </section>
 
       {/* Department Breakdown */}
-      <section>
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Spending by Department</h2>
+      <section className="card p-6">
+        <h2 className="section-heading">Spending by Department</h2>
         <DepartmentBar
           departments={data.appropriations.by_department}
           totalBudget={data.metadata.total_appropriations}
@@ -85,21 +96,21 @@ export default function BudgetExplorer({
       </section>
 
       {/* Fund Breakdown */}
-      <section>
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Spending by Fund Type</h2>
+      <section className="card p-6">
+        <h2 className="section-heading">Spending by Fund Type</h2>
         <FundPie funds={data.appropriations.by_fund} />
       </section>
 
       {/* Appropriation Type */}
-      <section>
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Spending by Category</h2>
+      <section className="card p-6">
+        <h2 className="section-heading">Spending by Category</h2>
         <AppropriationBreakdown departments={data.appropriations.by_department} />
       </section>
 
       {/* Historical Trends */}
       {data.appropriations.by_department.some((d) => d.trend && d.trend.length > 1) && (
-        <section>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <section className="card p-6">
+          <h2 className="section-heading">
             Historical Trends
           </h2>
           <p className="text-gray-600 mb-4">
@@ -110,8 +121,8 @@ export default function BudgetExplorer({
       )}
 
       {/* Treemap */}
-      <section>
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Budget Treemap</h2>
+      <section className="card p-6">
+        <h2 className="section-heading">Budget Treemap</h2>
         <p className="text-gray-600 mb-4">
           Visual representation of the budget with departments sized by their budget allocation.
         </p>
@@ -120,8 +131,8 @@ export default function BudgetExplorer({
 
       {/* Revenue Section (v1.5+) */}
       {data.revenue && (
-        <section>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Revenue</h2>
+        <section className="card p-6">
+          <h2 className="section-heading">Revenue</h2>
           <p className="text-gray-600 mb-4">
             Where the money comes from: a breakdown of revenue by source.
           </p>
@@ -157,8 +168,8 @@ export default function BudgetExplorer({
       )}
 
       {/* Data Source Attribution */}
-      <footer className="mt-12 pt-6 border-t border-gray-200">
-        <p className="text-sm text-gray-600">
+      <footer className="mt-8 pt-6 border-t border-border-subtle">
+        <p className="text-sm text-gray-500">
           Data Source: {data.metadata.data_source} (Dataset: {data.metadata.source_dataset_id})
           <br />
           Extracted: {new Date(data.metadata.extraction_date).toLocaleDateString()}

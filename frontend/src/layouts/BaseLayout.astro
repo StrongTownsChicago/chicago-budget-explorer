@@ -27,25 +27,44 @@ const fullTitle = `${title} | Chicago Budget Explorer`;
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
+  <body class="min-h-screen flex flex-col bg-surface-warm text-gray-900 font-sans">
     <!-- Skip to main content (accessibility) -->
     <a href="#main-content" class="skip-to-content">
       Skip to main content
     </a>
 
     <!-- Header -->
-    <header class="bg-chicago-blue text-white shadow-md">
+    <header class="gradient-hero text-white sticky top-0 z-50 backdrop-blur-sm">
+      <div class="h-1 bg-gradient-to-r from-chicago-light-blue via-white/30 to-chicago-light-blue"></div>
       <div class="container mx-auto px-4 py-4">
         <nav class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <a href="/" class="text-2xl font-bold hover:text-gray-200 transition-colors">
+            <a href="/" class="text-2xl font-bold hover:text-white/90 transition-colors tracking-tight">
               Chicago Budget Explorer
             </a>
           </div>
           <div class="flex items-center gap-6">
-            <a href="/" class="hover:text-gray-200 transition-colors">Home</a>
-            <a href="/about" class="hover:text-gray-200 transition-colors">About</a>
+            <a
+              href="/"
+              class="text-white/80 hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
+            >
+              Home
+            </a>
+            <a
+              href="/about"
+              class="text-white/80 hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-white after:transition-all hover:after:w-full"
+            >
+              About
+            </a>
           </div>
         </nav>
       </div>
@@ -57,21 +76,22 @@ const fullTitle = `${title} | Chicago Budget Explorer`;
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-12">
+    <footer class="bg-gray-900 text-white py-10 mt-12 relative">
+      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-chicago-blue via-chicago-light-blue to-chicago-blue"></div>
       <div class="container mx-auto px-4">
         <div class="grid md:grid-cols-3 gap-8">
           <div>
-            <h3 class="font-bold text-lg mb-3">About</h3>
-            <p class="text-gray-300 text-sm">
+            <h3 class="font-semibold text-lg mb-3 tracking-tight">About</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">
               An open-source tool for exploring and simulating Chicago's budget.
             </p>
           </div>
           <div>
-            <h3 class="font-bold text-lg mb-3">Data Sources</h3>
-            <p class="text-gray-300 text-sm">
+            <h3 class="font-semibold text-lg mb-3 tracking-tight">Data Sources</h3>
+            <p class="text-gray-400 text-sm">
               <a
                 href="https://data.cityofchicago.org"
-                class="hover:text-white underline"
+                class="hover:text-white underline underline-offset-2 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -80,21 +100,21 @@ const fullTitle = `${title} | Chicago Budget Explorer`;
             </p>
           </div>
           <div>
-            <h3 class="font-bold text-lg mb-3">Project</h3>
-            <p class="text-gray-300 text-sm">
+            <h3 class="font-semibold text-lg mb-3 tracking-tight">Project</h3>
+            <p class="text-gray-400 text-sm">
               Maintained by <a
                 href="https://strongtownschicago.org"
-                class="hover:text-white underline"
+                class="hover:text-white underline underline-offset-2 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Strong Towns Chicago
               </a>
             </p>
-            <p class="text-gray-300 text-sm mt-2">
+            <p class="text-gray-400 text-sm mt-2">
               <a
                 href="https://github.com/strongtownschicago/chicago-budget-tool"
-                class="hover:text-white underline"
+                class="hover:text-white underline underline-offset-2 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -103,8 +123,8 @@ const fullTitle = `${title} | Chicago Budget Explorer`;
             </p>
           </div>
         </div>
-        <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
-          © {new Date().getFullYear()} Strong Towns Chicago. Open source under MIT
+        <div class="mt-8 pt-8 border-t border-gray-700/50 text-center text-gray-500 text-sm">
+          &copy; {new Date().getFullYear()} Strong Towns Chicago. Open source under MIT
           License.
         </div>
       </div>

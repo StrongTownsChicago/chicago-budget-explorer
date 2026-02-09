@@ -21,15 +21,15 @@ export default function DepartmentSlider({ department, state, onAdjust }: Props)
 
   if (!department.simulation.adjustable) {
     return (
-      <div className="p-4 bg-gray-100 rounded-lg opacity-60" role="presentation">
+      <div className="card p-4 opacity-60 bg-gray-50" role="presentation">
         <div className="flex justify-between items-center mb-2">
           <h3 className="font-semibold text-gray-700">{department.name}</h3>
           <span className="text-gray-600 font-mono text-sm">
             {formatCurrency(department.amount)}
           </span>
         </div>
-        <p className="text-sm text-gray-600 flex items-center gap-2">
-          <span className="text-lg">🔒</span>
+        <p className="text-sm text-gray-500 flex items-center gap-2">
+          <span className="text-lg">&#x1F512;</span>
           {department.simulation.constraints[0] || department.simulation.description}
         </p>
       </div>
@@ -37,7 +37,7 @@ export default function DepartmentSlider({ department, state, onAdjust }: Props)
   }
 
   return (
-    <div className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-400 transition-colors">
+    <div className="card p-4 hover:shadow-[var(--shadow-card-hover)] transition-shadow border-border-subtle hover:border-chicago-light-blue">
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900">{department.name}</h3>
@@ -68,7 +68,7 @@ export default function DepartmentSlider({ department, state, onAdjust }: Props)
           step={department.simulation.step_pct}
           value={multiplier}
           onChange={(e) => onAdjust(department.id, parseFloat(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+          className="w-full"
           aria-label={`Adjust ${department.name} budget`}
           aria-valuemin={department.simulation.min_pct}
           aria-valuemax={department.simulation.max_pct}

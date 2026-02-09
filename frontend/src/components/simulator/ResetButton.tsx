@@ -9,7 +9,7 @@ export default function ResetButton({ onReset }: Props) {
   return (
     <button
       onClick={onReset}
-      className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-semibold text-sm"
+      className="btn-secondary px-4 py-2 text-sm"
       aria-label="Reset all department budgets to original values"
     >
       Reset All

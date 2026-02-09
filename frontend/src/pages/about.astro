@@ -11,166 +11,178 @@ const totalBudget = data.metadata.total_appropriations;
   title="About"
   description="Learn about the Chicago Budget Explorer - an open-source tool for understanding municipal budgets"
 >
-  <div class="max-w-3xl mx-auto prose prose-lg">
-    <h1>About Chicago Budget Explorer</h1>
+  <!-- Page Header -->
+  <section class="gradient-hero text-white -mx-4 -mt-8 px-4 py-12 mb-10">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-4xl font-extrabold tracking-tight">About Chicago Budget Explorer</h1>
+      <p class="text-white/70 mt-2 text-lg">Open-source civic technology for budget transparency</p>
+    </div>
+  </section>
 
-    <section>
-      <h2>What is this tool?</h2>
-      <p>
-        The Chicago Budget Explorer is an open-source civic tech project that makes
-        Chicago's operating budget transparent, interactive, and understandable. Explore
-        where {formatCurrency(totalBudget)} in tax dollars go and simulate your own budget scenarios.
-      </p>
-    </section>
+  <div class="max-w-3xl mx-auto space-y-8">
+    <div class="card p-8 prose prose-lg max-w-none">
+      <section>
+        <h2>What is this tool?</h2>
+        <p>
+          The Chicago Budget Explorer is an open-source civic tech project that makes
+          Chicago's operating budget transparent, interactive, and understandable. Explore
+          where {formatCurrency(totalBudget)} in tax dollars go and simulate your own budget scenarios.
+        </p>
+      </section>
 
-    <section>
-      <h2>Data Sources</h2>
-      <p>
-        All budget data comes from the official City of Chicago Open Data Portal via the
-        Socrata API. We use the published budget ordinance appropriations datasets, which
-        represent the legally approved budget passed by City Council.
-      </p>
-      <ul>
-        <li>
-          <strong>FY2025 Data</strong>: Budget - 2025 Budget Ordinance - Appropriations
-          (Dataset ID: t59y-fr3k)
-        </li>
-        <li>
-          <strong>FY2024 Data</strong>: Budget - 2024 Budget Ordinance - Appropriations
-          (Dataset ID: x394-e874)
-        </li>
-      </ul>
-    </section>
+      <section>
+        <h2>Data Sources</h2>
+        <p>
+          All budget data comes from the official City of Chicago Open Data Portal via the
+          Socrata API. We use the published budget ordinance appropriations datasets, which
+          represent the legally approved budget passed by City Council.
+        </p>
+        <ul>
+          <li>
+            <strong>FY2025 Data</strong>: Budget - 2025 Budget Ordinance - Appropriations
+            (Dataset ID: t59y-fr3k)
+          </li>
+          <li>
+            <strong>FY2024 Data</strong>: Budget - 2024 Budget Ordinance - Appropriations
+            (Dataset ID: x394-e874)
+          </li>
+        </ul>
+      </section>
 
-    <section>
-      <h2>What's Included</h2>
-      <ul>
-        <li>
-          <strong>Operating Budget</strong>: Day-to-day expenses like salaries, contracts,
-          and services
-        </li>
-        <li><strong>All Funds</strong>: Corporate, Enterprise, Grant, and Special Revenue funds</li>
-        <li>
-          <strong>Department-level Detail</strong>: See how much each city department
-          receives
-        </li>
-        <li>
-          <strong>Historical Comparison</strong>: Compare current and prior year budgets
-        </li>
-      </ul>
-    </section>
+      <section>
+        <h2>What's Included</h2>
+        <ul>
+          <li>
+            <strong>Operating Budget</strong>: Day-to-day expenses like salaries, contracts,
+            and services
+          </li>
+          <li><strong>All Funds</strong>: Corporate, Enterprise, Grant, and Special Revenue funds</li>
+          <li>
+            <strong>Department-level Detail</strong>: See how much each city department
+            receives
+          </li>
+          <li>
+            <strong>Historical Comparison</strong>: Compare current and prior year budgets
+          </li>
+        </ul>
+      </section>
 
-    <section>
-      <h2>What's NOT Included</h2>
-      <ul>
-        <li><strong>Capital Budget</strong>: Long-term infrastructure projects (roads, buildings)</li>
-        <li><strong>Actual Spending</strong>: This shows appropriations (approved budget), not actuals</li>
-        <li>
-          <strong>Sister Agencies</strong>: Chicago Public Schools, Park District, CTA, and
-          other taxing bodies
-        </li>
-        <li><strong>Revenue Details</strong>: Focus is on spending, not taxation</li>
-      </ul>
-    </section>
+      <section>
+        <h2>What's NOT Included</h2>
+        <ul>
+          <li><strong>Capital Budget</strong>: Long-term infrastructure projects (roads, buildings)</li>
+          <li><strong>Actual Spending</strong>: This shows appropriations (approved budget), not actuals</li>
+          <li>
+            <strong>Sister Agencies</strong>: Chicago Public Schools, Park District, CTA, and
+            other taxing bodies
+          </li>
+          <li><strong>Revenue Details</strong>: Focus is on spending, not taxation</li>
+        </ul>
+      </section>
+    </div>
 
-    <section>
-      <h2>Methodology</h2>
-      <p>Our data pipeline:</p>
-      <ol>
-        <li>Fetches raw data from Chicago's Socrata portal</li>
-        <li>Aggregates line items by department (5,000+ rows → ~50 departments)</li>
-        <li>Calculates fund breakdowns and subcategories</li>
-        <li>
-          Validates that departmental totals sum correctly (within $1 tolerance for
-          rounding)
-        </li>
-        <li>Generates JSON files consumed by this website</li>
-      </ol>
-      <p>
-        All code is open source and available on GitHub. You can verify our
-        transformations and run the pipeline yourself.
-      </p>
-    </section>
+    <div class="card p-8 prose prose-lg max-w-none">
+      <section>
+        <h2>Methodology</h2>
+        <p>Our data pipeline:</p>
+        <ol>
+          <li>Fetches raw data from Chicago's Socrata portal</li>
+          <li>Aggregates line items by department (5,000+ rows &rarr; ~50 departments)</li>
+          <li>Calculates fund breakdowns and subcategories</li>
+          <li>
+            Validates that departmental totals sum correctly (within $1 tolerance for
+            rounding)
+          </li>
+          <li>Generates JSON files consumed by this website</li>
+        </ol>
+        <p>
+          All code is open source and available on GitHub. You can verify our
+          transformations and run the pipeline yourself.
+        </p>
+      </section>
 
-    <section>
-      <h2>Simulation Constraints</h2>
-      <p>
-        The budget simulator applies realistic constraints based on how municipal budgets
-        work:
-      </p>
-      <ul>
-        <li>
-          <strong>Non-adjustable Departments</strong>: Debt service and pension payments
-          are legally mandated and cannot be reduced
-        </li>
-        <li>
-          <strong>Grant-Funded Departments</strong>: Departments with significant grant
-          funding have tighter adjustment ranges (grants can't be easily redirected)
-        </li>
-        <li>
-          <strong>Adjustment Range</strong>: Most departments can be adjusted 50%-150% of
-          their current budget
-        </li>
-      </ul>
-    </section>
+      <section>
+        <h2>Simulation Constraints</h2>
+        <p>
+          The budget simulator applies realistic constraints based on how municipal budgets
+          work:
+        </p>
+        <ul>
+          <li>
+            <strong>Non-adjustable Departments</strong>: Debt service and pension payments
+            are legally mandated and cannot be reduced
+          </li>
+          <li>
+            <strong>Grant-Funded Departments</strong>: Departments with significant grant
+            funding have tighter adjustment ranges (grants can't be easily redirected)
+          </li>
+          <li>
+            <strong>Adjustment Range</strong>: Most departments can be adjusted 50%-150% of
+            their current budget
+          </li>
+        </ul>
+      </section>
+    </div>
 
-    <section>
-      <h2>Features</h2>
-      <ul>
-        <li>City of Chicago FY2025 and FY2024 data</li>
-        <li>Interactive charts and budget simulator</li>
-        <li>Open source and free to use</li>
-      </ul>
-    </section>
+    <div class="card p-8 prose prose-lg max-w-none">
+      <section>
+        <h2>Features</h2>
+        <ul>
+          <li>City of Chicago FY2025 and FY2024 data</li>
+          <li>Interactive charts and budget simulator</li>
+          <li>Open source and free to use</li>
+        </ul>
+      </section>
 
-    <section>
-      <h2>How to Contribute</h2>
-      <p>
-        This is an open-source project. We welcome contributions of all kinds:
-      </p>
-      <ul>
-        <li>Code improvements and bug fixes</li>
-        <li>Data validation and quality checks</li>
-        <li>Documentation and accessibility improvements</li>
-        <li>New features and visualizations</li>
-      </ul>
-      <p>
-        Visit our <a href="https://github.com/strongtownschicago/budget-explorer"
-          >GitHub repository</a
-        > to get started.
-      </p>
-    </section>
+      <section>
+        <h2>How to Contribute</h2>
+        <p>
+          This is an open-source project. We welcome contributions of all kinds:
+        </p>
+        <ul>
+          <li>Code improvements and bug fixes</li>
+          <li>Data validation and quality checks</li>
+          <li>Documentation and accessibility improvements</li>
+          <li>New features and visualizations</li>
+        </ul>
+        <p>
+          Visit our <a href="https://github.com/strongtownschicago/budget-explorer"
+            >GitHub repository</a
+          > to get started.
+        </p>
+      </section>
 
-    <section>
-      <h2>Credits</h2>
-      <p>
-        Built by <a href="https://strongtownschicago.org">Strong Towns Chicago</a>, a
-        grassroots organization advocating for financially resilient neighborhoods.
-      </p>
-      <p>
-        Data provided by the <a href="https://data.cityofchicago.org"
-          >City of Chicago Open Data Portal</a
-        >.
-      </p>
-    </section>
+      <section>
+        <h2>Credits</h2>
+        <p>
+          Built by <a href="https://strongtownschicago.org">Strong Towns Chicago</a>, a
+          grassroots organization advocating for financially resilient neighborhoods.
+        </p>
+        <p>
+          Data provided by the <a href="https://data.cityofchicago.org"
+            >City of Chicago Open Data Portal</a
+          >.
+        </p>
+      </section>
 
-    <section>
-      <h2>Disclaimer</h2>
-      <p>
-        This tool is for educational and informational purposes only. While we strive for
-        accuracy, budget data is complex and subject to change. Always verify important
-        information with official city sources. The simulator is a simplified model and
-        does not account for all real-world budget constraints, legal requirements, and
-        political considerations.
-      </p>
-    </section>
+      <section>
+        <h2>Disclaimer</h2>
+        <p>
+          This tool is for educational and informational purposes only. While we strive for
+          accuracy, budget data is complex and subject to change. Always verify important
+          information with official city sources. The simulator is a simplified model and
+          does not account for all real-world budget constraints, legal requirements, and
+          political considerations.
+        </p>
+      </section>
+    </div>
 
-    <div class="mt-12 pt-6 border-t border-gray-300 text-center">
+    <div class="text-center py-8">
       <a
         href="/"
-        class="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold no-underline"
+        class="btn-primary inline-block no-underline"
       >
-        Explore the Budget →
+        Explore the Budget &rarr;
       </a>
     </div>
   </div>

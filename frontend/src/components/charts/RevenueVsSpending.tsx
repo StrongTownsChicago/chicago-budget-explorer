@@ -45,14 +45,23 @@ export default function RevenueVsSpending({
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="category" />
           <YAxis tickFormatter={(value) => formatCompact(value)} />
-          <Tooltip formatter={(value: number) => formatCurrency(value)} />
+          <Tooltip
+            formatter={(value: number) => formatCurrency(value)}
+            contentStyle={{
+              backgroundColor: "white",
+              border: "none",
+              borderRadius: "8px",
+              padding: "12px 16px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)",
+            }}
+          />
           <Legend />
           <Bar dataKey="Local Revenue" fill="#2E7D32" />
           <Bar dataKey="Total Spending" fill="#1976D2" />
         </BarChart>
       </ResponsiveContainer>
 
-      <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+      <div className="mt-4 p-4 bg-surface-warm rounded-xl border border-border-subtle">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div>
             <div className="text-gray-600">Local Revenue</div>

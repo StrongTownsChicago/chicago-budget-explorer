@@ -7,7 +7,7 @@ export interface Props {
 
 export default function BudgetSummary({ metadata }: Props) {
   return (
-    <div className="budget-summary bg-white rounded-lg shadow-md p-6 space-y-6">
+    <div className="budget-summary space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Budget Overview
@@ -23,26 +23,32 @@ export default function BudgetSummary({ metadata }: Props) {
 
       {/* Main Totals */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="stat-card bg-blue-50 p-4 rounded-lg">
+        <div
+          className="stat-card bg-blue-50/70 p-5 rounded-xl border border-blue-100"
+          style={{ borderTop: "3px solid #0051A5" }}
+        >
           <h3 className="text-sm font-semibold text-gray-600 mb-1">
             Operating Budget
           </h3>
-          <p className="text-3xl font-bold text-blue-900">
+          <p className="text-3xl font-bold text-blue-900 tracking-tight">
             {formatCurrency(metadata.operating_appropriations || 0)}
           </p>
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-xs text-gray-500 mt-1">
             Excludes airport enterprise funds
           </p>
         </div>
 
-        <div className="stat-card bg-gray-50 p-4 rounded-lg">
+        <div
+          className="stat-card bg-gray-50/70 p-5 rounded-xl border border-gray-200"
+          style={{ borderTop: "3px solid #6CACE4" }}
+        >
           <h3 className="text-sm font-semibold text-gray-600 mb-1">
             Total Appropriations
           </h3>
-          <p className="text-3xl font-bold text-gray-900">
+          <p className="text-3xl font-bold text-gray-900 tracking-tight">
             {formatCurrency(metadata.total_appropriations)}
           </p>
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-xs text-gray-500 mt-1">
             All funds including airports
           </p>
         </div>
@@ -54,14 +60,14 @@ export default function BudgetSummary({ metadata }: Props) {
           How Total is Calculated
         </h3>
         <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
+          <div className="flex justify-between py-1">
             <span className="text-gray-600">Gross Appropriations</span>
             <span className="font-mono">
               {formatCurrency(metadata.gross_appropriations)}
             </span>
           </div>
           {metadata.accounting_adjustments < 0 && (
-            <div className="flex justify-between">
+            <div className="flex justify-between py-1">
               <span className="text-gray-600">Accounting Adjustments</span>
               <span className="font-mono text-red-600">
                 {formatCurrency(metadata.accounting_adjustments)}
@@ -82,11 +88,14 @@ export default function BudgetSummary({ metadata }: Props) {
         <h3 className="text-sm font-semibold text-gray-700 mb-3">
           Breakdown by Fund Type
         </h3>
-        <div className="space-y-2 text-sm">
+        <div className="space-y-1 text-sm">
           {Object.entries(metadata.fund_category_breakdown || {})
             .sort((a, b) => b[1] - a[1])
             .map(([category, amount]) => (
-              <div key={category} className="flex justify-between">
+              <div
+                key={category}
+                className="flex justify-between py-1.5 px-2 rounded hover:bg-gray-50 transition-colors"
+              >
                 <span className="text-gray-600 capitalize">
                   {category.replace(/_/g, " ")} Funds
                 </span>
@@ -96,7 +105,7 @@ export default function BudgetSummary({ metadata }: Props) {
 
           {(!metadata.fund_category_breakdown ||
             Object.keys(metadata.fund_category_breakdown).length === 0) && (
-            <div className="flex justify-between">
+            <div className="flex justify-between py-1.5 px-2">
               <span className="text-gray-600">All Funds</span>
               <span className="font-mono">
                 {formatCurrency(metadata.total_appropriations)}

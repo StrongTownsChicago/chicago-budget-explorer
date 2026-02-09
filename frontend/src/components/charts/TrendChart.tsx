@@ -131,9 +131,10 @@ export default function TrendChart({
               labelFormatter={(label) => String(label)}
               contentStyle={{
                 backgroundColor: "white",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                padding: "8px",
+                border: "none",
+                borderRadius: "8px",
+                padding: "12px 16px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)",
               }}
             />
             <Legend />
@@ -166,11 +167,12 @@ export default function TrendChart({
                 <button
                   key={dept.id}
                   onClick={() => toggleDepartment(dept.id)}
-                  className={`px-3 py-1 text-xs rounded-full border transition-colors ${
+                  className={`px-3 py-1.5 text-xs rounded-full border transition-all ${
                     isSelected
-                      ? "bg-blue-100 border-blue-400 text-blue-800"
-                      : "bg-gray-50 border-gray-300 text-gray-600 hover:bg-gray-100"
+                      ? "bg-chicago-blue border-chicago-blue text-white shadow-sm"
+                      : "bg-white border-border-subtle text-gray-600 hover:bg-gray-50 hover:border-gray-400"
                   }`}
+                  style={isSelected ? { boxShadow: "0 1px 3px rgba(0,81,165,0.3)" } : {}}
                 >
                   {dept.name}
                 </button>

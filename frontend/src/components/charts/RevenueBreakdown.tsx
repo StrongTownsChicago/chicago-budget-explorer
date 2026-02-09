@@ -121,9 +121,10 @@ export default function RevenueBreakdown({ sources, totalRevenue }: Props) {
             formatter={(value: number) => [formatCurrency(value), "Revenue"]}
             contentStyle={{
               backgroundColor: "white",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              padding: "8px",
+              border: "none",
+              borderRadius: "8px",
+              padding: "12px 16px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)",
             }}
             labelFormatter={(label) => label}
           />

@@ -28,17 +28,17 @@ export default function BudgetBalance({ state, totalRevenue }: Props) {
 
   return (
     <div
-      className={`p-6 rounded-lg border-2 ${bgClass}`}
+      className={`p-6 rounded-xl border-2 ${bgClass}`}
       role="status"
       aria-live="polite"
       aria-atomic="true"
     >
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold mb-2">
+          <h2 className="text-3xl font-extrabold mb-2 tracking-tight">
             {formatCurrency(state.totalBudget)}
           </h2>
-          <p className="text-lg">
+          <p className="text-lg font-medium">
             {statusText}
             {!balanced && (
               <span className="ml-2 font-semibold">
@@ -50,7 +50,7 @@ export default function BudgetBalance({ state, totalRevenue }: Props) {
 
         <div className="text-right">
           <div className="text-sm text-gray-600 mb-1">Change from Original</div>
-          <div className="text-2xl font-bold">
+          <div className="text-2xl font-bold tracking-tight">
             {delta >= 0 ? "+" : ""}
             {formatCurrency(delta)}
           </div>
@@ -62,20 +62,20 @@ export default function BudgetBalance({ state, totalRevenue }: Props) {
       </div>
 
       {balanced && (
-        <div className="mt-4 text-sm">
-          ✓ Your budget is balanced! No additional revenue needed.
+        <div className="mt-4 text-sm font-medium">
+          Your budget is balanced! No additional revenue needed.
         </div>
       )}
 
       {delta > 0 && (
-        <div className="mt-4 text-sm">
-          ⚠ You need to find additional revenue or make cuts to balance the budget.
+        <div className="mt-4 text-sm font-medium">
+          You need to find additional revenue or make cuts to balance the budget.
         </div>
       )}
 
       {delta < 0 && (
-        <div className="mt-4 text-sm">
-          ℹ You have a surplus. Consider increasing services or reducing taxes.
+        <div className="mt-4 text-sm font-medium">
+          You have a surplus. Consider increasing services or reducing taxes.
         </div>
       )}
 
