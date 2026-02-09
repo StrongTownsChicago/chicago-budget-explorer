@@ -53,7 +53,7 @@ src/
 │   │   ├── EntityPicker, DepartmentBar, FundPie, BudgetTreemap
 │   │   ├── TrendChart, RevenueBreakdown, RevenueVsSpending
 │   │   ├── AppropriationBreakdown, TransparencyCallout
-│   ├── simulator/     # Simulation components (SimulatorPanel, DepartmentSlider, etc.)
+│   ├── simulator/     # Simulation components (SimulatorPanel, DepartmentAccordion, etc.)
 │   └── ui/            # Shared UI components (YearSelector)
 ├── layouts/           # Page layouts
 │   └── BaseLayout.astro
