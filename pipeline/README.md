@@ -16,9 +16,10 @@ The pipeline:
 make install    # Install dependencies with uv
 make fetch      # Fetch data from Socrata API
 make transform  # Transform raw data to JSON
+make enrich     # Add cross-year trend data
+make manifest   # Generate manifest.json
 make validate   # Validate transformed data
-make copy       # Copy JSON to frontend/src/data
-make all        # Run full pipeline (fetch + transform + validate + copy)
+make all        # Run full pipeline (fetch + transform + enrich + validate + copy)
 make clean      # Remove generated files
 make test       # Run tests with coverage
 make lint       # Run linting (ruff + mypy)
@@ -83,12 +84,14 @@ Defines entities (City of Chicago, CPS, etc.) and their data sources.
 
 - `base.py` - Abstract base class
 - `city_of_chicago.py` - City-specific transformation logic
+- `trend_enricher.py` - Cross-year trend enrichment (adds historical trend data to departments)
 
 **Responsibilities:**
 - Normalize department names (title-case with acronym preservation)
 - Aggregate by department
 - Calculate fund breakdowns
 - Calculate subcategories (appropriation accounts)
+- Categorize and transform revenue data
 - Compute year-over-year changes
 - Apply simulation constraints
 
@@ -98,13 +101,14 @@ Defines entities (City of Chicago, CPS, etc.) and their data sources.
 
 **Purpose**: Ensure data quality
 
-- `budget.py` - Hierarchical sum validation, cross-year consistency checks
+- `budget.py` - Hierarchical sum validation, revenue validation, cross-year consistency checks
 
 **Validation checks:**
 1. Schema validation (Pydantic models enforce)
-2. Hierarchical sums: departments sum to total, subcategories sum to department, etc.
-3. Cross-year consistency: flag departments with >50% change
-4. ID uniqueness: no duplicate department IDs
+2. Hierarchical sums: departments sum to total, subcategories sum to department, fund summaries match
+3. Revenue validation: source sums match total, revenue vs appropriations gap check, grant transparency
+4. Cross-year consistency: flag departments with >50% change
+5. ID uniqueness: no duplicate department IDs
 
 **Pattern**: Fail build on errors, log warnings
 
@@ -117,27 +121,30 @@ Defines entities (City of Chicago, CPS, etc.) and their data sources.
 
 **Key models:**
 - `BudgetData` - Complete budget for one entity for one fiscal year
-- `Department` - Single department with amount, fund breakdown, subcategories
+- `Department` - Single department with amount, fund breakdown, subcategories, trends
 - `SimulationConfig` - Simulation constraints per department
-- `Metadata` - Entity info, fiscal year, data source, extraction date
+- `Metadata` - Entity info, fiscal year, data source, totals (gross/adjustments/total appropriations)
+- `Revenue` - Revenue by source and by fund
+- `RevenueSource` - Individual revenue source with subcategories and fund breakdown
 
 ### CLI (`src/cli.py`)
 
 **Commands:**
 - `python -m src.cli fetch <entity> --year <fy>`
 - `python -m src.cli transform <entity> --year <fy> --prior-year <fy>`
+- `python -m src.cli enrich <entity>` - Add cross-year trends
 - `python -m src.cli validate`
+- `python -m src.cli manifest` - Generate manifest.json
 - `python -m src.cli all` - Run full pipeline
 
 ## Testing
 
 **Unit tests** (`tests/test_*.py`):
 - `test_extractors.py` - API mocking, column detection
-- `test_transformers.py` - Aggregation logic, constraint application
+- `test_transformers.py` - Aggregation logic, constraint application, revenue transformation
 - `test_validators.py` - Validation error handling
-
-**Integration test**:
-- `test_pipeline_integration.py` - Full pipeline execution
+- `test_models.py` - Pydantic schema model tests
+- `test_trend_enricher.py` - Cross-year trend enrichment tests
 
 **Run tests:**
 ```bash

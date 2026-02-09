@@ -35,8 +35,10 @@ src/
 ├── data/              # Generated JSON from pipeline (committed)
 │   ├── manifest.json
 │   └── city-of-chicago/
+│       ├── fy2026.json
 │       ├── fy2025.json
-│       └── fy2024.json
+│       ├── fy2024.json
+│       └── fy2023.json
 ├── lib/               # Utilities
 │   ├── types.ts       # TypeScript types (derived from JSON)
 │   ├── data-loader.ts # Data loading utilities
@@ -44,11 +46,15 @@ src/
 │   ├── format.ts      # Formatting utilities
 │   └── colors.ts      # Color palette
 ├── components/        # React and Astro components
+│   ├── BudgetExplorer.tsx  # Main budget explorer with year selection
+│   ├── BudgetSummary.tsx   # Budget overview with metadata
 │   ├── layout/        # Header, Footer, Nav
-│   ├── entity/        # EntityPicker, EntityCard
 │   ├── charts/        # Chart components (Recharts + D3)
-│   ├── simulator/     # Simulation components
-│   └── ui/            # Shared UI components
+│   │   ├── EntityPicker, DepartmentBar, FundPie, BudgetTreemap
+│   │   ├── TrendChart, RevenueBreakdown, RevenueVsSpending
+│   │   ├── AppropriationBreakdown, TransparencyCallout
+│   ├── simulator/     # Simulation components (SimulatorPanel, DepartmentSlider, etc.)
+│   └── ui/            # Shared UI components (YearSelector)
 ├── layouts/           # Page layouts
 │   └── BaseLayout.astro
 ├── pages/             # Routes (file-based routing)
@@ -112,14 +118,15 @@ Responsive breakpoints:
 
 ## Testing
 
-**Unit tests** (Vitest - 72 tests):
+**Unit tests** (Vitest):
 
-- `simulation-engine.test.ts` - Simulation calculations
-- `format.test.ts` - Formatting utilities
-- `BudgetExplorer.test.tsx` - Budget explorer component
-- `YearSelector.test.tsx` - Year selector component
+- `lib/__tests__/simulation-engine.test.ts` - Simulation calculations
+- `lib/__tests__/format.test.ts` - Formatting utilities
+- `components/__tests__/BudgetExplorer.test.tsx` - Budget explorer component
+- `components/ui/__tests__/YearSelector.test.tsx` - Year selector component
+- `components/charts/__tests__/*.test.tsx` - Chart component tests (Treemap, DepartmentBar, RevenueBreakdown, RevenueVsSpending, TransparencyCallout, TrendChart)
 
-**E2E tests** (Playwright - 24 tests):
+**E2E tests** (Playwright):
 
 - Landing page, navigation, accessibility
 - Budget data display and filtering

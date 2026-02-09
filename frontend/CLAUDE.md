@@ -48,8 +48,10 @@ frontend/src/
 ├── data/                      # Generated JSON (from pipeline)
 │   ├── manifest.json
 │   └── city-of-chicago/
+│       ├── fy2026.json
 │       ├── fy2025.json
-│       └── fy2024.json
+│       ├── fy2024.json
+│       └── fy2023.json
 ├── lib/                       # Utilities (pure functions)
 │   ├── types.ts               # TypeScript types matching JSON schema
 │   ├── data-loader.ts         # Load JSON files
@@ -57,10 +59,21 @@ frontend/src/
 │   ├── format.ts              # Currency/percent formatting
 │   └── colors.ts              # Color palette
 ├── components/                # Astro and React components
+│   ├── BudgetExplorer.tsx     # Main budget explorer with year selection
+│   ├── BudgetSummary.tsx      # Budget overview with metadata
 │   ├── layout/                # Header, Footer (Astro)
 │   ├── charts/                # Recharts + D3 components (React)
+│   │   ├── EntityPicker.tsx   # Entity selector
+│   │   ├── DepartmentBar.tsx  # Department spending bar chart
+│   │   ├── FundPie.tsx        # Fund breakdown pie chart
+│   │   ├── BudgetTreemap.tsx  # D3 treemap visualization
+│   │   ├── TrendChart.tsx     # Historical budget trends
+│   │   ├── RevenueBreakdown.tsx      # Revenue sources
+│   │   ├── RevenueVsSpending.tsx     # Revenue vs spending comparison
+│   │   ├── AppropriationBreakdown.tsx # Appropriations breakdown
+│   │   └── TransparencyCallout.tsx   # Data quality callout
 │   ├── simulator/             # Simulator components (React)
-│   └── ui/                    # Shared UI components
+│   └── ui/                    # Shared UI components (YearSelector)
 ├── layouts/
 │   └── BaseLayout.astro       # Page wrapper with header/footer
 ├── pages/                     # Routes (file-based routing)
@@ -144,7 +157,7 @@ import { createSimulation, adjustDepartment } from "@/lib/simulation-engine";
 const [state, setState] = useState(() => createSimulation(data));
 
 const handleAdjust = (deptId: string, multiplier: number) => {
-  setState((prev) => adjustDepartment(prev, data.appropriations.by_department, deptId, multiplier));
+  setState((prev) => adjustDepartment(prev, departments, deptId, multiplier));
 };
 ```
 
@@ -152,7 +165,7 @@ const handleAdjust = (deptId: string, multiplier: number) => {
 
 **Tailwind CSS 4**: Utility-first styling.
 
-**Custom colors**: `bg-chicago-blue`, `text-chicago-red` (defined in `tailwind.config.mjs`).
+**Custom colors**: `bg-chicago-blue`, `text-chicago-red` (defined in `src/styles/global.css` via Tailwind 4 `@theme`).
 
 **Responsive**: Mobile-first. Use `md:`, `lg:` prefixes for breakpoints.
 

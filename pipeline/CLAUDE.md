@@ -17,12 +17,15 @@ Python data pipeline for the Chicago Budget Explorer. Extracts budget data from 
 
 ```
 Socrata API → Extractor → DataFrame → Transformer → BudgetData → Validator → JSON
+                                                         ↓
+                                                   Trend Enricher (cross-year trends)
 ```
 
 1. **Extract** (src/extractors/): Fetch raw data from source
 2. **Transform** (src/transformers/): Convert to BudgetData schema, aggregate by department
-3. **Validate** (src/validators/): Check hierarchical sums, cross-year consistency
-4. **Output**: JSON files to `output/` (copied to frontend/src/data)
+3. **Enrich** (src/transformers/trend_enricher.py): Add cross-year trend data to departments
+4. **Validate** (src/validators/): Check hierarchical sums, cross-year consistency, revenue
+5. **Output**: JSON files to `output/` (copied to frontend/src/data)
 
 ### Key Concepts
 
@@ -51,7 +54,8 @@ pipeline/
 │   │   └── socrata.py         # Socrata API extractor
 │   ├── transformers/
 │   │   ├── base.py            # Abstract transformer
-│   │   └── city_of_chicago.py # City-specific transformation logic
+│   │   ├── city_of_chicago.py # City-specific transformation logic
+│   │   └── trend_enricher.py  # Cross-year trend enrichment
 │   ├── validators/
 │   │   └── budget.py          # Data quality validation
 │   └── cli.py                 # CLI commands
@@ -90,12 +94,13 @@ pipeline/
 
 ## Validation Rules
 
-1. **Schema**: Pydantic enforces types, required fields, constraints (amount >= 0, etc.)
+1. **Schema**: Pydantic enforces types, required fields, constraints (amounts allow negatives for accounting adjustments)
 2. **Hierarchical sums**: sum(departments) == total (within $1 tolerance)
 3. **Subcategory sums**: sum(subcategories) == department amount
 4. **Fund breakdown**: Warning if doesn't match (not error, as funds can overlap)
 5. **ID uniqueness**: No duplicate department IDs
-6. **Cross-year consistency**: Flag departments with >50% change (warning, not error)
+6. **Revenue validation**: Source sums, revenue vs appropriations gap, grant transparency
+7. **Cross-year consistency**: Flag departments with >50% change (warning, not error)
 
 ## Type Safety
 
@@ -125,6 +130,7 @@ def test_feature():
 ```bash
 python -m src.cli fetch city-of-chicago --year fy2025
 python -m src.cli transform city-of-chicago --year fy2025 --prior-year fy2024
+python -m src.cli enrich city-of-chicago   # Add cross-year trends
 python -m src.cli validate
 python -m src.cli manifest  # Generate manifest.json
 python -m src.cli all       # Full pipeline

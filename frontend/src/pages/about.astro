@@ -3,7 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { loadBudgetData } from "@/lib/data-loader";
 import { formatCurrency } from "@/lib/format";
 
-const data = await loadBudgetData("city-of-chicago", "fy2025");
+const data = await loadBudgetData("city-of-chicago", "fy2026");
 const totalBudget = data.metadata.total_appropriations;
 ---
 
@@ -39,12 +39,20 @@ const totalBudget = data.metadata.total_appropriations;
         </p>
         <ul>
           <li>
+            <strong>FY2026 Data</strong>: Budget - 2026 Budget Ordinance - Appropriations
+            (Dataset ID: 6694-f78c)
+          </li>
+          <li>
             <strong>FY2025 Data</strong>: Budget - 2025 Budget Ordinance - Appropriations
             (Dataset ID: t59y-fr3k)
           </li>
           <li>
             <strong>FY2024 Data</strong>: Budget - 2024 Budget Ordinance - Appropriations
             (Dataset ID: x394-e874)
+          </li>
+          <li>
+            <strong>FY2023 Data</strong>: Budget - 2023 Budget Ordinance - Appropriations
+            (Dataset ID: xbjh-7zvh)
           </li>
         </ul>
       </section>
@@ -62,7 +70,12 @@ const totalBudget = data.metadata.total_appropriations;
             receives
           </li>
           <li>
-            <strong>Historical Comparison</strong>: Compare current and prior year budgets
+            <strong>Revenue Breakdown</strong>: See where city revenue comes from, categorized
+            by source type
+          </li>
+          <li>
+            <strong>Historical Trends</strong>: Compare budgets across four fiscal years with
+            trend visualizations
           </li>
         </ul>
       </section>
@@ -76,7 +89,7 @@ const totalBudget = data.metadata.total_appropriations;
             <strong>Sister Agencies</strong>: Chicago Public Schools, Park District, CTA, and
             other taxing bodies
           </li>
-          <li><strong>Revenue Details</strong>: Focus is on spending, not taxation</li>
+          <li><strong>Revenue Projections</strong>: Revenue data shown is from budget ordinance estimates, not actual collections</li>
         </ul>
       </section>
     </div>
@@ -128,7 +141,9 @@ const totalBudget = data.metadata.total_appropriations;
       <section>
         <h2>Features</h2>
         <ul>
-          <li>City of Chicago FY2025 and FY2024 data</li>
+          <li>City of Chicago FY2023 through FY2026 data</li>
+          <li>Revenue analysis and spending breakdowns</li>
+          <li>Historical trend visualizations across fiscal years</li>
           <li>Interactive charts and budget simulator</li>
           <li>Open source and free to use</li>
         </ul>

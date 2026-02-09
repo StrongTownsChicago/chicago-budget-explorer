@@ -7,7 +7,8 @@ An interactive, open-source tool for exploring and simulating the City of Chicag
 The Chicago Budget Explorer is a civic tech project that makes Chicago's budget transparent and interactive. Residents, journalists, advocacy organizations, and policymakers can:
 
 - **Explore** budget allocations by department with interactive visualizations
-- **Compare** spending across fiscal years
+- **Analyze** revenue sources and spending breakdowns
+- **Compare** spending across fiscal years with historical trend charts
 - **Simulate** budget changes to understand trade-offs
 - **Visualize** data with charts, treemaps, and breakdowns
 
@@ -86,9 +87,10 @@ The static site is output to `frontend/dist/`.
 
 **Data Pipeline (Python)**:
 
-- Extracts budget data from Chicago's Socrata portal
+- Extracts budget data from Chicago's Socrata portal (appropriations + revenue)
 - Transforms into normalized JSON schema
-- Validates hierarchical sums and cross-year consistency
+- Enriches with cross-year trend data
+- Validates hierarchical sums, revenue, and cross-year consistency
 - Static JSON files committed to repository
 
 **Frontend (Astro + React)**:
