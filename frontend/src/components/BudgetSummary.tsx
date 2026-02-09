@@ -14,10 +14,9 @@ export default function BudgetSummary({ metadata }: Props) {
         </h2>
         <p className="text-sm text-gray-600 mb-4">
           The <strong>operating budget</strong> (
-          {formatCurrency(metadata.operating_appropriations || 0)}) matches
-          the figure in official budget reports and excludes self-funded
-          airport operations. The <strong>total appropriations</strong>{" "}
-          include all funds.
+          {formatCurrency(metadata.operating_appropriations || 0)}) excludes
+          self-funded airport operations. The{" "}
+          <strong>total appropriations</strong> include all funds.
         </p>
       </div>
 
