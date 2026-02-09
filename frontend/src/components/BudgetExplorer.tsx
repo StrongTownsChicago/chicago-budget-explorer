@@ -11,6 +11,8 @@ import TrendChart from "@/components/charts/TrendChart";
 import RevenueBreakdown from "@/components/charts/RevenueBreakdown";
 import RevenueVsSpending from "@/components/charts/RevenueVsSpending";
 import TransparencyCallout from "@/components/charts/TransparencyCallout";
+import Tabs from "@/components/ui/Tabs";
+import type { Tab } from "@/components/ui/Tabs";
 
 export interface Props {
   entityId: string;
@@ -32,14 +34,119 @@ export default function BudgetExplorer({
 
   if (!data) return null;
 
+  const hasTrendData = data.appropriations.by_department.some(
+    (d) => d.trend && d.trend.length > 1,
+  );
+
+  const tabs: Tab[] = [
+    {
+      id: "spending",
+      label: "Spending",
+      content: (
+        <div className="space-y-12">
+          <section className="card p-6">
+            <h2 className="section-heading">Spending by Department</h2>
+            <DepartmentBar
+              departments={data.appropriations.by_department}
+              totalBudget={data.metadata.total_appropriations}
+            />
+          </section>
+
+          <section className="card p-6">
+            <h2 className="section-heading">Spending by Fund Type</h2>
+            <FundPie funds={data.appropriations.by_fund} />
+          </section>
+
+          <section className="card p-6">
+            <h2 className="section-heading">Spending by Category</h2>
+            <AppropriationBreakdown
+              departments={data.appropriations.by_department}
+            />
+          </section>
+
+          <section className="card p-6">
+            <h2 className="section-heading">Budget Treemap</h2>
+            <p className="text-gray-600 mb-4">
+              Visual representation of the budget with departments sized by
+              their budget allocation.
+            </p>
+            <BudgetTreemap departments={data.appropriations.by_department} />
+          </section>
+        </div>
+      ),
+    },
+  ];
+
+  if (data.revenue) {
+    tabs.push({
+      id: "revenue",
+      label: "Revenue",
+      content: (
+        <div className="space-y-12">
+          <section className="card p-6">
+            <h2 className="section-heading">Revenue</h2>
+            <p className="text-gray-600 mb-4">
+              Where the money comes from: a breakdown of revenue by source.
+            </p>
+
+            <TransparencyCallout
+              localRevenue={data.revenue.total_revenue}
+              grantRevenueEstimated={data.revenue.grant_revenue_estimated}
+              totalBudget={data.metadata.total_appropriations}
+            />
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  Revenue by Source
+                </h3>
+                <RevenueBreakdown
+                  sources={data.revenue.by_source}
+                  totalRevenue={data.revenue.total_revenue}
+                />
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  Revenue vs. Spending
+                </h3>
+                <RevenueVsSpending
+                  totalRevenue={data.revenue.total_revenue}
+                  totalAppropriations={data.metadata.total_appropriations}
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+      ),
+    });
+  }
+
+  if (hasTrendData) {
+    tabs.push({
+      id: "trends",
+      label: "Trends",
+      content: (
+        <div className="space-y-12">
+          <section className="card p-6">
+            <h2 className="section-heading">Historical Trends</h2>
+            <p className="text-gray-600 mb-4">
+              Compare department budgets across fiscal years.
+            </p>
+            <TrendChart departments={data.appropriations.by_department} />
+          </section>
+        </div>
+      ),
+    });
+  }
+
   return (
     <div className="space-y-10">
       {/* Header */}
       <header
         className="gradient-hero text-white -mx-4 -mt-8 px-4 py-10"
         style={{
-          background:
-            "linear-gradient(135deg, #0051A5 0%, #003B7A 100%)",
+          background: "linear-gradient(135deg, #0051A5 0%, #003B7A 100%)",
         }}
       >
         <div className="max-w-6xl mx-auto">
@@ -86,93 +193,17 @@ export default function BudgetExplorer({
         <BudgetSummary metadata={data.metadata} />
       </section>
 
-      {/* Department Breakdown */}
-      <section className="card p-6">
-        <h2 className="section-heading">Spending by Department</h2>
-        <DepartmentBar
-          departments={data.appropriations.by_department}
-          totalBudget={data.metadata.total_appropriations}
-        />
-      </section>
-
-      {/* Fund Breakdown */}
-      <section className="card p-6">
-        <h2 className="section-heading">Spending by Fund Type</h2>
-        <FundPie funds={data.appropriations.by_fund} />
-      </section>
-
-      {/* Appropriation Type */}
-      <section className="card p-6">
-        <h2 className="section-heading">Spending by Category</h2>
-        <AppropriationBreakdown departments={data.appropriations.by_department} />
-      </section>
-
-      {/* Historical Trends */}
-      {data.appropriations.by_department.some((d) => d.trend && d.trend.length > 1) && (
-        <section className="card p-6">
-          <h2 className="section-heading">
-            Historical Trends
-          </h2>
-          <p className="text-gray-600 mb-4">
-            Compare department budgets across fiscal years.
-          </p>
-          <TrendChart departments={data.appropriations.by_department} />
-        </section>
-      )}
-
-      {/* Treemap */}
-      <section className="card p-6">
-        <h2 className="section-heading">Budget Treemap</h2>
-        <p className="text-gray-600 mb-4">
-          Visual representation of the budget with departments sized by their budget allocation.
-        </p>
-        <BudgetTreemap departments={data.appropriations.by_department} />
-      </section>
-
-      {/* Revenue Section (v1.5+) */}
-      {data.revenue && (
-        <section className="card p-6">
-          <h2 className="section-heading">Revenue</h2>
-          <p className="text-gray-600 mb-4">
-            Where the money comes from: a breakdown of revenue by source.
-          </p>
-
-          <TransparencyCallout
-            localRevenue={data.revenue.total_revenue}
-            grantRevenueEstimated={data.revenue.grant_revenue_estimated}
-            totalBudget={data.metadata.total_appropriations}
-          />
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Revenue by Source
-              </h3>
-              <RevenueBreakdown
-                sources={data.revenue.by_source}
-                totalRevenue={data.revenue.total_revenue}
-              />
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Revenue vs. Spending
-              </h3>
-              <RevenueVsSpending
-                totalRevenue={data.revenue.total_revenue}
-                totalAppropriations={data.metadata.total_appropriations}
-              />
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Tabbed Content */}
+      <Tabs tabs={tabs} defaultTab="spending" />
 
       {/* Data Source Attribution */}
       <footer className="mt-8 pt-6 border-t border-border-subtle">
         <p className="text-sm text-gray-500">
-          Data Source: {data.metadata.data_source} (Dataset: {data.metadata.source_dataset_id})
+          Data Source: {data.metadata.data_source} (Dataset:{" "}
+          {data.metadata.source_dataset_id})
           <br />
-          Extracted: {new Date(data.metadata.extraction_date).toLocaleDateString()}
+          Extracted:{" "}
+          {new Date(data.metadata.extraction_date).toLocaleDateString()}
           <br />
           Pipeline Version: {data.metadata.pipeline_version}
         </p>

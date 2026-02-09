@@ -115,6 +115,45 @@ const createMockBudgetData = (year: string, total: number): BudgetData => ({
   schema_version: "1.0.0",
 });
 
+const createRevenueData = () => ({
+  by_source: [
+    {
+      id: "revenue-property-tax",
+      name: "Property Tax",
+      amount: 1500000000,
+      subcategories: [],
+      fund_breakdown: [],
+    },
+  ],
+  by_fund: [],
+  total_revenue: 1500000000,
+  local_revenue_only: true,
+  grant_revenue_estimated: 500000000,
+});
+
+const createTrendDepartment = () => ({
+  id: "dept-finance",
+  name: "Finance",
+  code: "FIN",
+  amount: 500000000,
+  prior_year_amount: 450000000,
+  change_pct: 11.1,
+  fund_breakdown: [{ fund_id: "0100", fund_name: "Corporate", amount: 500000000 }],
+  subcategories: [{ id: "personnel", name: "Personnel", amount: 500000000 }],
+  trend: [
+    { fiscal_year: "fy2024", amount: 450000000 },
+    { fiscal_year: "fy2025", amount: 500000000 },
+  ],
+  simulation: {
+    adjustable: true,
+    min_pct: 50,
+    max_pct: 150,
+    step_pct: 1,
+    constraints: [],
+    description: "",
+  },
+});
+
 describe("BudgetExplorer", () => {
   const defaultProps = {
     entityId: "city-of-chicago",
@@ -225,21 +264,7 @@ describe("BudgetExplorer", () => {
   it("renders revenue section when revenue data is present", () => {
     const dataWithRevenue = {
       ...defaultProps.budgetDataByYear.fy2025,
-      revenue: {
-        by_source: [
-          {
-            id: "revenue-property-tax",
-            name: "Property Tax",
-            amount: 1500000000,
-            subcategories: [],
-            fund_breakdown: [],
-          },
-        ],
-        by_fund: [],
-        total_revenue: 1500000000,
-        local_revenue_only: true,
-        grant_revenue_estimated: 500000000,
-      },
+      revenue: createRevenueData(),
     };
 
     const propsWithRevenue = {
@@ -251,9 +276,69 @@ describe("BudgetExplorer", () => {
     };
 
     render(<BudgetExplorer {...propsWithRevenue} />);
+    // Revenue components are in the DOM (inside a hidden tab panel)
     expect(screen.getByTestId("revenue-breakdown")).toBeInTheDocument();
     expect(screen.getByTestId("revenue-vs-spending")).toBeInTheDocument();
     expect(screen.getByTestId("transparency-callout")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /^Revenue$/ })).toBeInTheDocument();
+    // Revenue heading is inside a hidden panel, so we need hidden: true
+    expect(
+      screen.getByRole("heading", { name: /^Revenue$/, hidden: true }),
+    ).toBeInTheDocument();
+  });
+
+  // Tab-specific tests
+
+  it("renders Spending tab button", () => {
+    render(<BudgetExplorer {...defaultProps} />);
+    expect(screen.getByRole("tab", { name: "Spending" })).toBeInTheDocument();
+  });
+
+  it("renders Revenue tab button when revenue data exists", () => {
+    const dataWithRevenue = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      revenue: createRevenueData(),
+    };
+
+    const propsWithRevenue = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithRevenue,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithRevenue} />);
+    expect(screen.getByRole("tab", { name: "Revenue" })).toBeInTheDocument();
+  });
+
+  it("does not render Revenue tab when revenue is absent", () => {
+    render(<BudgetExplorer {...defaultProps} />);
+    expect(screen.queryByRole("tab", { name: "Revenue" })).not.toBeInTheDocument();
+  });
+
+  it("renders Trends tab when trend data exists", () => {
+    const dataWithTrends: BudgetData = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      appropriations: {
+        ...defaultProps.budgetDataByYear.fy2025.appropriations,
+        by_department: [createTrendDepartment()],
+      },
+    };
+
+    const propsWithTrends = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithTrends,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithTrends} />);
+    expect(screen.getByRole("tab", { name: "Trends" })).toBeInTheDocument();
+  });
+
+  it("does not render Trends tab when no trend data", () => {
+    render(<BudgetExplorer {...defaultProps} />);
+    expect(screen.queryByRole("tab", { name: "Trends" })).not.toBeInTheDocument();
   });
 });
