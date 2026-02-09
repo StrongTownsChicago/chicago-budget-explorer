@@ -20,7 +20,7 @@ export default function BudgetBalance({ state, totalRevenue }: Props) {
   const delta = getBudgetDelta(state);
   const deltaPct = getDeltaPercent(state);
   const balanced = isBalanced(state);
-  const revenueGap =
+  const _revenueGap =
     totalRevenue != null ? state.totalBudget - totalRevenue : null;
 
   const statusText = balanced
