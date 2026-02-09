@@ -1,6 +1,10 @@
 import { formatCurrency, formatPercent } from "@/lib/format";
 import type { SimulationState } from "@/lib/types";
-import { getBudgetDelta, getDeltaPercent, isBalanced } from "@/lib/simulation-engine";
+import {
+  getBudgetDelta,
+  getDeltaPercent,
+  isBalanced,
+} from "@/lib/simulation-engine";
 import { getDeltaBackground } from "@/lib/colors";
 
 export interface Props {
@@ -16,7 +20,8 @@ export default function BudgetBalance({ state, totalRevenue }: Props) {
   const delta = getBudgetDelta(state);
   const deltaPct = getDeltaPercent(state);
   const balanced = isBalanced(state);
-  const revenueGap = totalRevenue != null ? state.totalBudget - totalRevenue : null;
+  const revenueGap =
+    totalRevenue != null ? state.totalBudget - totalRevenue : null;
 
   const statusText = balanced
     ? "Balanced"
@@ -69,33 +74,13 @@ export default function BudgetBalance({ state, totalRevenue }: Props) {
 
       {delta > 0 && (
         <div className="mt-4 text-sm font-medium">
-          You need to find additional revenue or make cuts to balance the budget.
+          You need to find additional revenue or make cuts to balance the
+          budget.
         </div>
       )}
 
       {delta < 0 && (
-        <div className="mt-4 text-sm font-medium">
-          You have a surplus. Consider increasing services or reducing taxes.
-        </div>
-      )}
-
-      {revenueGap != null && Math.abs(revenueGap) > 1_000_000 && (
-        <div className="mt-4 text-sm text-gray-700 border-t pt-3">
-          {revenueGap > 0 ? (
-            <span>
-              Your budget is <strong>{formatCurrency(revenueGap)}</strong> over
-              available local revenue. This gap would need to be closed through
-              new taxes, borrowing, or spending cuts elsewhere.
-            </span>
-          ) : (
-            <span>
-              Your budget leaves a{" "}
-              <strong>{formatCurrency(Math.abs(revenueGap))}</strong> surplus
-              relative to local revenue that could fund reserves, debt paydown,
-              or new programs.
-            </span>
-          )}
-        </div>
+        <div className="mt-4 text-sm font-medium">You have a surplus.</div>
       )}
     </div>
   );
