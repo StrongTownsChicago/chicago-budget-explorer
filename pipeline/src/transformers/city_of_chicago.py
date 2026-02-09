@@ -214,8 +214,8 @@ class CityOfChicagoTransformer(BaseTransformer):
         # Standard constraints
         return SimulationConfig(
             adjustable=True,
-            min_pct=0.5,
-            max_pct=1.5,
+            min_pct=0.0,
+            max_pct=2.0,
             step_pct=0.01,
             constraints=[],
             description="This department can be adjusted within standard constraints.",
