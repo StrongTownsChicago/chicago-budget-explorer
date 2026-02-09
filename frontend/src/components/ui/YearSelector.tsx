@@ -6,7 +6,11 @@ export interface Props {
   onYearChange: (year: string) => void;
 }
 
-export default function YearSelector({ availableYears, defaultYear, onYearChange }: Props) {
+export default function YearSelector({
+  availableYears,
+  defaultYear,
+  onYearChange,
+}: Props) {
   const [selectedYear, setSelectedYear] = useState(defaultYear);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -20,7 +24,10 @@ export default function YearSelector({ availableYears, defaultYear, onYearChange
 
   return (
     <div className="flex items-center gap-3">
-      <label htmlFor="year-selector" className="text-sm font-medium text-gray-700">
+      <label
+        htmlFor="year-selector"
+        className="text-sm font-medium text-white-700"
+      >
         Fiscal Year:
       </label>
       <select

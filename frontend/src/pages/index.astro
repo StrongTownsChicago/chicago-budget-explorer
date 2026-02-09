@@ -3,8 +3,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { loadBudgetData } from "@/lib/data-loader";
 import { formatCurrency } from "@/lib/format";
 
-const data = await loadBudgetData("city-of-chicago", "fy2025");
-const totalBudget = data.metadata.total_appropriations;
+const data = await loadBudgetData("city-of-chicago", "fy2026");
+const totalBudget = data.metadata.operating_appropriations;
 const departmentCount = data.appropriations.by_department.length;
 const fiscalYear = data.metadata.fiscal_year_label;
 ---
@@ -51,21 +51,16 @@ const fiscalYear = data.metadata.fiscal_year_label;
 
     <!-- Feature Highlights -->
     <section class="py-12 border-t border-border-subtle">
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-2 gap-6">
         <a href="/entity/city-of-chicago" class="card-hover p-6 text-center group">
-          <div class="text-3xl mb-3">&#x1F50D;</div>
-          <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-chicago-blue transition-colors">Explore</h3>
-          <p class="text-sm text-gray-600">Interactive charts showing where every dollar goes across departments and funds.</p>
+          <div class="text-3xl mb-3">&#x1F4CA;</div>
+          <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-chicago-blue transition-colors">Analyze</h3>
+          <p class="text-sm text-gray-600">Analzye budgets across fiscal years and track department spending trends.</p>
         </a>
         <a href="/entity/city-of-chicago/simulate" class="card-hover p-6 text-center group">
           <div class="text-3xl mb-3">&#x2699;</div>
           <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-chicago-blue transition-colors">Simulate</h3>
           <p class="text-sm text-gray-600">Adjust department budgets with sliders and see how changes affect the total.</p>
-        </a>
-        <a href="/entity/city-of-chicago" class="card-hover p-6 text-center group">
-          <div class="text-3xl mb-3">&#x1F4CA;</div>
-          <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-chicago-blue transition-colors">Compare</h3>
-          <p class="text-sm text-gray-600">Compare budgets across fiscal years and track department spending trends.</p>
         </a>
       </div>
     </section>
