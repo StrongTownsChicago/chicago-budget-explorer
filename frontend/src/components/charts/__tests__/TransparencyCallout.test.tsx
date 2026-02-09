@@ -49,6 +49,22 @@ describe("TransparencyCallout", () => {
     expect(screen.getByText(/\$16\.0B/)).toBeInTheDocument();
   });
 
+  it("explains internal transfers", () => {
+    render(
+      <TransparencyCallout
+        localRevenue={5000000000}
+        grantRevenueEstimated={2500000000}
+        totalBudget={16000000000}
+      />
+    );
+    expect(
+      screen.getByText(/pension fund allocations and internal service earnings/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/transfers between city funds/)
+    ).toBeInTheDocument();
+  });
+
   it("does not render when grant revenue is null", () => {
     const { container } = render(
       <TransparencyCallout

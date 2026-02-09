@@ -87,55 +87,166 @@ entities:
         - "Chicago O'Hare Airport Fund"
         - "Chicago Midway Airport Fund"
 
-      # Revenue source categorization (maps raw source names to user-friendly categories)
-      revenue_categories:
-        property_tax:
-          - "Property Tax"
-          - "Tax Levy"
-        sales_tax:
-          - "Sales Tax"
-        state_sharing:
-          - "State Income Tax"
-          - "Use Tax"
-          - "Personal Property Replacement Tax"
-        utility_tax:
-          - "Electricity Tax"
-          - "Gas Tax"
-          - "Telecommunications Tax"
-          - "Utility Tax"
-        transaction_tax:
-          - "Personal Property Lease Transaction Tax"
-          - "Real Estate Transfer Tax"
-          - "Amusement Tax"
-          - "Transaction Tax"
-        transportation_tax:
-          - "Ground Transportation Tax"
-          - "Parking Tax"
-          - "Chicago Casino Tax"
-          - "Transportation Tax"
-        fines_forfeitures:
-          - "Fines"
-          - "Forfeitures"
-          - "Penalties"
-          - "Red Light Camera"
-          - "Parking Fines"
-        licenses_permits:
-          - "Licenses"
-          - "Permits"
-          - "Building Permits"
-          - "Business Licenses"
-        charges_for_services:
-          - "Charges for Services"
-          - "Water"
-          - "Sewer"
-          - "Airport"
-          - "Concession"
-        debt_proceeds:
-          - "Proceeds from Debt"
-          - "Bond Proceeds"
-        tif:
-          - "TIF"
-          - "Tax Increment"
+      # Revenue categorization - multi-level strategy
+      # 1. Check revenue_source for cross-fund patterns (property tax, TIF)
+      # 2. For rows with populated revenue_category column, map that field
+      # 3. For rows with empty revenue_category, map by fund_name
+      # 4. Fallback: "uncategorized"
+      revenue_categorization:
+        # Map Socrata revenue_category values to our display categories.
+        # These are populated only for Corporate Fund (fund_code 0100).
+        category_field_mapping:
+          "Transportation Taxes": "transportation_tax"
+          "Municipal Public Utility Tax": "utility_tax"
+          "Recreation Taxes": "recreation_tax"
+          "Transaction Taxes": "transaction_tax"
+          "Business Taxes": "business_tax"
+          "Chicago Sales Tax / Home Rule Retailers' Occupation Tax": "sales_tax"
+          "Charges for Services": "charges_for_services"
+          "Fines, Forfeitures and Penalties": "fines_forfeitures"
+          "Licenses, Permits, and Certificates": "licenses_permits"
+          "Internal Service Earnings": "internal_earnings"
+          "Interest Income": "interest_income"
+          "Leases, Rentals and Sales": "leases_sales"
+          "Municipal Parking": "parking_revenue"
+          "Other Revenue": "other_local"
+          "State Income Tax": "state_sharing"
+          "Personal Property Replacement Tax": "state_sharing"
+          "Municipal Auto Rental Tax": "state_sharing"
+          "Reimbursements for City Services": "intergovernmental"
+          "Proceeds and Transfers In": "proceeds_transfers"
+
+        # Map fund_name to categories (for rows with empty revenue_category).
+        # Wildcard patterns supported (e.g., "*Annuity*").
+        fund_based_categories:
+          airport_enterprise:
+            - "Chicago O'Hare Airport Fund"
+            - "Chicago Midway Airport Fund"
+          water_sewer:
+            - "Water Fund"
+            - "Sewer Fund"
+          pension_allocations:
+            - "Municipal Employees' Annuity*"
+            - "Policemen's Annuity*"
+            - "Firemen's Annuity*"
+            - "Laborers'*Annuity*"
+          property_tax_funds:
+            - "Bond Redemption and Interest*"
+            - "Library Note Redemption*"
+          vehicle_transportation:
+            - "Vehicle Tax Fund"
+            - "Motor Fuel Tax Fund"
+          emergency_comm:
+            - "Emergency Communication Fund"
+          special_revenue:
+            - "Special Events*"
+            - "Garbage Collection Fund"
+            - "CTA Real Property Transfer Tax Fund"
+            - "Foreign Fire Insurance Tax Fund"
+            - "Cannabis Regulation Tax*"
+            - "Opioid Settlement Fund"
+            - "Library Fund"
+
+        # Revenue source patterns that override fund-based categorization.
+        # Checked before fund_based_categories for pension/bond fund rows
+        # where the revenue_source identifies the actual tax type.
+        source_overrides:
+          property_tax:
+            - "Property Tax*"
+            - "Tax Levy*"
+          utility_tax:
+            - "*Utility Tax*"
+          tif:
+            - "Tax Increment*"
+            - "TIF*"
+
+        # How each category maps to display name and revenue type
+        display_categories:
+          # TAX REVENUE
+          property_tax:
+            name: "Property Tax"
+            revenue_type: "tax"
+          sales_tax:
+            name: "Sales Tax"
+            revenue_type: "tax"
+          state_sharing:
+            name: "State Shared Revenue"
+            revenue_type: "tax"
+          utility_tax:
+            name: "Utility Taxes"
+            revenue_type: "tax"
+          transaction_tax:
+            name: "Transaction Taxes"
+            revenue_type: "tax"
+          transportation_tax:
+            name: "Transportation Taxes"
+            revenue_type: "tax"
+          recreation_tax:
+            name: "Recreation & Sin Taxes"
+            revenue_type: "tax"
+          business_tax:
+            name: "Business Taxes"
+            revenue_type: "tax"
+          vehicle_transportation:
+            name: "Vehicle & Motor Fuel Taxes"
+            revenue_type: "tax"
+          # FEE/CHARGE REVENUE
+          fines_forfeitures:
+            name: "Fines and Forfeitures"
+            revenue_type: "fee"
+          licenses_permits:
+            name: "Licenses and Permits"
+            revenue_type: "fee"
+          charges_for_services:
+            name: "Charges for Services"
+            revenue_type: "fee"
+          parking_revenue:
+            name: "Parking Revenue"
+            revenue_type: "fee"
+          emergency_comm:
+            name: "Telephone Surcharges"
+            revenue_type: "fee"
+          # ENTERPRISE REVENUE
+          airport_enterprise:
+            name: "Airport Revenue"
+            revenue_type: "enterprise"
+          water_sewer:
+            name: "Water & Sewer Revenue"
+            revenue_type: "enterprise"
+          # INTERNAL/OTHER
+          pension_allocations:
+            name: "Pension Fund Allocations"
+            revenue_type: "internal_transfer"
+          interest_income:
+            name: "Interest Income"
+            revenue_type: "other"
+          internal_earnings:
+            name: "Internal Service Earnings"
+            revenue_type: "internal_transfer"
+          proceeds_transfers:
+            name: "Proceeds & Transfers"
+            revenue_type: "debt_proceeds"
+          leases_sales:
+            name: "Leases, Rentals & Sales"
+            revenue_type: "other"
+          intergovernmental:
+            name: "Intergovernmental Revenue"
+            revenue_type: "other"
+          special_revenue:
+            name: "Special Revenue Funds"
+            revenue_type: "other"
+          property_tax_funds:
+            name: "Debt Service Funds"
+            revenue_type: "debt_proceeds"
+          other_local:
+            name: "Other Local Revenue"
+            revenue_type: "other"
+          tif:
+            name: "TIF Surplus"
+            revenue_type: "other"
+          uncategorized:
+            name: "Uncategorized Revenue"
+            revenue_type: "other"
 
       # Column mappings for revenue dataset
       revenue_columns:

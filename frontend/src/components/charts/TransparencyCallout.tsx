@@ -42,15 +42,20 @@ export default function TransparencyCallout({
           </h4>
           <p className="text-sm text-yellow-800 mb-2">
             The revenue data shown covers <strong>local funds only</strong>{" "}
-            (property taxes, sales taxes, fees, etc.). It does not include
+            (taxes, fees, enterprise revenue, etc.). It does not include
             federal and state grants, which make up approximately{" "}
             <strong>{formatCurrency(grantRevenueEstimated)}</strong> (
             {grantPct.toFixed(1)}%) of the total budget.
           </p>
+          <p className="text-sm text-yellow-800 mb-2">
+            Some revenue categories (such as pension fund allocations and
+            internal service earnings) represent transfers between city funds
+            rather than new revenue from external sources.
+          </p>
           <p className="text-sm text-yellow-800">
-            This limitation exists because grant revenue is not published in a
-            structured, open-data format. We estimate grant funding from
-            appropriations data. The total budget including grants is{" "}
+            Grant revenue is not published in a structured, open-data format.
+            We estimate grant funding from appropriations data. The total
+            budget including grants is{" "}
             <strong>{formatCurrency(totalBudget)}</strong>.
           </p>
         </div>

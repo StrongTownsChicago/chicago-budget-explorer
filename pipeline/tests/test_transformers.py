@@ -443,12 +443,12 @@ class TestCityOfChicagoTransformer:
         assert len(result.metadata.fund_category_breakdown) == 3
 
 
-class TestRevenueTransformation:
-    """Tests for revenue-related transformation methods."""
+class TestRevenueCategorization:
+    """Tests for multi-level revenue categorization."""
 
     @pytest.fixture
-    def config_with_revenue(self):
-        """Create test configuration with revenue categories."""
+    def config_with_categorization(self):
+        """Config with the new revenue_categorization structure."""
         return {
             "id": "city-of-chicago",
             "name": "City of Chicago",
@@ -460,14 +460,159 @@ class TestRevenueTransformation:
                 "acronyms": {},
                 "non_adjustable_departments": [],
                 "grant_funded_threshold": 0.9,
-                "revenue_categories": {
-                    "property_tax": ["Property Tax", "Tax Levy"],
-                    "sales_tax": ["Sales Tax"],
-                    "utility_tax": ["Electricity Tax", "Gas Tax", "Telecommunications Tax"],
+                "revenue_categorization": {
+                    "category_field_mapping": {
+                        "Transportation Taxes": "transportation_tax",
+                        "Municipal Public Utility Tax": "utility_tax",
+                        "Recreation Taxes": "recreation_tax",
+                        "Transaction Taxes": "transaction_tax",
+                        "Business Taxes": "business_tax",
+                        "Chicago Sales Tax / Home Rule Retailers' Occupation Tax": "sales_tax",
+                        "Charges for Services": "charges_for_services",
+                        "Fines, Forfeitures and Penalties": "fines_forfeitures",
+                        "Licenses, Permits, and Certificates": "licenses_permits",
+                        "Internal Service Earnings": "internal_earnings",
+                        "Interest Income": "interest_income",
+                        "Leases, Rentals and Sales": "leases_sales",
+                        "Municipal Parking": "parking_revenue",
+                        "Other Revenue": "other_local",
+                        "State Income Tax": "state_sharing",
+                        "Personal Property Replacement Tax": "state_sharing",
+                        "Municipal Auto Rental Tax": "state_sharing",
+                        "Reimbursements for City Services": "intergovernmental",
+                        "Proceeds and Transfers In": "proceeds_transfers",
+                    },
+                    "fund_based_categories": {
+                        "airport_enterprise": [
+                            "Chicago O'Hare Airport Fund",
+                            "Chicago Midway Airport Fund",
+                        ],
+                        "water_sewer": ["Water Fund", "Sewer Fund"],
+                        "pension_allocations": [
+                            "Municipal Employees' Annuity*",
+                            "Policemen's Annuity*",
+                            "Firemen's Annuity*",
+                            "Laborers'*Annuity*",
+                        ],
+                        "property_tax_funds": [
+                            "Bond Redemption and Interest*",
+                            "Library Note Redemption*",
+                        ],
+                        "vehicle_transportation": [
+                            "Vehicle Tax Fund",
+                            "Motor Fuel Tax Fund",
+                        ],
+                        "emergency_comm": ["Emergency Communication Fund"],
+                        "special_revenue": [
+                            "Special Events*",
+                            "Garbage Collection Fund",
+                            "Library Fund",
+                        ],
+                    },
+                    "source_overrides": {
+                        "property_tax": ["Property Tax*", "Tax Levy*"],
+                        "utility_tax": ["*Utility Tax*"],
+                        "tif": ["Tax Increment*", "TIF*"],
+                    },
+                    "display_categories": {
+                        "property_tax": {"name": "Property Tax", "revenue_type": "tax"},
+                        "sales_tax": {"name": "Sales Tax", "revenue_type": "tax"},
+                        "state_sharing": {
+                            "name": "State Shared Revenue",
+                            "revenue_type": "tax",
+                        },
+                        "utility_tax": {"name": "Utility Taxes", "revenue_type": "tax"},
+                        "transaction_tax": {
+                            "name": "Transaction Taxes",
+                            "revenue_type": "tax",
+                        },
+                        "transportation_tax": {
+                            "name": "Transportation Taxes",
+                            "revenue_type": "tax",
+                        },
+                        "recreation_tax": {
+                            "name": "Recreation & Sin Taxes",
+                            "revenue_type": "tax",
+                        },
+                        "business_tax": {"name": "Business Taxes", "revenue_type": "tax"},
+                        "vehicle_transportation": {
+                            "name": "Vehicle & Motor Fuel Taxes",
+                            "revenue_type": "tax",
+                        },
+                        "fines_forfeitures": {
+                            "name": "Fines and Forfeitures",
+                            "revenue_type": "fee",
+                        },
+                        "licenses_permits": {
+                            "name": "Licenses and Permits",
+                            "revenue_type": "fee",
+                        },
+                        "charges_for_services": {
+                            "name": "Charges for Services",
+                            "revenue_type": "fee",
+                        },
+                        "parking_revenue": {
+                            "name": "Parking Revenue",
+                            "revenue_type": "fee",
+                        },
+                        "emergency_comm": {
+                            "name": "Telephone Surcharges",
+                            "revenue_type": "fee",
+                        },
+                        "airport_enterprise": {
+                            "name": "Airport Revenue",
+                            "revenue_type": "enterprise",
+                        },
+                        "water_sewer": {
+                            "name": "Water & Sewer Revenue",
+                            "revenue_type": "enterprise",
+                        },
+                        "pension_allocations": {
+                            "name": "Pension Fund Allocations",
+                            "revenue_type": "internal_transfer",
+                        },
+                        "interest_income": {
+                            "name": "Interest Income",
+                            "revenue_type": "other",
+                        },
+                        "internal_earnings": {
+                            "name": "Internal Service Earnings",
+                            "revenue_type": "internal_transfer",
+                        },
+                        "proceeds_transfers": {
+                            "name": "Proceeds & Transfers",
+                            "revenue_type": "debt_proceeds",
+                        },
+                        "leases_sales": {
+                            "name": "Leases, Rentals & Sales",
+                            "revenue_type": "other",
+                        },
+                        "intergovernmental": {
+                            "name": "Intergovernmental Revenue",
+                            "revenue_type": "other",
+                        },
+                        "special_revenue": {
+                            "name": "Special Revenue Funds",
+                            "revenue_type": "other",
+                        },
+                        "property_tax_funds": {
+                            "name": "Debt Service Funds",
+                            "revenue_type": "debt_proceeds",
+                        },
+                        "other_local": {
+                            "name": "Other Local Revenue",
+                            "revenue_type": "other",
+                        },
+                        "tif": {"name": "TIF Surplus", "revenue_type": "other"},
+                        "uncategorized": {
+                            "name": "Uncategorized Revenue",
+                            "revenue_type": "other",
+                        },
+                    },
                 },
                 "revenue_columns": {
                     "source_column": "revenue_source",
-                    "fund_column": "fund_description",
+                    "fund_column": "fund_name",
                 },
             },
             "socrata": {
@@ -481,96 +626,397 @@ class TestRevenueTransformation:
             },
         }
 
-    def test_categorize_revenue_source_property_tax(self, config_with_revenue):
-        """Categorize property tax sources correctly."""
-        transformer = CityOfChicagoTransformer(config_with_revenue)
-        assert transformer.categorize_revenue_source("Property Tax Levy") == "property_tax"
+    @pytest.fixture
+    def transformer(self, config_with_categorization):
+        """Create transformer with categorization config."""
+        return CityOfChicagoTransformer(config_with_categorization)
 
-    def test_categorize_revenue_source_case_insensitive(self, config_with_revenue):
-        """Categorization is case-insensitive."""
-        transformer = CityOfChicagoTransformer(config_with_revenue)
-        assert transformer.categorize_revenue_source("PROPERTY TAX LEVY") == "property_tax"
-        assert transformer.categorize_revenue_source("property tax levy") == "property_tax"
+    def test_corporate_fund_uses_revenue_category_field(self, transformer):
+        """When revenue_category is populated, use category_field_mapping."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "Transportation Taxes", "Corporate Fund", "Ground Transportation Tax"
+        )
+        assert cat == "transportation_tax"
+        assert rev_type == "tax"
 
-    def test_categorize_revenue_source_unknown_defaults_to_other(self, config_with_revenue):
-        """Unknown revenue sources default to 'other' category."""
-        transformer = CityOfChicagoTransformer(config_with_revenue)
-        assert transformer.categorize_revenue_source("Mystery Revenue Source") == "other"
+    def test_water_fund_uses_fund_name_mapping(self, transformer):
+        """When revenue_category is empty, use fund_based_categories."""
+        cat, rev_type = transformer.categorize_revenue_row("", "Water Fund", "Water Rates")
+        assert cat == "water_sewer"
+        assert rev_type == "enterprise"
 
-    def test_transform_revenue_basic(self, config_with_revenue):
-        """Transform revenue DataFrame to Revenue model."""
-        transformer = CityOfChicagoTransformer(config_with_revenue)
+    def test_airport_categorized_as_enterprise(self, transformer):
+        """Airport funds should be enterprise revenue."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "", "Chicago O'Hare Airport Fund", "Total From Rates and Charges"
+        )
+        assert cat == "airport_enterprise"
+        assert rev_type == "enterprise"
 
-        revenue_df = pd.DataFrame(
+    def test_pension_fund_allocation_is_internal(self, transformer):
+        """Pension fund allocations should be internal transfers."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "", "Policemen's Annuity and Benefit Fund", "Corporate Fund Pension Allocation"
+        )
+        assert cat == "pension_allocations"
+        assert rev_type == "internal_transfer"
+
+    def test_property_tax_in_pension_fund_is_property_tax(self, transformer):
+        """Property Tax Levy in pension fund should categorize as property_tax."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "", "Policemen's Annuity and Benefit Fund", "Property Tax Levy (Net Abatement)"
+        )
+        assert cat == "property_tax"
+        assert rev_type == "tax"
+
+    def test_property_tax_in_bond_fund_is_property_tax(self, transformer):
+        """Property Tax Levy in bond fund should categorize as property_tax."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "", "Bond Redemption and Interest Series Fund", "Property Tax Levy (Net Abatement)"
+        )
+        assert cat == "property_tax"
+        assert rev_type == "tax"
+
+    def test_tif_categorization(self, transformer):
+        """TIF revenue should be categorized separately."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "", "TIF Admin Fund", "Tax Increment Financing Administrative Reimbursement"
+        )
+        assert cat == "tif"
+        assert rev_type == "other"
+
+    def test_unknown_fund_falls_to_uncategorized(self, transformer):
+        """Revenue from unknown fund with empty category should be uncategorized."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "", "Some New Unknown Fund", "Unknown Revenue"
+        )
+        assert cat == "uncategorized"
+        assert rev_type == "other"
+
+    def test_empty_revenue_category_treated_as_missing(self, transformer):
+        """Empty and whitespace revenue_category should fall through to fund mapping."""
+        cat, rev_type = transformer.categorize_revenue_row("   ", "Water Fund", "Water Rates")
+        assert cat == "water_sewer"
+        assert rev_type == "enterprise"
+
+    def test_recreation_taxes_categorized(self, transformer):
+        """Recreation taxes should group together via category_field_mapping."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "Recreation Taxes", "Corporate Fund", "Amusement Tax"
+        )
+        assert cat == "recreation_tax"
+        assert rev_type == "tax"
+
+    def test_utility_tax_from_pension_fund(self, transformer):
+        """Utility Tax in pension fund should categorize as utility_tax via source_override."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "", "Municipal Employees' Annuity and Benefit Fund", "Water and Sewer Utility Tax"
+        )
+        assert cat == "utility_tax"
+        assert rev_type == "tax"
+
+    def test_sales_tax_via_category_field(self, transformer):
+        """Sales tax via revenue_category mapping."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "Chicago Sales Tax / Home Rule Retailers' Occupation Tax",
+            "Corporate Fund",
+            "Chicago Home Rule Occupation Tax",
+        )
+        assert cat == "sales_tax"
+        assert rev_type == "tax"
+
+    def test_proceeds_and_transfers(self, transformer):
+        """Proceeds and Transfers In should map to debt_proceeds type."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "Proceeds and Transfers In",
+            "Corporate Fund",
+            "Sales Tax Securitization Corporation Residual",
+        )
+        assert cat == "proceeds_transfers"
+        assert rev_type == "debt_proceeds"
+
+    def test_vehicle_tax_fund(self, transformer):
+        """Vehicle Tax Fund should map to vehicle_transportation."""
+        cat, rev_type = transformer.categorize_revenue_row("", "Vehicle Tax Fund", "Vehicle Tax")
+        assert cat == "vehicle_transportation"
+        assert rev_type == "tax"
+
+    def test_emergency_comm_fund(self, transformer):
+        """Emergency Communication Fund should map to fee type."""
+        cat, rev_type = transformer.categorize_revenue_row(
+            "", "Emergency Communication Fund", "Telephone Surcharge"
+        )
+        assert cat == "emergency_comm"
+        assert rev_type == "fee"
+
+    def test_all_display_categories_have_name(self, config_with_categorization):
+        """Every category in display_categories must have a name field."""
+        display = config_with_categorization["transform"]["revenue_categorization"][
+            "display_categories"
+        ]
+        for key, cat_config in display.items():
+            assert "name" in cat_config, f"display_categories[{key}] missing 'name'"
+
+    def test_all_display_categories_have_revenue_type(self, config_with_categorization):
+        """Every category in display_categories must have a revenue_type field."""
+        display = config_with_categorization["transform"]["revenue_categorization"][
+            "display_categories"
+        ]
+        for key, cat_config in display.items():
+            assert "revenue_type" in cat_config, f"display_categories[{key}] missing 'revenue_type'"
+
+
+class TestRevenueSourceModel:
+    """Tests for RevenueSource schema changes."""
+
+    def test_revenue_type_defaults_to_other(self):
+        """RevenueSource should default revenue_type to 'other'."""
+        from src.models.schema import RevenueSource
+
+        source = RevenueSource(id="test", name="Test", amount=100)
+        assert source.revenue_type == "other"
+
+    def test_revenue_type_accepts_valid_values(self):
+        """RevenueSource should accept known revenue_type values."""
+        from src.models.schema import RevenueSource
+
+        for rt in ("tax", "fee", "enterprise", "internal_transfer", "debt_proceeds", "other"):
+            source = RevenueSource(id="test", name="Test", amount=100, revenue_type=rt)
+            assert source.revenue_type == rt
+
+    def test_existing_json_without_revenue_type_still_valid(self):
+        """Existing JSON without revenue_type field should parse correctly."""
+        from src.models.schema import RevenueSource
+
+        data = {"id": "test", "name": "Test", "amount": 100}
+        source = RevenueSource(**data)
+        assert source.revenue_type == "other"
+
+
+class TestTransformRevenueWithNewCategorization:
+    """Tests for the full revenue transformation with new categorization."""
+
+    @pytest.fixture
+    def config_with_categorization(self):
+        """Config with the new revenue_categorization structure."""
+        return {
+            "id": "city-of-chicago",
+            "name": "City of Chicago",
+            "transform": {
+                "department_column": "DEPARTMENT_NAME",
+                "department_code_column": "DEPARTMENT_CODE",
+                "fund_description_column": "FUND_DESCRIPTION",
+                "appropriation_account_description_column": "APPROPRIATION_ACCOUNT_DESCRIPTION",
+                "acronyms": {},
+                "non_adjustable_departments": [],
+                "grant_funded_threshold": 0.9,
+                "revenue_categorization": {
+                    "category_field_mapping": {
+                        "Transportation Taxes": "transportation_tax",
+                        "Transaction Taxes": "transaction_tax",
+                        "Proceeds and Transfers In": "proceeds_transfers",
+                    },
+                    "fund_based_categories": {
+                        "airport_enterprise": [
+                            "Chicago O'Hare Airport Fund",
+                            "Chicago Midway Airport Fund",
+                        ],
+                        "water_sewer": ["Water Fund"],
+                        "pension_allocations": ["Policemen's Annuity*"],
+                    },
+                    "source_overrides": {
+                        "property_tax": ["Property Tax*", "Tax Levy*"],
+                    },
+                    "display_categories": {
+                        "property_tax": {"name": "Property Tax", "revenue_type": "tax"},
+                        "transportation_tax": {
+                            "name": "Transportation Taxes",
+                            "revenue_type": "tax",
+                        },
+                        "transaction_tax": {
+                            "name": "Transaction Taxes",
+                            "revenue_type": "tax",
+                        },
+                        "airport_enterprise": {
+                            "name": "Airport Revenue",
+                            "revenue_type": "enterprise",
+                        },
+                        "water_sewer": {
+                            "name": "Water & Sewer Revenue",
+                            "revenue_type": "enterprise",
+                        },
+                        "pension_allocations": {
+                            "name": "Pension Fund Allocations",
+                            "revenue_type": "internal_transfer",
+                        },
+                        "proceeds_transfers": {
+                            "name": "Proceeds & Transfers",
+                            "revenue_type": "debt_proceeds",
+                        },
+                        "uncategorized": {
+                            "name": "Uncategorized Revenue",
+                            "revenue_type": "other",
+                        },
+                    },
+                },
+                "revenue_columns": {
+                    "source_column": "revenue_source",
+                    "fund_column": "fund_name",
+                },
+            },
+            "socrata": {
+                "domain": "data.cityofchicago.org",
+                "datasets": {
+                    "fy2025": {
+                        "appropriations": "test-2025",
+                        "revenue": "test-rev-2025",
+                    },
+                },
+            },
+        }
+
+    @pytest.fixture
+    def sample_revenue_df(self):
+        """DataFrame mimicking real FY2025 revenue data structure."""
+        return pd.DataFrame(
             [
+                # Corporate Fund with revenue_category populated
                 {
-                    "revenue_source": "Property Tax Levy",
-                    "fund_description": "Corporate Fund",
-                    "2025_ordinance": "1500000000",
+                    "fund_name": "Corporate Fund",
+                    "revenue_category": "Transportation Taxes",
+                    "revenue_source": "Ground Transportation Tax",
+                    "estimated_revenue": "218602527",
                 },
                 {
-                    "revenue_source": "Sales Tax Revenue",
-                    "fund_description": "Corporate Fund",
-                    "2025_ordinance": "800000000",
+                    "fund_name": "Corporate Fund",
+                    "revenue_category": "Transaction Taxes",
+                    "revenue_source": "Lease of Personal Property",
+                    "estimated_revenue": "818125487",
+                },
+                {
+                    "fund_name": "Corporate Fund",
+                    "revenue_category": "Proceeds and Transfers In",
+                    "revenue_source": "Sales Tax Securitization Residual",
+                    "estimated_revenue": "572000000",
+                },
+                # Water Fund with empty category
+                {
+                    "fund_name": "Water Fund",
+                    "revenue_category": "",
+                    "revenue_source": "Water Rates",
+                    "estimated_revenue": "829394847",
+                },
+                # Airport with empty category
+                {
+                    "fund_name": "Chicago O'Hare Airport Fund",
+                    "revenue_category": "",
+                    "revenue_source": "Total From Rates and Charges",
+                    "estimated_revenue": "1941546908",
+                },
+                # Pension fund with property tax AND allocation
+                {
+                    "fund_name": "Policemen's Annuity and Benefit Fund",
+                    "revenue_category": "",
+                    "revenue_source": "Property Tax Levy (Net Abatement)",
+                    "estimated_revenue": "813518000",
+                },
+                {
+                    "fund_name": "Policemen's Annuity and Benefit Fund",
+                    "revenue_category": "",
+                    "revenue_source": "Corporate Fund Pension Allocation",
+                    "estimated_revenue": "227650852",
                 },
             ]
         )
 
-        revenue = transformer.transform_revenue(revenue_df, "fy2025")
+    @pytest.fixture
+    def transformer(self, config_with_categorization):
+        """Create transformer."""
+        return CityOfChicagoTransformer(config_with_categorization)
 
-        assert len(revenue.by_source) == 2
-        assert revenue.total_revenue == 2300000000
-        # Sorted by amount: Property Tax first
-        assert revenue.by_source[0].name == "Property Tax"
-        assert revenue.by_source[0].amount == 1500000000
-        assert revenue.by_source[1].name == "Sales Tax"
-        assert revenue.by_source[1].amount == 800000000
-        assert revenue.local_revenue_only is True
+    def test_revenue_type_populated_on_all_sources(self, transformer, sample_revenue_df):
+        """Every RevenueSource should have a valid revenue_type."""
+        revenue = transformer.transform_revenue(sample_revenue_df, "fy2025")
+        valid_types = {"tax", "fee", "enterprise", "internal_transfer", "debt_proceeds", "other"}
+        for source in revenue.by_source:
+            assert source.revenue_type in valid_types, (
+                f"{source.name} has invalid revenue_type: {source.revenue_type}"
+            )
 
-    def test_transform_revenue_aggregates_subcategories(self, config_with_revenue):
-        """Revenue transformation aggregates multiple sources into categories."""
-        transformer = CityOfChicagoTransformer(config_with_revenue)
+    def test_airport_revenue_exists(self, transformer, sample_revenue_df):
+        """Airport revenue should appear as its own category."""
+        revenue = transformer.transform_revenue(sample_revenue_df, "fy2025")
+        airport = [s for s in revenue.by_source if "airport" in s.id.lower()]
+        assert len(airport) == 1
+        assert airport[0].revenue_type == "enterprise"
+        assert airport[0].amount == 1941546908
 
-        revenue_df = pd.DataFrame(
-            [
-                {
-                    "revenue_source": "Electricity Tax",
-                    "fund_description": "Corporate Fund",
-                    "2025_ordinance": "100000000",
-                },
-                {
-                    "revenue_source": "Gas Tax",
-                    "fund_description": "Corporate Fund",
-                    "2025_ordinance": "50000000",
-                },
-                {
-                    "revenue_source": "Telecommunications Tax",
-                    "fund_description": "Corporate Fund",
-                    "2025_ordinance": "75000000",
-                },
-            ]
+    def test_pension_allocations_marked_as_internal(self, transformer, sample_revenue_df):
+        """Pension allocations should be marked as internal_transfer type."""
+        revenue = transformer.transform_revenue(sample_revenue_df, "fy2025")
+        pension = [s for s in revenue.by_source if "pension" in s.id.lower()]
+        assert len(pension) == 1
+        assert pension[0].revenue_type == "internal_transfer"
+        assert pension[0].amount == 227650852
+
+    def test_property_tax_aggregates_across_funds(self, transformer, sample_revenue_df):
+        """Property tax from pension funds should aggregate into property_tax category."""
+        revenue = transformer.transform_revenue(sample_revenue_df, "fy2025")
+        prop_tax = [s for s in revenue.by_source if "property" in s.id.lower()]
+        assert len(prop_tax) == 1
+        assert prop_tax[0].amount == 813518000
+        assert prop_tax[0].revenue_type == "tax"
+
+    def test_subcategories_sum_to_source(self, transformer, sample_revenue_df):
+        """For each source, subcategory amounts should sum to source amount."""
+        revenue = transformer.transform_revenue(sample_revenue_df, "fy2025")
+        for source in revenue.by_source:
+            if source.subcategories:
+                subcat_sum = sum(sc.amount for sc in source.subcategories)
+                assert abs(subcat_sum - source.amount) <= 1, (
+                    f"{source.name}: subcategory sum {subcat_sum} != source amount {source.amount}"
+                )
+
+    def test_total_revenue_equals_row_sum(self, transformer, sample_revenue_df):
+        """Total revenue should match the sum of all input rows."""
+        revenue = transformer.transform_revenue(sample_revenue_df, "fy2025")
+        row_total = int(
+            pd.to_numeric(sample_revenue_df["estimated_revenue"], errors="coerce").sum()
         )
+        assert abs(revenue.total_revenue - row_total) <= 1
 
-        revenue = transformer.transform_revenue(revenue_df, "fy2025")
-
-        assert len(revenue.by_source) == 1
-        utility_category = revenue.by_source[0]
-        assert utility_category.name == "Utility Taxes"
-        assert utility_category.amount == 225000000
-        assert len(utility_category.subcategories) == 3
-
-    def test_transform_revenue_empty_dataframe(self, config_with_revenue):
+    def test_transform_revenue_empty_dataframe(self, transformer):
         """Handle empty revenue DataFrame gracefully."""
-        transformer = CityOfChicagoTransformer(config_with_revenue)
         empty_df = pd.DataFrame()
-
         revenue = transformer.transform_revenue(empty_df, "fy2025")
         assert revenue.by_source == []
         assert revenue.total_revenue == 0
 
-    def test_transform_with_revenue_df(self, config_with_revenue):
+    def test_missing_revenue_category_column_handled(self, transformer):
+        """DataFrame without revenue_category column should work via fund_name categorization."""
+        df = pd.DataFrame(
+            [
+                {
+                    "fund_name": "Water Fund",
+                    "revenue_source": "Water Rates",
+                    "estimated_revenue": "500000000",
+                },
+                {
+                    "fund_name": "Chicago O'Hare Airport Fund",
+                    "revenue_source": "Total From Rates and Charges",
+                    "estimated_revenue": "2000000000",
+                },
+            ]
+        )
+        revenue = transformer.transform_revenue(df, "fy2025")
+        assert revenue.total_revenue == 2500000000
+        # Both should be categorized (not uncategorized)
+        uncategorized = [s for s in revenue.by_source if "uncategorized" in s.id.lower()]
+        assert len(uncategorized) == 0
+
+    def test_transform_with_revenue_df_integration(self, config_with_categorization):
         """Transform includes revenue when revenue_df is provided."""
-        transformer = CityOfChicagoTransformer(config_with_revenue)
+        transformer = CityOfChicagoTransformer(config_with_categorization)
 
         approp_df = pd.DataFrame(
             [
@@ -584,13 +1030,13 @@ class TestRevenueTransformation:
             ]
         )
 
-        # Revenue DataFrame
         revenue_df = pd.DataFrame(
             [
                 {
-                    "revenue_source": "Property Tax Levy",
-                    "fund_description": "Corporate Fund",
-                    "2025_ordinance": "1500000",
+                    "fund_name": "Corporate Fund",
+                    "revenue_category": "Transportation Taxes",
+                    "revenue_source": "Ground Transportation Tax",
+                    "estimated_revenue": "1500000",
                 },
             ]
         )
@@ -601,10 +1047,11 @@ class TestRevenueTransformation:
         assert result.revenue.total_revenue == 1500000
         assert result.metadata.total_revenue == 1500000
         assert result.metadata.revenue_surplus_deficit == 1500000 - 2000000
+        assert result.revenue.by_source[0].revenue_type == "tax"
 
-    def test_transform_without_revenue_df(self, config_with_revenue):
+    def test_transform_without_revenue_df(self, config_with_categorization):
         """Transform works without revenue_df (backward compatibility)."""
-        transformer = CityOfChicagoTransformer(config_with_revenue)
+        transformer = CityOfChicagoTransformer(config_with_categorization)
 
         approp_df = pd.DataFrame(
             [

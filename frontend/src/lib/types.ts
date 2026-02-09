@@ -62,6 +62,7 @@ export interface RevenueSource {
   id: string;
   name: string;
   amount: number;
+  revenue_type: string; // "tax" | "fee" | "enterprise" | "internal_transfer" | "debt_proceeds" | "other"
   subcategories: Subcategory[];
   fund_breakdown: FundBreakdown[];
 }
