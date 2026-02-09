@@ -134,7 +134,7 @@ export interface Manifest {
 // Simulation state types
 
 export interface SimulationState {
-  adjustments: Record<string, number>; // dept id → multiplier
+  adjustments: Record<string, number>; // subcategory id → multiplier
   totalBudget: number;
   originalBudget: number;
 }

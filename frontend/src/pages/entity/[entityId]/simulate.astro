@@ -33,7 +33,7 @@ for (const year of entity.available_years) {
     <div class="max-w-4xl mx-auto">
       <h1 class="text-4xl font-extrabold tracking-tight">Budget Simulator</h1>
       <p class="text-lg text-white/80 mt-2">
-        Adjust department budgets to see how it affects the total. Try to keep it balanced!
+        Expand departments and adjust individual budget line items to see how changes affect the total.
       </p>
       <a
         href={`/entity/${entityId}`}
@@ -57,7 +57,8 @@ for (const year of entity.available_years) {
     <div class="mt-8 card p-5">
       <h3 class="font-semibold text-gray-900 mb-2">How to use the simulator:</h3>
       <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-        <li>Use the sliders to increase or decrease each department's budget</li>
+        <li>Click on a department to expand it and see individual budget line items</li>
+        <li>Use the sliders to increase or decrease each line item's budget</li>
         <li>Watch the budget balance indicator update in real-time</li>
         <li>Green = balanced, Red = over budget, Yellow = under budget</li>
         <li>Locked departments cannot be adjusted (usually debt service or legal obligations)</li>

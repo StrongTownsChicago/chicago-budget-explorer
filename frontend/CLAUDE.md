@@ -148,17 +148,20 @@ export default function DepartmentCard({ department }: Props) {
 
 ### Simulation State Management
 
-Use `useState` in React components. Simulation engine is pure functions:
+Use `useState` in React components. Simulation engine is pure functions operating at the subcategory level:
 
 ```tsx
-import { useState } from "react";
-import { createSimulation, adjustDepartment } from "@/lib/simulation-engine";
+import { useState, useCallback } from "react";
+import { createSimulation, adjustSubcategory } from "@/lib/simulation-engine";
 
 const [state, setState] = useState(() => createSimulation(data));
 
-const handleAdjust = (deptId: string, multiplier: number) => {
-  setState((prev) => adjustDepartment(prev, departments, deptId, multiplier));
-};
+const handleAdjustSubcategory = useCallback(
+  (subcategoryId: string, multiplier: number) => {
+    setState((prev) => adjustSubcategory(prev, departments, subcategoryId, multiplier));
+  },
+  [departments],
+);
 ```
 
 ## Styling
