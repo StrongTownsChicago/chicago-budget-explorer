@@ -513,6 +513,7 @@ class CityOfChicagoTransformer(BaseTransformer):
                     fund_breakdown=sorted(fund_breakdown, key=lambda x: x.amount, reverse=True),
                     subcategories=sorted(subcategories, key=lambda x: x.amount, reverse=True),
                     simulation=simulation,
+                    trend=None,
                 )
             )
 

@@ -66,8 +66,8 @@ test.describe("Accessibility", () => {
   test("has accessible form labels (if forms exist)", async ({ page }) => {
     await page.goto("/");
 
-    // Check if there are any input fields
-    const inputs = page.locator("input, select, textarea");
+    // Check user-facing input fields within main content (excludes dev toolbars)
+    const inputs = page.locator("main input, main select, main textarea");
     const inputCount = await inputs.count();
 
     // If inputs exist, check they have labels
