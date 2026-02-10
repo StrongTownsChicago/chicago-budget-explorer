@@ -2,12 +2,15 @@
  * Pure function simulation engine for subcategory-level budget adjustments.
  *
  * All functions are pure (no side effects) for easy testing and reasoning.
- * Adjustments are tracked per subcategory (individual line items within departments).
+ * Adjustments are tracked per subcategory (individual line items within
+ * departments and revenue sources). Revenue and expense subcategory IDs
+ * are namespaced (dept-* vs revenue-*) so they coexist in one adjustments map.
  */
 
 import type {
   BudgetData,
   Department,
+  RevenueSource,
   SimulationState,
   Subcategory,
 } from "./types";
@@ -30,6 +33,7 @@ function findParentDepartment(
 
 /**
  * Create initial simulation state with all subcategories at 1.0x (100%).
+ * Initializes both expense and revenue subcategory adjustments.
  *
  * @param data - BudgetData to initialize from
  * @returns Initial simulation state
@@ -37,24 +41,39 @@ function findParentDepartment(
 export function createSimulation(data: BudgetData): SimulationState {
   const adjustments: Record<string, number> = {};
 
+  // Initialize expense subcategory adjustments
   for (const dept of data.appropriations.by_department) {
     for (const sub of dept.subcategories) {
-      adjustments[sub.id] = 1.0; // 100% (no change)
+      adjustments[sub.id] = 1.0;
     }
   }
+
+  // Initialize revenue subcategory adjustments (if revenue data exists)
+  const revenueSources = data.revenue?.by_source ?? [];
+  for (const source of revenueSources) {
+    for (const sub of source.subcategories) {
+      adjustments[sub.id] = 1.0;
+    }
+  }
+
+  const totalRevenue = data.revenue?.total_revenue ?? 0;
+  const untrackedRevenue = data.revenue?.grant_revenue_estimated ?? 0;
 
   return {
     adjustments,
     totalBudget: data.metadata.total_appropriations,
     originalBudget: data.metadata.total_appropriations,
+    totalRevenue,
+    originalRevenue: totalRevenue,
+    untrackedRevenue,
   };
 }
 
 /**
- * Adjust a subcategory's budget multiplier.
+ * Adjust a subcategory's budget multiplier (expense side).
  *
  * Finds the parent department to enforce its simulation constraints (min/max).
- * Returns a new state object (immutable update).
+ * Returns a new state object (immutable update). Preserves revenue state fields.
  *
  * @param state - Current simulation state
  * @param departments - List of all departments
@@ -96,9 +115,58 @@ export function adjustSubcategory(
   }, 0);
 
   return {
+    ...state,
     adjustments: newAdjustments,
     totalBudget: newTotal,
-    originalBudget: state.originalBudget,
+  };
+}
+
+/**
+ * Adjust a revenue subcategory's multiplier.
+ *
+ * Similar to adjustSubcategory but for revenue sources. All revenue sources
+ * are adjustable with configurable min/max bounds (defaulting to 0.5-1.5).
+ *
+ * @param state - Current simulation state
+ * @param revenueSources - List of all revenue sources
+ * @param subcategoryId - Revenue subcategory ID to adjust
+ * @param multiplier - New multiplier
+ * @param minPct - Minimum allowed multiplier (default: 0.5)
+ * @param maxPct - Maximum allowed multiplier (default: 1.5)
+ * @returns New simulation state
+ */
+export function adjustRevenueSubcategory(
+  state: SimulationState,
+  revenueSources: RevenueSource[],
+  subcategoryId: string,
+  multiplier: number,
+  minPct: number = 0.5,
+  maxPct: number = 1.5
+): SimulationState {
+  // Find parent revenue source
+  const parentSource = revenueSources.find((src) =>
+    src.subcategories.some((sub) => sub.id === subcategoryId)
+  );
+  if (!parentSource) return state;
+
+  const clamped = Math.max(minPct, Math.min(maxPct, multiplier));
+  const newAdjustments = { ...state.adjustments, [subcategoryId]: clamped };
+
+  // Recalculate total revenue from all revenue subcategories
+  const newTotalRevenue = revenueSources.reduce((sum, src) => {
+    return (
+      sum +
+      src.subcategories.reduce((srcSum, sub) => {
+        const subMultiplier = newAdjustments[sub.id] ?? 1.0;
+        return srcSum + Math.round(sub.amount * subMultiplier);
+      }, 0)
+    );
+  }, 0);
+
+  return {
+    ...state,
+    adjustments: newAdjustments,
+    totalRevenue: newTotalRevenue,
   };
 }
 
@@ -134,7 +202,35 @@ export function getAdjustedDepartmentTotal(
 }
 
 /**
- * Get budget delta (difference from original).
+ * Get adjusted total for a revenue source (sum of its adjusted subcategories).
+ *
+ * @param source - Revenue source to total
+ * @param state - Current simulation state
+ * @returns Adjusted dollar total for the revenue source
+ */
+export function getAdjustedRevenueSourceTotal(
+  source: RevenueSource,
+  state: SimulationState
+): number {
+  return source.subcategories.reduce((sum, sub) => {
+    const multiplier = state.adjustments[sub.id] ?? 1.0;
+    return sum + Math.round(sub.amount * multiplier);
+  }, 0);
+}
+
+/**
+ * Get the revenue-vs-expense balance.
+ * Positive = surplus, negative = deficit.
+ *
+ * @param state - Simulation state
+ * @returns Dollar balance (revenue + untracked - expenses)
+ */
+export function getRevenueExpenseBalance(state: SimulationState): number {
+  return state.totalRevenue + state.untrackedRevenue - state.totalBudget;
+}
+
+/**
+ * Get budget delta (difference from original expenses).
  *
  * @param state - Simulation state
  * @returns Dollar amount over/under original budget
@@ -171,7 +267,8 @@ export function isBalanced(
 }
 
 /**
- * Get subcategories that have been adjusted (not at 1.0x), with their parent department context.
+ * Get expense subcategories that have been adjusted (not at 1.0x),
+ * with their parent department context.
  *
  * @param state - Simulation state
  * @param departments - List of all departments
@@ -189,6 +286,33 @@ export function getAdjustedSubcategories(
       const multiplier = state.adjustments[sub.id] ?? 1.0;
       if (Math.abs(multiplier - 1.0) > 0.001) {
         results.push({ subcategory: sub, department: dept });
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Get revenue subcategories that have been adjusted (not at 1.0x),
+ * with their parent revenue source context.
+ *
+ * @param state - Simulation state
+ * @param revenueSources - List of all revenue sources
+ * @returns List of adjusted subcategories with source context
+ */
+export function getAdjustedRevenueSources(
+  state: SimulationState,
+  revenueSources: RevenueSource[]
+): Array<{ subcategory: Subcategory; source: RevenueSource }> {
+  const results: Array<{ subcategory: Subcategory; source: RevenueSource }> =
+    [];
+
+  for (const source of revenueSources) {
+    for (const sub of source.subcategories) {
+      const multiplier = state.adjustments[sub.id] ?? 1.0;
+      if (Math.abs(multiplier - 1.0) > 0.001) {
+        results.push({ subcategory: sub, source });
       }
     }
   }

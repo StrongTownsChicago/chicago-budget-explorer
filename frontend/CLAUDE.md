@@ -148,21 +148,32 @@ export default function DepartmentCard({ department }: Props) {
 
 ### Simulation State Management
 
-Use `useState` in React components. Simulation engine is pure functions operating at the subcategory level:
+Use `useState` in React components. Simulation engine is pure functions operating at the subcategory level for both expenses and revenue:
 
 ```tsx
 import { useState, useCallback } from "react";
-import { createSimulation, adjustSubcategory } from "@/lib/simulation-engine";
+import { createSimulation, adjustSubcategory, adjustRevenueSubcategory } from "@/lib/simulation-engine";
 
 const [state, setState] = useState(() => createSimulation(data));
 
+// Expense adjustments
 const handleAdjustSubcategory = useCallback(
   (subcategoryId: string, multiplier: number) => {
     setState((prev) => adjustSubcategory(prev, departments, subcategoryId, multiplier));
   },
   [departments],
 );
+
+// Revenue adjustments (available when data.revenue exists)
+const handleAdjustRevenue = useCallback(
+  (subcategoryId: string, multiplier: number) => {
+    setState((prev) => adjustRevenueSubcategory(prev, revenueSources, subcategoryId, multiplier));
+  },
+  [revenueSources],
+);
 ```
+
+`SimulationState` tracks both expense totals (`totalBudget`, `originalBudget`) and revenue totals (`totalRevenue`, `originalRevenue`, `untrackedRevenue`). The `adjustments` map holds multipliers for both expense and revenue subcategories (IDs are naturally namespaced: `dept-*` vs `revenue-*`). See `simulation-engine.ts` for balance calculation via `getRevenueExpenseBalance()`.
 
 ## Styling
 

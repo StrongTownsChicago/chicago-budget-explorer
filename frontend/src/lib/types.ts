@@ -134,7 +134,10 @@ export interface Manifest {
 // Simulation state types
 
 export interface SimulationState {
-  adjustments: Record<string, number>; // subcategory id → multiplier
-  totalBudget: number;
-  originalBudget: number;
+  adjustments: Record<string, number>; // subcategory id → multiplier (both expense and revenue)
+  totalBudget: number; // adjusted total appropriations
+  originalBudget: number; // original total appropriations
+  totalRevenue: number; // adjusted total revenue (local + adjustments)
+  originalRevenue: number; // original total revenue (local only)
+  untrackedRevenue: number; // fixed amount (grant revenue estimate, not adjustable)
 }
