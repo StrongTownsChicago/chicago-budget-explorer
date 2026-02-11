@@ -143,7 +143,7 @@ Dataset mappings are configured in `pipeline/config/entities.yaml`.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License
 
 ## Credits
 

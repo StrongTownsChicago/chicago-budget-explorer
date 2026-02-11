@@ -36,6 +36,9 @@ env/
 # Pipeline output (generated data - tracked in frontend/src/data/)
 pipeline/output/
 
+# Raw pipeline data (re-fetchable from source APIs)
+frontend/src/data/*/raw/
+
 # Node
 node_modules/
 npm-debug.log*

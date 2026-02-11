@@ -61,7 +61,6 @@ frontend/src/
 ├── components/                # Astro and React components
 │   ├── BudgetExplorer.tsx     # Main budget explorer with year selection
 │   ├── BudgetSummary.tsx      # Budget overview with metadata
-│   ├── layout/                # Header, Footer (Astro)
 │   ├── charts/                # Recharts + D3 components (React)
 │   │   ├── EntityPicker.tsx   # Entity selector
 │   │   ├── DepartmentBar.tsx  # Department spending bar chart
@@ -74,7 +73,7 @@ frontend/src/
 │   │   ├── AppropriationBreakdown.tsx # Appropriations breakdown
 │   │   └── TransparencyCallout.tsx   # Data quality callout
 │   ├── simulator/             # Simulator components (React)
-│   └── ui/                    # Shared UI components (YearSelector)
+│   └── ui/                    # Shared UI components (YearSelector, Tabs)
 ├── layouts/
 │   └── BaseLayout.astro       # Page wrapper with header/footer
 ├── pages/                     # Routes (file-based routing)
