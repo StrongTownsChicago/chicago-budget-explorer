@@ -23,7 +23,7 @@ Socrata API → Extractor → DataFrame → Transformer → BudgetData → Valid
 
 1. **Extract** (src/extractors/): Fetch raw data from source
 2. **Transform** (src/transformers/): Convert to BudgetData schema, aggregate by department
-3. **Enrich** (src/transformers/trend_enricher.py): Add cross-year trend data to departments and revenue sources
+3. **Enrich** (src/transformers/trend_enricher.py): Add cross-year trend data to departments, revenue sources, and subcategories
 4. **Validate** (src/validators/): Check hierarchical sums, cross-year consistency, revenue
 5. **Output**: JSON files to `output/` (copied to frontend/src/data)
 

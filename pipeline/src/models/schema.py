@@ -16,12 +16,23 @@ class FundBreakdown(BaseModel):
     )
 
 
+class TrendPoint(BaseModel):
+    """A single data point in a historical trend (used by departments, revenue sources, and subcategories)."""
+
+    fiscal_year: str = Field(..., description="Fiscal year (e.g., 'fy2025')")
+    amount: int = Field(..., description="Budget amount for this year")
+
+
 class Subcategory(BaseModel):
     """Budget subcategory within a department (e.g., Personnel Services, Contractual Services)."""
 
     id: str = Field(..., description="Unique subcategory identifier (slugified)")
     name: str = Field(..., description="Subcategory name")
     amount: int = Field(..., description="Dollar amount (can be negative for reductions)")
+    trend: list[TrendPoint] | None = Field(
+        None,
+        description="Historical trend data across fiscal years (optional, populated by enricher)",
+    )
 
 
 class SimulationConfig(BaseModel):
@@ -43,13 +54,6 @@ class SimulationConfig(BaseModel):
         if v < 0 or v > 2.0:
             raise ValueError("Percentage multiplier must be between 0 and 2.0")
         return v
-
-
-class TrendPoint(BaseModel):
-    """A single data point in a department's historical trend."""
-
-    fiscal_year: str = Field(..., description="Fiscal year (e.g., 'fy2025')")
-    amount: int = Field(..., description="Budget amount for this year")
 
 
 class Department(BaseModel):

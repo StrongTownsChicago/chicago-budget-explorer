@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { BudgetData } from "@/lib/types";
 import { formatCurrency } from "@/lib/format";
 import YearSelector from "@/components/ui/YearSelector";
@@ -8,6 +8,7 @@ import FundPie from "@/components/charts/FundPie";
 import AppropriationBreakdown from "@/components/charts/AppropriationBreakdown";
 import BudgetTreemap from "@/components/charts/BudgetTreemap";
 import TrendChart from "@/components/charts/TrendChart";
+import LineItemTrend from "@/components/charts/LineItemTrend";
 import RevenueBreakdown from "@/components/charts/RevenueBreakdown";
 import RevenueVsSpending from "@/components/charts/RevenueVsSpending";
 import TransparencyCallout from "@/components/charts/TransparencyCallout";
@@ -30,9 +31,27 @@ export default function BudgetExplorer({
   defaultYear,
 }: Props) {
   const [selectedYear, setSelectedYear] = useState(defaultYear);
+  const [selectedExpenseDeptId, setSelectedExpenseDeptId] = useState<string | null>(null);
+  const [selectedRevenueSourceId, setSelectedRevenueSourceId] = useState<string | null>(null);
   const data = budgetDataByYear[selectedYear];
 
   if (!data) return null;
+
+  const selectedExpenseDept = useMemo(
+    () =>
+      selectedExpenseDeptId
+        ? data.appropriations.by_department.find((d) => d.id === selectedExpenseDeptId) ?? null
+        : null,
+    [data.appropriations.by_department, selectedExpenseDeptId],
+  );
+
+  const selectedRevenueSource = useMemo(
+    () =>
+      selectedRevenueSourceId && data.revenue
+        ? data.revenue.by_source.find((s) => s.id === selectedRevenueSourceId) ?? null
+        : null,
+    [data.revenue, selectedRevenueSourceId],
+  );
 
   const hasExpenseTrendData = data.appropriations.by_department.some(
     (d) => d.trend && d.trend.length > 1,
@@ -144,6 +163,45 @@ export default function BudgetExplorer({
                 items={data.appropriations.by_department}
                 label="departments"
               />
+
+              {/* Expense line-item drill-down */}
+              <div className="mt-6 pt-6 border-t border-border-subtle">
+                <label
+                  htmlFor="expense-drilldown"
+                  className="text-sm font-semibold text-gray-700 mr-2"
+                >
+                  Explore line items for:
+                </label>
+                <select
+                  id="expense-drilldown"
+                  className="px-3 py-1.5 text-sm border border-border-subtle rounded-lg bg-white text-gray-700"
+                  value={selectedExpenseDeptId ?? ""}
+                  onChange={(e) =>
+                    setSelectedExpenseDeptId(e.target.value || null)
+                  }
+                >
+                  <option value="">Select a department...</option>
+                  {data.appropriations.by_department
+                    .filter((d) =>
+                      d.subcategories.some(
+                        (s) => s.trend && s.trend.length >= 2,
+                      ),
+                    )
+                    .map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {d.name}
+                      </option>
+                    ))}
+                </select>
+
+                {selectedExpenseDept && (
+                  <LineItemTrend
+                    parentName={selectedExpenseDept.name}
+                    subcategories={selectedExpenseDept.subcategories}
+                    label="line items"
+                  />
+                )}
+              </div>
             </section>
           )}
 
@@ -157,6 +215,45 @@ export default function BudgetExplorer({
                 items={data.revenue.by_source}
                 label="revenue sources"
               />
+
+              {/* Revenue line-item drill-down */}
+              <div className="mt-6 pt-6 border-t border-border-subtle">
+                <label
+                  htmlFor="revenue-drilldown"
+                  className="text-sm font-semibold text-gray-700 mr-2"
+                >
+                  Explore line items for:
+                </label>
+                <select
+                  id="revenue-drilldown"
+                  className="px-3 py-1.5 text-sm border border-border-subtle rounded-lg bg-white text-gray-700"
+                  value={selectedRevenueSourceId ?? ""}
+                  onChange={(e) =>
+                    setSelectedRevenueSourceId(e.target.value || null)
+                  }
+                >
+                  <option value="">Select a revenue source...</option>
+                  {data.revenue.by_source
+                    .filter((s) =>
+                      s.subcategories.some(
+                        (sc) => sc.trend && sc.trend.length >= 2,
+                      ),
+                    )
+                    .map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name}
+                      </option>
+                    ))}
+                </select>
+
+                {selectedRevenueSource && (
+                  <LineItemTrend
+                    parentName={selectedRevenueSource.name}
+                    subcategories={selectedRevenueSource.subcategories}
+                    label="revenue lines"
+                  />
+                )}
+              </div>
             </section>
           )}
         </div>

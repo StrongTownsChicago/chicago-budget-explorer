@@ -63,6 +63,14 @@ vi.mock("@/components/charts/TransparencyCallout", () => ({
   default: () => <div data-testid="transparency-callout">Transparency Callout</div>,
 }));
 
+vi.mock("@/components/charts/LineItemTrend", () => ({
+  default: ({ parentName }: { parentName: string }) => (
+    <div data-testid={`line-item-trend-${parentName.toLowerCase().replace(/\s+/g, "-")}`}>
+      Line Item Trend ({parentName})
+    </div>
+  ),
+}));
+
 const createMockBudgetData = (year: string, total: number): BudgetData => ({
   metadata: {
     entity_id: "city-of-chicago",
@@ -188,6 +196,79 @@ const createTrendDepartment = () => ({
     constraints: [],
     description: "",
   },
+});
+
+const createTrendDepartmentWithSubcategoryTrends = () => ({
+  id: "dept-police",
+  name: "Police",
+  code: "057",
+  amount: 2000000000,
+  prior_year_amount: 1900000000,
+  change_pct: 5.3,
+  fund_breakdown: [{ fund_id: "0100", fund_name: "Corporate", amount: 2000000000 }],
+  subcategories: [
+    {
+      id: "police-salaries",
+      name: "Salaries",
+      amount: 1500000000,
+      trend: [
+        { fiscal_year: "fy2024", amount: 1400000000 },
+        { fiscal_year: "fy2025", amount: 1500000000 },
+      ],
+    },
+    {
+      id: "police-overtime",
+      name: "Overtime",
+      amount: 200000000,
+      trend: [
+        { fiscal_year: "fy2024", amount: 180000000 },
+        { fiscal_year: "fy2025", amount: 200000000 },
+      ],
+    },
+  ],
+  trend: [
+    { fiscal_year: "fy2024", amount: 1900000000 },
+    { fiscal_year: "fy2025", amount: 2000000000 },
+  ],
+  simulation: {
+    adjustable: true,
+    min_pct: 50,
+    max_pct: 150,
+    step_pct: 1,
+    constraints: [],
+    description: "",
+  },
+});
+
+const createRevenueTrendDataWithSubcategoryTrends = () => ({
+  by_source: [
+    {
+      id: "revenue-property-tax",
+      name: "Property Tax",
+      amount: 1500000000,
+      revenue_type: "tax",
+      subcategories: [
+        {
+          id: "prop-levy",
+          name: "Property Tax Levy",
+          amount: 1200000000,
+          trend: [
+            { fiscal_year: "fy2024", amount: 1100000000 },
+            { fiscal_year: "fy2025", amount: 1200000000 },
+          ],
+        },
+      ],
+      fund_breakdown: [],
+      trend: [
+        { fiscal_year: "fy2024", amount: 1400000000 },
+        { fiscal_year: "fy2025", amount: 1500000000 },
+      ],
+    },
+  ],
+  by_fund: [],
+  total_revenue: 1500000000,
+  local_revenue_only: true,
+  grant_revenue_estimated: 500000000,
 });
 
 describe("BudgetExplorer", () => {
@@ -470,5 +551,93 @@ describe("BudgetExplorer", () => {
 
     render(<BudgetExplorer {...propsNoTrends} />);
     expect(screen.queryByRole("tab", { name: "Trends" })).not.toBeInTheDocument();
+  });
+
+  // Line-item drill-down tests
+
+  it("renders expense drill-down dropdown when department has subcategory trends", () => {
+    const dataWithSubcatTrends: BudgetData = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      appropriations: {
+        ...defaultProps.budgetDataByYear.fy2025.appropriations,
+        by_department: [createTrendDepartmentWithSubcategoryTrends()],
+      },
+    };
+
+    const propsWithSubcatTrends = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithSubcatTrends,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithSubcatTrends} />);
+
+    // The expense drill-down dropdown should be present in the DOM
+    const dropdown = screen.getByLabelText(/explore line items for/i);
+    expect(dropdown).toBeInTheDocument();
+  });
+
+  it("renders LineItemTrend when department selected from dropdown", async () => {
+    const user = userEvent.setup();
+    const dataWithSubcatTrends: BudgetData = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      appropriations: {
+        ...defaultProps.budgetDataByYear.fy2025.appropriations,
+        by_department: [createTrendDepartmentWithSubcategoryTrends()],
+      },
+    };
+
+    const propsWithSubcatTrends = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithSubcatTrends,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithSubcatTrends} />);
+
+    // Before selection, no LineItemTrend rendered
+    expect(screen.queryByTestId("line-item-trend-police")).not.toBeInTheDocument();
+
+    // Select a department from dropdown
+    const dropdown = screen.getByLabelText(/explore line items for/i);
+    await user.selectOptions(dropdown, "dept-police");
+
+    // LineItemTrend should now be rendered with parentName="Police"
+    expect(screen.getByTestId("line-item-trend-police")).toBeInTheDocument();
+  });
+
+  it("renders revenue drill-down when revenue source has subcategory trends", async () => {
+    const user = userEvent.setup();
+    const dataWithRevSubcatTrends: BudgetData = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      appropriations: {
+        ...defaultProps.budgetDataByYear.fy2025.appropriations,
+        by_department: [createTrendDepartment()],
+      },
+      revenue: createRevenueTrendDataWithSubcategoryTrends(),
+    };
+
+    const propsWithRevSubcatTrends = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithRevSubcatTrends,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithRevSubcatTrends} />);
+
+    // Revenue drill-down dropdown should exist
+    const dropdowns = screen.getAllByLabelText(/explore line items for/i);
+    // There should be 2 dropdowns (expense + revenue) but expense may not have subcategory trends
+    const revenueDropdown = dropdowns[dropdowns.length - 1]!;
+
+    await user.selectOptions(revenueDropdown, "revenue-property-tax");
+
+    expect(screen.getByTestId("line-item-trend-property-tax")).toBeInTheDocument();
   });
 });

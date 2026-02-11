@@ -12,18 +12,29 @@ from src.models.schema import (
     Revenue,
     RevenueSource,
     SimulationConfig,
+    Subcategory,
     TrendPoint,
 )
 from src.transformers.trend_enricher import (
     build_department_index,
     build_revenue_index,
+    build_subcategory_index,
     enrich_entity,
     enrich_with_trends,
 )
 
 
+def make_subcategory(subcat_id: str, name: str, amount: int) -> Subcategory:
+    """Create a test subcategory."""
+    return Subcategory(id=subcat_id, name=name, amount=amount)
+
+
 def make_department(
-    name: str, code: str, amount: int, trend: list[TrendPoint] | None = None
+    name: str,
+    code: str,
+    amount: int,
+    trend: list[TrendPoint] | None = None,
+    subcategories: list[Subcategory] | None = None,
 ) -> Department:
     """Create a test department with minimal required fields."""
     return Department(
@@ -34,7 +45,7 @@ def make_department(
         prior_year_amount=None,
         change_pct=None,
         fund_breakdown=[],
-        subcategories=[],
+        subcategories=subcategories or [],
         simulation=SimulationConfig(
             adjustable=True,
             min_pct=0.5,
@@ -47,7 +58,12 @@ def make_department(
     )
 
 
-def make_revenue_source(name: str, amount: int, revenue_type: str = "tax") -> RevenueSource:
+def make_revenue_source(
+    name: str,
+    amount: int,
+    revenue_type: str = "tax",
+    subcategories: list[Subcategory] | None = None,
+) -> RevenueSource:
     """Create a test revenue source with minimal required fields."""
     source_id = f"revenue-{name.lower().replace(' ', '-')}"
     return RevenueSource(
@@ -55,7 +71,7 @@ def make_revenue_source(name: str, amount: int, revenue_type: str = "tax") -> Re
         name=name,
         amount=amount,
         revenue_type=revenue_type,
-        subcategories=[],
+        subcategories=subcategories or [],
         fund_breakdown=[],
     )
 
@@ -505,6 +521,20 @@ class TestTrendPointModel:
         assert source_with_trend.trend is not None
         assert len(source_with_trend.trend) == 2
 
+    def test_subcategory_with_trend(self):
+        """Subcategory model accepts optional trend field."""
+        # Without trend (backward compatible)
+        subcat = make_subcategory("police-overtime", "Overtime", 100_000_000)
+        assert subcat.trend is None
+
+        # With populated trend
+        subcat.trend = [
+            TrendPoint(fiscal_year="fy2024", amount=90_000_000),
+            TrendPoint(fiscal_year="fy2025", amount=100_000_000),
+        ]
+        assert subcat.trend is not None
+        assert len(subcat.trend) == 2
+
 
 class TestBuildRevenueIndex:
     """Tests for building revenue source trend index."""
@@ -942,3 +972,670 @@ class TestEnrichEntityRevenue:
                 result = BudgetData(**json.load(f))
             for source in result.revenue.by_source:
                 assert source.trend is not None
+
+
+class TestBuildSubcategoryIndex:
+    """Tests for building subcategory trend index."""
+
+    def test_expense_subcategories_across_years(self):
+        """Department subcategories across multiple years produce correct trend arrays."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                            make_subcategory("police-overtime", "Overtime", 50_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        210_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 155_000_000),
+                            make_subcategory("police-overtime", "Overtime", 55_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2026": make_budget_data(
+                "fy2026",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        220_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 160_000_000),
+                            make_subcategory("police-overtime", "Overtime", 60_000_000),
+                        ],
+                    ),
+                ],
+            ),
+        }
+
+        index = build_subcategory_index(year_data)
+
+        assert "police-salaries" in index
+        assert "police-overtime" in index
+        assert len(index["police-salaries"]) == 3
+        assert len(index["police-overtime"]) == 3
+        assert index["police-salaries"][0].fiscal_year == "fy2024"
+        assert index["police-salaries"][0].amount == 150_000_000
+        assert index["police-salaries"][2].fiscal_year == "fy2026"
+        assert index["police-salaries"][2].amount == 160_000_000
+
+    def test_revenue_subcategories_across_years(self):
+        """Revenue source subcategories produce correct trend arrays."""
+        depts = [make_department("Police", "057", 1_000_000)]
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                depts,
+                revenue=make_revenue(
+                    [
+                        make_revenue_source(
+                            "Property Tax",
+                            1_400_000_000,
+                            subcategories=[
+                                make_subcategory("prop-levy", "Property Tax Levy", 1_200_000_000),
+                                make_subcategory("prop-tif", "TIF Surplus", 200_000_000),
+                            ],
+                        ),
+                    ]
+                ),
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                depts,
+                revenue=make_revenue(
+                    [
+                        make_revenue_source(
+                            "Property Tax",
+                            1_500_000_000,
+                            subcategories=[
+                                make_subcategory("prop-levy", "Property Tax Levy", 1_300_000_000),
+                                make_subcategory("prop-tif", "TIF Surplus", 200_000_000),
+                            ],
+                        ),
+                    ]
+                ),
+            ),
+        }
+
+        index = build_subcategory_index(year_data)
+
+        assert "prop-levy" in index
+        assert "prop-tif" in index
+        assert len(index["prop-levy"]) == 2
+        assert index["prop-levy"][0].amount == 1_200_000_000
+        assert index["prop-levy"][1].amount == 1_300_000_000
+
+    def test_mixed_expense_and_revenue_subcategories(self):
+        """Both expense and revenue subcategories coexist in the flat index."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                        ],
+                    ),
+                ],
+                revenue=make_revenue(
+                    [
+                        make_revenue_source(
+                            "Property Tax",
+                            1_400_000_000,
+                            subcategories=[
+                                make_subcategory("prop-levy", "Levy", 1_400_000_000),
+                            ],
+                        ),
+                    ]
+                ),
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        210_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 155_000_000),
+                        ],
+                    ),
+                ],
+                revenue=make_revenue(
+                    [
+                        make_revenue_source(
+                            "Property Tax",
+                            1_500_000_000,
+                            subcategories=[
+                                make_subcategory("prop-levy", "Levy", 1_500_000_000),
+                            ],
+                        ),
+                    ]
+                ),
+            ),
+        }
+
+        index = build_subcategory_index(year_data)
+
+        # Both expense and revenue subcategories in the same index
+        assert "police-salaries" in index
+        assert "prop-levy" in index
+        assert len(index) == 2
+
+    def test_filters_single_year_subcategories(self):
+        """Subcategories appearing in only 1 year are excluded from the index."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                            make_subcategory("police-new-item", "New Item", 10_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        210_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 155_000_000),
+                        ],
+                    ),
+                ],
+            ),
+        }
+
+        index = build_subcategory_index(year_data)
+
+        # police-salaries appears in 2 years -> included
+        assert "police-salaries" in index
+        assert len(index["police-salaries"]) == 2
+
+        # police-new-item appears in only 1 year -> excluded
+        assert "police-new-item" not in index
+
+    def test_sorts_trend_points_ascending(self):
+        """Trend points are sorted by fiscal year regardless of input order."""
+        year_data = {
+            "fy2026": make_budget_data(
+                "fy2026",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        220_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 160_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                        ],
+                    ),
+                ],
+            ),
+        }
+
+        index = build_subcategory_index(year_data)
+
+        years = [tp.fiscal_year for tp in index["police-salaries"]]
+        assert years == ["fy2024", "fy2026"]
+
+    def test_empty_year_data(self):
+        """Empty input returns empty dict."""
+        index = build_subcategory_index({})
+        assert index == {}
+
+    def test_no_subcategories(self):
+        """Departments with empty subcategory lists produce empty index."""
+        year_data = {
+            "fy2024": make_budget_data("fy2024", [make_department("Police", "057", 200_000_000)]),
+            "fy2025": make_budget_data("fy2025", [make_department("Police", "057", 210_000_000)]),
+        }
+
+        index = build_subcategory_index(year_data)
+        assert index == {}
+
+    def test_zero_amount_subcategories_included(self):
+        """Subcategories with amount=0 are included in trends (valid data point)."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        100_000_000,
+                        subcategories=[
+                            make_subcategory("police-item", "Item", 100_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        50_000_000,
+                        subcategories=[
+                            make_subcategory("police-item", "Item", 0),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2026": make_budget_data(
+                "fy2026",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        80_000_000,
+                        subcategories=[
+                            make_subcategory("police-item", "Item", 50_000_000),
+                        ],
+                    ),
+                ],
+            ),
+        }
+
+        index = build_subcategory_index(year_data)
+
+        assert len(index["police-item"]) == 3
+        assert index["police-item"][1].amount == 0
+
+
+class TestEnrichWithTrendsSubcategories:
+    """Tests for subcategory enrichment within enrich_with_trends."""
+
+    def test_injects_subcategory_trends_into_departments(self):
+        """After enrichment, department subcategories have trend arrays."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                            make_subcategory("police-overtime", "Overtime", 50_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        210_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 160_000_000),
+                            make_subcategory("police-overtime", "Overtime", 50_000_000),
+                        ],
+                    ),
+                ],
+            ),
+        }
+
+        enriched = enrich_with_trends(year_data)
+
+        for fy, data in enriched.items():
+            police = data.appropriations.by_department[0]
+            for subcat in police.subcategories:
+                assert subcat.trend is not None
+                assert len(subcat.trend) == 2
+                assert subcat.trend[0].fiscal_year == "fy2024"
+                assert subcat.trend[1].fiscal_year == "fy2025"
+
+    def test_injects_subcategory_trends_into_revenue_sources(self):
+        """After enrichment, revenue source subcategories have trend arrays."""
+        depts = [make_department("Police", "057", 1_000_000)]
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                depts,
+                revenue=make_revenue(
+                    [
+                        make_revenue_source(
+                            "Property Tax",
+                            1_400_000_000,
+                            subcategories=[
+                                make_subcategory("prop-levy", "Levy", 1_200_000_000),
+                            ],
+                        ),
+                    ]
+                ),
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                depts,
+                revenue=make_revenue(
+                    [
+                        make_revenue_source(
+                            "Property Tax",
+                            1_500_000_000,
+                            subcategories=[
+                                make_subcategory("prop-levy", "Levy", 1_300_000_000),
+                            ],
+                        ),
+                    ]
+                ),
+            ),
+        }
+
+        enriched = enrich_with_trends(year_data)
+
+        for fy, data in enriched.items():
+            prop_tax = data.revenue.by_source[0]
+            assert prop_tax.subcategories[0].trend is not None
+            assert len(prop_tax.subcategories[0].trend) == 2
+
+    def test_single_year_subcategories_no_trend(self):
+        """Subcategories in only 1 year get no trend (remain None)."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        210_000_000,
+                        subcategories=[
+                            make_subcategory("police-new-item", "New Item", 10_000_000),
+                        ],
+                    ),
+                ],
+            ),
+        }
+
+        enriched = enrich_with_trends(year_data)
+
+        # police-salaries only in fy2024 -> no trend
+        fy2024_subcat = enriched["fy2024"].appropriations.by_department[0].subcategories[0]
+        assert fy2024_subcat.trend is None
+
+        # police-new-item only in fy2025 -> no trend
+        fy2025_subcat = enriched["fy2025"].appropriations.by_department[0].subcategories[0]
+        assert fy2025_subcat.trend is None
+
+    def test_preserves_existing_subcategory_fields(self):
+        """Enrichment does not corrupt subcategory id, name, or amount."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        150_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        160_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 160_000_000),
+                        ],
+                    ),
+                ],
+            ),
+        }
+
+        enriched = enrich_with_trends(year_data)
+
+        subcat_fy2024 = enriched["fy2024"].appropriations.by_department[0].subcategories[0]
+        assert subcat_fy2024.id == "police-salaries"
+        assert subcat_fy2024.name == "Salaries"
+        assert subcat_fy2024.amount == 150_000_000
+
+    def test_idempotent_subcategory_enrichment(self):
+        """Running enricher twice produces identical output for subcategory trends."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                        ],
+                    ),
+                ],
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        210_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 160_000_000),
+                        ],
+                    ),
+                ],
+            ),
+        }
+
+        first_result = enrich_with_trends(year_data)
+
+        serialized = {
+            fy: BudgetData(**json.loads(data.model_dump_json()))
+            for fy, data in first_result.items()
+        }
+
+        second_result = enrich_with_trends(serialized)
+
+        for fy in first_result:
+            first_json = first_result[fy].model_dump_json()
+            second_json = second_result[fy].model_dump_json()
+            assert first_json == second_json
+
+    def test_all_three_trend_levels_coexist(self):
+        """Department, revenue source, and subcategory trends all present after enrichment."""
+        year_data = {
+            "fy2024": make_budget_data(
+                "fy2024",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                        ],
+                    ),
+                ],
+                revenue=make_revenue(
+                    [
+                        make_revenue_source(
+                            "Property Tax",
+                            1_400_000_000,
+                            subcategories=[
+                                make_subcategory("prop-levy", "Levy", 1_400_000_000),
+                            ],
+                        ),
+                    ]
+                ),
+            ),
+            "fy2025": make_budget_data(
+                "fy2025",
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        210_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 160_000_000),
+                        ],
+                    ),
+                ],
+                revenue=make_revenue(
+                    [
+                        make_revenue_source(
+                            "Property Tax",
+                            1_500_000_000,
+                            subcategories=[
+                                make_subcategory("prop-levy", "Levy", 1_500_000_000),
+                            ],
+                        ),
+                    ]
+                ),
+            ),
+        }
+
+        enriched = enrich_with_trends(year_data)
+
+        for fy, data in enriched.items():
+            # Department trend
+            assert data.appropriations.by_department[0].trend is not None
+            assert len(data.appropriations.by_department[0].trend) == 2
+            # Revenue source trend
+            assert data.revenue.by_source[0].trend is not None
+            assert len(data.revenue.by_source[0].trend) == 2
+            # Subcategory trends (both expense and revenue)
+            assert data.appropriations.by_department[0].subcategories[0].trend is not None
+            assert len(data.appropriations.by_department[0].subcategories[0].trend) == 2
+            assert data.revenue.by_source[0].subcategories[0].trend is not None
+            assert len(data.revenue.by_source[0].subcategories[0].trend) == 2
+
+
+class TestEnrichEntitySubcategories:
+    """Tests for full entity enrichment including subcategory trends in file I/O."""
+
+    def test_enriches_subcategory_trends_in_files_on_disk(self, tmp_path: Path):
+        """File I/O enrichment writes subcategory trends back to JSON."""
+        entity_dir = tmp_path / "city-of-chicago"
+        entity_dir.mkdir()
+
+        for fy, salary_amt in [("fy2024", 150_000_000), ("fy2025", 160_000_000)]:
+            data = make_budget_data(
+                fy,
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        salary_amt + 50_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", salary_amt),
+                            make_subcategory("police-overtime", "Overtime", 50_000_000),
+                        ],
+                    ),
+                ],
+            )
+            with open(entity_dir / f"{fy}.json", "w") as f:
+                json.dump(data.model_dump(mode="json"), f, default=str)
+
+        count = enrich_entity(entity_dir)
+        assert count == 2
+
+        # Read back and verify subcategory trends
+        with open(entity_dir / "fy2025.json") as f:
+            result = BudgetData(**json.load(f))
+
+        police = result.appropriations.by_department[0]
+        salaries = next(s for s in police.subcategories if s.id == "police-salaries")
+        assert salaries.trend is not None
+        assert len(salaries.trend) == 2
+        assert salaries.trend[0].fiscal_year == "fy2024"
+        assert salaries.trend[0].amount == 150_000_000
+        assert salaries.trend[1].fiscal_year == "fy2025"
+        assert salaries.trend[1].amount == 160_000_000
+
+    def test_enriched_subcategory_output_validates_schema(self, tmp_path: Path):
+        """Enriched JSON with subcategory trends passes BudgetData schema validation."""
+        entity_dir = tmp_path / "city-of-chicago"
+        entity_dir.mkdir()
+
+        for fy in ["fy2024", "fy2025"]:
+            data = make_budget_data(
+                fy,
+                [
+                    make_department(
+                        "Police",
+                        "057",
+                        200_000_000,
+                        subcategories=[
+                            make_subcategory("police-salaries", "Salaries", 150_000_000),
+                            make_subcategory("police-overtime", "Overtime", 50_000_000),
+                        ],
+                    ),
+                ],
+            )
+            with open(entity_dir / f"{fy}.json", "w") as f:
+                json.dump(data.model_dump(mode="json"), f, default=str)
+
+        enrich_entity(entity_dir)
+
+        # Should not raise a validation error
+        for fy in ["fy2024", "fy2025"]:
+            with open(entity_dir / f"{fy}.json") as f:
+                result = BudgetData(**json.load(f))
+            for dept in result.appropriations.by_department:
+                for subcat in dept.subcategories:
+                    assert subcat.trend is not None

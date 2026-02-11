@@ -15,6 +15,7 @@ export interface Subcategory {
   id: string;
   name: string;
   amount: number;
+  trend?: TrendPoint[];
 }
 
 export interface SimulationConfig {

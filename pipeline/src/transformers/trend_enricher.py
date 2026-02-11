@@ -1,9 +1,9 @@
 """Post-processor that enriches budget data with cross-year trend arrays.
 
 Reads all generated JSON files for an entity, matches departments across years
-by department code (with name fallback) and revenue sources by ID, then injects
-trend arrays into each department and revenue source. This runs after all
-single-year transforms complete.
+by department code (with name fallback), revenue sources by ID, and subcategories
+by ID, then injects trend arrays into each department, revenue source, and
+subcategory. This runs after all single-year transforms complete.
 """
 
 import json
@@ -105,19 +105,73 @@ def build_revenue_index(
     return trends_by_id
 
 
-def enrich_with_trends(year_data: dict[str, BudgetData]) -> dict[str, BudgetData]:
-    """Enrich all years' department and revenue source data with trend arrays.
+def build_subcategory_index(
+    year_data: dict[str, BudgetData],
+) -> dict[str, list[TrendPoint]]:
+    """Build trend arrays indexed by subcategory ID.
 
-    For each department in each year, adds a trend array containing the
-    department's budget amount across all available years (matched by code).
-    For each revenue source in each year, adds a trend array containing the
-    source's revenue amount across all years that have revenue data (matched by ID).
+    Iterates over all years, collecting subcategory amounts from both
+    department and revenue source subcategories. Subcategory IDs are
+    globally unique (prefixed with parent entity name for expenses,
+    or category name for revenue).
+
+    Only includes subcategories that appear in at least 2 years, since
+    single-year entries provide no useful trend information.
 
     Args:
         year_data: Dictionary mapping fiscal year to BudgetData
 
     Returns:
-        Updated dictionary with trend arrays injected into departments and revenue sources
+        Dictionary mapping subcategory ID to sorted list of TrendPoints
+    """
+    trends_by_id: dict[str, list[TrendPoint]] = {}
+
+    for fiscal_year, budget_data in year_data.items():
+        # Collect expense subcategories from departments
+        for dept in budget_data.appropriations.by_department:
+            for subcat in dept.subcategories:
+                if subcat.id not in trends_by_id:
+                    trends_by_id[subcat.id] = []
+                trends_by_id[subcat.id].append(
+                    TrendPoint(fiscal_year=fiscal_year, amount=subcat.amount)
+                )
+
+        # Collect revenue subcategories from revenue sources
+        if budget_data.revenue is not None:
+            for source in budget_data.revenue.by_source:
+                for subcat in source.subcategories:
+                    if subcat.id not in trends_by_id:
+                        trends_by_id[subcat.id] = []
+                    trends_by_id[subcat.id].append(
+                        TrendPoint(fiscal_year=fiscal_year, amount=subcat.amount)
+                    )
+
+    # Filter to subcategories appearing in at least 2 years and sort
+    filtered: dict[str, list[TrendPoint]] = {}
+    for subcat_id, trend_points in trends_by_id.items():
+        if len(trend_points) >= 2:
+            trend_points.sort(key=lambda tp: tp.fiscal_year)
+            filtered[subcat_id] = trend_points
+
+    return filtered
+
+
+def enrich_with_trends(year_data: dict[str, BudgetData]) -> dict[str, BudgetData]:
+    """Enrich all years' department, revenue source, and subcategory data with trend arrays.
+
+    For each department in each year, adds a trend array containing the
+    department's budget amount across all available years (matched by code).
+    For each revenue source in each year, adds a trend array containing the
+    source's revenue amount across all years that have revenue data (matched by ID).
+    For each subcategory (expense and revenue) appearing in at least 2 years,
+    adds a trend array matched by subcategory ID.
+
+    Args:
+        year_data: Dictionary mapping fiscal year to BudgetData
+
+    Returns:
+        Updated dictionary with trend arrays injected into departments,
+        revenue sources, and subcategories
     """
     if not year_data:
         return year_data
@@ -141,6 +195,22 @@ def enrich_with_trends(year_data: dict[str, BudgetData]) -> dict[str, BudgetData
             trend = trends_by_id.get(source.id)
             if trend:
                 source.trend = trend
+
+    # Enrich subcategory trends (both expense and revenue subcategories)
+    trends_by_subcat_id = build_subcategory_index(year_data)
+
+    for budget_data in year_data.values():
+        for dept in budget_data.appropriations.by_department:
+            for subcat in dept.subcategories:
+                subcat_trend = trends_by_subcat_id.get(subcat.id)
+                if subcat_trend:
+                    subcat.trend = subcat_trend
+        if budget_data.revenue is not None:
+            for source in budget_data.revenue.by_source:
+                for subcat in source.subcategories:
+                    subcat_trend = trends_by_subcat_id.get(subcat.id)
+                    if subcat_trend:
+                        subcat.trend = subcat_trend
 
     return year_data
 
