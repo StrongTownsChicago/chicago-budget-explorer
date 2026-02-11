@@ -67,7 +67,7 @@ frontend/src/
 │   │   ├── DepartmentBar.tsx  # Department spending bar chart
 │   │   ├── FundPie.tsx        # Fund breakdown pie chart
 │   │   ├── BudgetTreemap.tsx  # D3 treemap visualization
-│   │   ├── TrendChart.tsx     # Historical budget trends
+│   │   ├── TrendChart.tsx     # Historical budget trends (generalized for departments and revenue sources)
 │   │   ├── RevenueBreakdown.tsx      # Revenue sources
 │   │   ├── RevenueVsSpending.tsx     # Revenue vs spending comparison
 │   │   ├── AppropriationBreakdown.tsx # Appropriations breakdown

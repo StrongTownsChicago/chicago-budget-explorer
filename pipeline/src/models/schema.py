@@ -168,6 +168,9 @@ class RevenueSource(BaseModel):
     fund_breakdown: list[FundBreakdown] = Field(
         default_factory=list, description="Which funds receive this revenue"
     )
+    trend: list[TrendPoint] | None = Field(
+        None, description="Historical trend data across fiscal years (optional)"
+    )
 
 
 class Revenue(BaseModel):

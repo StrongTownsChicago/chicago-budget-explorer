@@ -1,8 +1,9 @@
 """Post-processor that enriches budget data with cross-year trend arrays.
 
 Reads all generated JSON files for an entity, matches departments across years
-by department code (with name fallback), and injects trend arrays into each
-department. This runs after all single-year transforms complete.
+by department code (with name fallback) and revenue sources by ID, then injects
+trend arrays into each department and revenue source. This runs after all
+single-year transforms complete.
 """
 
 import json
@@ -69,29 +70,77 @@ def build_department_index(
     return trends_by_code
 
 
+def build_revenue_index(
+    year_data: dict[str, BudgetData],
+) -> dict[str, list[TrendPoint]]:
+    """Build trend arrays indexed by revenue source ID.
+
+    Iterates over all years that have revenue data and builds a dictionary
+    mapping each revenue source ID to its trend array. Years without revenue
+    data (revenue is None) are skipped.
+
+    Args:
+        year_data: Dictionary mapping fiscal year to BudgetData (sorted ascending)
+
+    Returns:
+        Dictionary mapping revenue source ID to sorted list of TrendPoints
+    """
+    trends_by_id: dict[str, list[TrendPoint]] = {}
+
+    for fiscal_year, budget_data in year_data.items():
+        if budget_data.revenue is None:
+            continue
+
+        for source in budget_data.revenue.by_source:
+            if source.id not in trends_by_id:
+                trends_by_id[source.id] = []
+            trends_by_id[source.id].append(
+                TrendPoint(fiscal_year=fiscal_year, amount=source.amount)
+            )
+
+    # Sort each trend by fiscal year ascending
+    for source_id in trends_by_id:
+        trends_by_id[source_id].sort(key=lambda tp: tp.fiscal_year)
+
+    return trends_by_id
+
+
 def enrich_with_trends(year_data: dict[str, BudgetData]) -> dict[str, BudgetData]:
-    """Enrich all years' department data with trend arrays.
+    """Enrich all years' department and revenue source data with trend arrays.
 
     For each department in each year, adds a trend array containing the
     department's budget amount across all available years (matched by code).
+    For each revenue source in each year, adds a trend array containing the
+    source's revenue amount across all years that have revenue data (matched by ID).
 
     Args:
         year_data: Dictionary mapping fiscal year to BudgetData
 
     Returns:
-        Updated dictionary with trend arrays injected into departments
+        Updated dictionary with trend arrays injected into departments and revenue sources
     """
     if not year_data:
         return year_data
 
+    # Enrich department trends
     trends_by_code = build_department_index(year_data)
 
-    # Inject trend arrays into each year's departments
     for budget_data in year_data.values():
         for dept in budget_data.appropriations.by_department:
             trend = trends_by_code.get(dept.code)
             if trend:
                 dept.trend = trend
+
+    # Enrich revenue source trends
+    trends_by_id = build_revenue_index(year_data)
+
+    for budget_data in year_data.values():
+        if budget_data.revenue is None:
+            continue
+        for source in budget_data.revenue.by_source:
+            trend = trends_by_id.get(source.id)
+            if trend:
+                source.trend = trend
 
     return year_data
 

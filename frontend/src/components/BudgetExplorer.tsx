@@ -34,9 +34,15 @@ export default function BudgetExplorer({
 
   if (!data) return null;
 
-  const hasTrendData = data.appropriations.by_department.some(
+  const hasExpenseTrendData = data.appropriations.by_department.some(
     (d) => d.trend && d.trend.length > 1,
   );
+
+  const hasRevenueTrendData = Boolean(
+    data.revenue?.by_source.some((s) => s.trend && s.trend.length > 1),
+  );
+
+  const hasTrendData = hasExpenseTrendData || hasRevenueTrendData;
 
   const tabs: Tab[] = [
     {
@@ -128,13 +134,31 @@ export default function BudgetExplorer({
       label: "Trends",
       content: (
         <div className="space-y-12">
-          <section className="card p-6">
-            <h2 className="section-heading">Historical Trends</h2>
-            <p className="text-gray-600 mb-4">
-              Compare department budgets across fiscal years.
-            </p>
-            <TrendChart departments={data.appropriations.by_department} />
-          </section>
+          {hasExpenseTrendData && (
+            <section className="card p-6">
+              <h2 className="section-heading">Expense Trends</h2>
+              <p className="text-gray-600 mb-4">
+                Compare department budgets across fiscal years.
+              </p>
+              <TrendChart
+                items={data.appropriations.by_department}
+                label="departments"
+              />
+            </section>
+          )}
+
+          {hasRevenueTrendData && data.revenue && (
+            <section className="card p-6">
+              <h2 className="section-heading">Revenue Trends</h2>
+              <p className="text-gray-600 mb-4">
+                Compare revenue sources across fiscal years.
+              </p>
+              <TrendChart
+                items={data.revenue.by_source}
+                label="revenue sources"
+              />
+            </section>
+          )}
         </div>
       ),
     });

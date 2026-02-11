@@ -46,7 +46,9 @@ vi.mock("@/components/charts/BudgetTreemap", () => ({
 }));
 
 vi.mock("@/components/charts/TrendChart", () => ({
-  default: () => <div data-testid="trend-chart">Trend Chart</div>,
+  default: ({ label }: { label?: string }) => (
+    <div data-testid={`trend-chart-${label || "departments"}`}>Trend Chart ({label || "departments"})</div>
+  ),
 }));
 
 vi.mock("@/components/charts/RevenueBreakdown", () => ({
@@ -121,12 +123,46 @@ const createRevenueData = () => ({
       id: "revenue-property-tax",
       name: "Property Tax",
       amount: 1500000000,
+      revenue_type: "tax",
       subcategories: [],
       fund_breakdown: [],
     },
   ],
   by_fund: [],
   total_revenue: 1500000000,
+  local_revenue_only: true,
+  grant_revenue_estimated: 500000000,
+});
+
+const createRevenueTrendData = () => ({
+  by_source: [
+    {
+      id: "revenue-property-tax",
+      name: "Property Tax",
+      amount: 1500000000,
+      revenue_type: "tax",
+      subcategories: [],
+      fund_breakdown: [],
+      trend: [
+        { fiscal_year: "fy2024", amount: 1400000000 },
+        { fiscal_year: "fy2025", amount: 1500000000 },
+      ],
+    },
+    {
+      id: "revenue-sales-tax",
+      name: "Sales Tax",
+      amount: 800000000,
+      revenue_type: "tax",
+      subcategories: [],
+      fund_breakdown: [],
+      trend: [
+        { fiscal_year: "fy2024", amount: 750000000 },
+        { fiscal_year: "fy2025", amount: 800000000 },
+      ],
+    },
+  ],
+  by_fund: [],
+  total_revenue: 2300000000,
   local_revenue_only: true,
   grant_revenue_estimated: 500000000,
 });
@@ -339,6 +375,100 @@ describe("BudgetExplorer", () => {
 
   it("does not render Trends tab when no trend data", () => {
     render(<BudgetExplorer {...defaultProps} />);
+    expect(screen.queryByRole("tab", { name: "Trends" })).not.toBeInTheDocument();
+  });
+
+  // Revenue trend tests
+
+  it("renders revenue trends in Trends tab when revenue has trend data", () => {
+    const dataWithRevenueTrends: BudgetData = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      appropriations: {
+        ...defaultProps.budgetDataByYear.fy2025.appropriations,
+        by_department: [createTrendDepartment()],
+      },
+      revenue: createRevenueTrendData(),
+    };
+
+    const propsWithRevenueTrends = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithRevenueTrends,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithRevenueTrends} />);
+    expect(screen.getByRole("tab", { name: "Trends" })).toBeInTheDocument();
+
+    // Both expense and revenue trend charts should be in the DOM
+    expect(screen.getByTestId("trend-chart-departments")).toBeInTheDocument();
+    expect(screen.getByTestId("trend-chart-revenue sources")).toBeInTheDocument();
+  });
+
+  it("renders Trends tab when only revenue has trends (no expense trends)", () => {
+    const dataWithOnlyRevenueTrends: BudgetData = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      revenue: createRevenueTrendData(),
+    };
+
+    const propsWithOnlyRevenueTrends = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithOnlyRevenueTrends,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithOnlyRevenueTrends} />);
+    expect(screen.getByRole("tab", { name: "Trends" })).toBeInTheDocument();
+
+    // Only revenue trend chart should be present (no expense trends)
+    expect(screen.queryByTestId("trend-chart-departments")).not.toBeInTheDocument();
+    expect(screen.getByTestId("trend-chart-revenue sources")).toBeInTheDocument();
+  });
+
+  it("does not render revenue trends section when revenue has no trend data", () => {
+    const dataWithExpenseTrendsOnly: BudgetData = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      appropriations: {
+        ...defaultProps.budgetDataByYear.fy2025.appropriations,
+        by_department: [createTrendDepartment()],
+      },
+      revenue: createRevenueData(), // has revenue but no trend arrays
+    };
+
+    const propsWithExpenseTrendsOnly = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithExpenseTrendsOnly,
+      },
+    };
+
+    render(<BudgetExplorer {...propsWithExpenseTrendsOnly} />);
+    expect(screen.getByRole("tab", { name: "Trends" })).toBeInTheDocument();
+
+    // Only expense trend chart should be present
+    expect(screen.getByTestId("trend-chart-departments")).toBeInTheDocument();
+    expect(screen.queryByTestId("trend-chart-revenue sources")).not.toBeInTheDocument();
+  });
+
+  it("does not render Trends tab when neither expenses nor revenue have trends", () => {
+    const dataWithRevenueNoTrends: BudgetData = {
+      ...defaultProps.budgetDataByYear.fy2025,
+      revenue: createRevenueData(),
+    };
+
+    const propsNoTrends = {
+      ...defaultProps,
+      budgetDataByYear: {
+        ...defaultProps.budgetDataByYear,
+        fy2025: dataWithRevenueNoTrends,
+      },
+    };
+
+    render(<BudgetExplorer {...propsNoTrends} />);
     expect(screen.queryByRole("tab", { name: "Trends" })).not.toBeInTheDocument();
   });
 });

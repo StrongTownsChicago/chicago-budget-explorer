@@ -19,7 +19,7 @@
     },
     "data_source": "socrata_api",
     "source_dataset_id": "6694-f78c",
-    "extraction_date": "2026-02-08",
+    "extraction_date": "2026-02-10",
     "pipeline_version": "1.0.0",
     "notes": "Total appropriations include accounting adjustments. Operating appropriations exclude non-operating funds (e.g., airports). Fund categories are entity-specific.",
     "total_revenue": 14623624011,
@@ -9014,6 +9014,20 @@
             "fund_name": "Chicago Midway Airport Fund",
             "amount": 431267524
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 2138499000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 2340811882
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 2491602400
+          }
         ]
       },
       {
@@ -9069,6 +9083,20 @@
             "fund_name": "Laborers' and Retirement Board Annuity and Benefit Fund",
             "amount": 54661000
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 1778249000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 1811531000
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 1862339928
+          }
         ]
       },
       {
@@ -9097,6 +9125,20 @@
           {
             "fund_id": "corporate-fund",
             "fund_name": "Corporate Fund",
+            "amount": 1393630329
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 795699000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 972641384
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 1393630329
           }
         ]
@@ -9143,6 +9185,20 @@
             "fund_id": "sewer-fund",
             "fund_name": "Sewer Fund",
             "amount": 437646334
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 1307003000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 1303773209
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 1359218872
           }
         ]
       },
@@ -9234,6 +9290,20 @@
             "fund_name": "Firemen's Annuity and Benefit Fund",
             "amount": 101040665
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 1080255000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 1164881541
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 1162109732
+          }
         ]
       },
       {
@@ -9264,6 +9334,20 @@
             "fund_name": "Corporate Fund",
             "amount": 752591322
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 876315000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 737784144
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 752591322
+          }
         ]
       },
       {
@@ -9287,6 +9371,20 @@
           {
             "fund_id": "corporate-fund",
             "fund_name": "Corporate Fund",
+            "amount": 686698094
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 580701000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 599974121
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 686698094
           }
         ]
@@ -9344,6 +9442,20 @@
             "fund_name": "Municipal Employees' Annuity and Benefit Fund",
             "amount": 222357381
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 623529000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 594641737
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 617985185
+          }
         ]
       },
       {
@@ -9374,6 +9486,20 @@
             "fund_name": "Corporate Fund",
             "amount": 497855406
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 403064000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 439155697
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 497855406
+          }
         ]
       },
       {
@@ -9392,6 +9518,20 @@
           {
             "fund_id": "corporate-fund",
             "fund_name": "Corporate Fund",
+            "amount": 481667969
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 347876000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 345213522
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 481667969
           }
         ]
@@ -9449,6 +9589,20 @@
             "fund_name": "Corporate Fund",
             "amount": 425271489
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 344272000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 370995855
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 425271489
+          }
         ]
       },
       {
@@ -9487,6 +9641,20 @@
           {
             "fund_id": "corporate-fund",
             "fund_name": "Corporate Fund",
+            "amount": 413619033
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 430501000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 421125447
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 413619033
           }
         ]
@@ -9548,6 +9716,20 @@
             "fund_id": "motor-fuel-tax-fund",
             "fund_name": "Motor Fuel Tax Fund",
             "amount": 129995559
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 396132000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 399375835
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 406868704
           }
         ]
       },
@@ -9659,6 +9841,20 @@
             "fund_name": "Cannabis Regulation Tax",
             "amount": 4667417
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 309775000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 337092133
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 367184715
+          }
         ]
       },
       {
@@ -9694,6 +9890,20 @@
             "fund_name": "Corporate Fund",
             "amount": 357475666
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 528020000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 517638037
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 357475666
+          }
         ]
       },
       {
@@ -9712,6 +9922,20 @@
           {
             "fund_id": "corporate-fund",
             "fund_name": "Corporate Fund",
+            "amount": 255834804
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 177006000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 155267377
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 255834804
           }
         ]
@@ -9909,6 +10133,20 @@
             "fund_name": "Controlled Substances Fund",
             "amount": 62560
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 163671000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 176234272
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 198385120
+          }
         ]
       },
       {
@@ -9934,6 +10172,20 @@
             "fund_name": "Corporate Fund",
             "amount": 195016642
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 154815000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 174970298
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 195016642
+          }
         ]
       },
       {
@@ -9952,6 +10204,20 @@
           {
             "fund_id": "emergency-communication-fund",
             "fund_name": "Emergency Communication Fund",
+            "amount": 168460413
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 175032000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 168460413
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 168460413
           }
         ]
@@ -9977,6 +10243,20 @@
           {
             "fund_id": "bond-redemption-and-interest-series-fund",
             "fund_name": "Bond Redemption and Interest Series Fund",
+            "amount": 115493270
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 252612000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 144705349
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 115493270
           }
         ]
@@ -10019,6 +10299,20 @@
             "fund_name": "Corporate Fund",
             "amount": 95525157
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 79602000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 78243627
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 95525157
+          }
         ]
       },
       {
@@ -10037,6 +10331,20 @@
           {
             "fund_id": "corporate-fund",
             "fund_name": "Corporate Fund",
+            "amount": 94657111
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 96052000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 104379272
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 94657111
           }
         ]
@@ -10079,6 +10387,20 @@
             "fund_name": "Corporate Fund",
             "amount": 86819261
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 24827000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 13796464
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 86819261
+          }
         ]
       },
       {
@@ -10109,6 +10431,20 @@
             "fund_name": "Tax Increment Financing Administration Fund",
             "amount": 23421859
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 53602000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 66297572
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 70776362
+          }
         ]
       },
       {
@@ -10127,6 +10463,20 @@
           {
             "fund_id": "corporate-fund",
             "fund_name": "Corporate Fund",
+            "amount": 55500000
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 3500000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 58000000
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 55500000
           }
         ]
@@ -10149,6 +10499,20 @@
             "fund_name": "Corporate Fund",
             "amount": 9893536
           }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 7676000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 9863019
+          },
+          {
+            "fiscal_year": "fy2026",
+            "amount": 9893536
+          }
         ]
       },
       {
@@ -10167,6 +10531,20 @@
           {
             "fund_id": "corporate-fund",
             "fund_name": "Corporate Fund",
+            "amount": 1143491
+          }
+        ],
+        "trend": [
+          {
+            "fiscal_year": "fy2024",
+            "amount": 2000000
+          },
+          {
+            "fiscal_year": "fy2025",
+            "amount": 2524932
+          },
+          {
+            "fiscal_year": "fy2026",
             "amount": 1143491
           }
         ]
