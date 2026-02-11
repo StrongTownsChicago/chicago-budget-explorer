@@ -57,7 +57,14 @@ export function createSimulation(data: BudgetData): SimulationState {
   }
 
   const totalRevenue = data.revenue?.total_revenue ?? 0;
-  const untrackedRevenue = data.revenue?.grant_revenue_estimated ?? 0;
+  const grantRevenue = data.revenue?.grant_revenue_estimated ?? 0;
+
+  // Ensure budget starts balanced: untracked revenue covers the gap between
+  // appropriations and tracked local revenue (includes grants + other sources)
+  const untrackedRevenue =
+    totalRevenue > 0
+      ? data.metadata.total_appropriations - totalRevenue
+      : 0;
 
   return {
     adjustments,
@@ -66,6 +73,7 @@ export function createSimulation(data: BudgetData): SimulationState {
     totalRevenue,
     originalRevenue: totalRevenue,
     untrackedRevenue,
+    grantRevenue,
   };
 }
 

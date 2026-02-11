@@ -261,11 +261,11 @@ export default function SimulatorPanel({
                     </span>
                     <div>
                       <h3 className="font-semibold text-gray-700">
-                        Estimated Grant Revenue
+                        Estimated Grants &amp; Other Revenue
                       </h3>
                       <p className="text-xs text-gray-500">
-                        Federal and state grants estimated from appropriations
-                        data. Not adjustable.
+                        Federal/state grants and other revenue sources not
+                        individually tracked. Not adjustable.
                       </p>
                     </div>
                   </div>

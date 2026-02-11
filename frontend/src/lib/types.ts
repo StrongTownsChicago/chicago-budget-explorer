@@ -139,5 +139,6 @@ export interface SimulationState {
   originalBudget: number; // original total appropriations
   totalRevenue: number; // adjusted total revenue (local + adjustments)
   originalRevenue: number; // original total revenue (local only)
-  untrackedRevenue: number; // fixed amount (grant revenue estimate, not adjustable)
+  untrackedRevenue: number; // fixed amount: appropriations - local revenue (ensures balanced start)
+  grantRevenue: number; // estimated grant revenue (display only, subset of untrackedRevenue)
 }

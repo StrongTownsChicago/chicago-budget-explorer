@@ -32,6 +32,7 @@ const defaultRevenueState = {
   totalRevenue: 0,
   originalRevenue: 0,
   untrackedRevenue: 0,
+  grantRevenue: 0,
 };
 
 /**
@@ -724,7 +725,9 @@ describe("createSimulation with revenue", () => {
     expect(state.originalRevenue).toBe(5_000_000_000);
   });
 
-  it("populates untrackedRevenue from grant_revenue_estimated", () => {
+  it("computes untrackedRevenue to balance budget at start", () => {
+    // Appropriations: $2B (dept) total, Revenue: $5B tracked
+    // Since revenue > appropriations, untrackedRevenue should still be gap
     const data = createMockBudgetDataWithRevenue(
       [createMockDepartment("dept-police", 2_000_000_000)],
       [createMockRevenueSource("revenue-tax", 5_000_000_000)],
@@ -733,7 +736,31 @@ describe("createSimulation with revenue", () => {
 
     const state = createSimulation(data);
 
+    // untrackedRevenue = total_appropriations - total_revenue = 2B - 5B = -3B → capped in balance
+    // But since total_appropriations < total_revenue, gap is negative
+    // untrackedRevenue = 2B - 5B = -3B
+    expect(state.untrackedRevenue).toBe(-3_000_000_000);
+    expect(state.grantRevenue).toBe(3_000_000_000);
+    // Balance: totalRevenue + untrackedRevenue - totalBudget = 5B + (-3B) - 2B = 0
+    expect(getRevenueExpenseBalance(state)).toBe(0);
+  });
+
+  it("sets untrackedRevenue to cover gap between appropriations and revenue", () => {
+    // Appropriations: $10B, Revenue: $7B tracked, grants: $2B
+    // Gap = $3B (includes grants + other untracked sources)
+    const data = createMockBudgetDataWithRevenue(
+      [createMockDepartment("dept-police", 10_000_000_000)],
+      [createMockRevenueSource("revenue-tax", 7_000_000_000)],
+      2_000_000_000,
+    );
+
+    const state = createSimulation(data);
+
+    // untrackedRevenue = 10B - 7B = 3B (covers grants + $1B other)
     expect(state.untrackedRevenue).toBe(3_000_000_000);
+    expect(state.grantRevenue).toBe(2_000_000_000);
+    // Balance starts at zero
+    expect(getRevenueExpenseBalance(state)).toBe(0);
   });
 
   it("handles null revenue data", () => {
@@ -746,6 +773,7 @@ describe("createSimulation with revenue", () => {
     expect(state.totalRevenue).toBe(0);
     expect(state.originalRevenue).toBe(0);
     expect(state.untrackedRevenue).toBe(0);
+    expect(state.grantRevenue).toBe(0);
     // Only department subcategory IDs in adjustments
     expect(Object.keys(state.adjustments)).toHaveLength(3);
   });
@@ -759,7 +787,9 @@ describe("createSimulation with revenue", () => {
 
     const state = createSimulation(data);
 
-    expect(state.untrackedRevenue).toBe(0);
+    // untrackedRevenue = appropriations - revenue = 2B - 5B = -3B
+    expect(state.untrackedRevenue).toBe(-3_000_000_000);
+    expect(state.grantRevenue).toBe(0);
   });
 });
 
@@ -964,7 +994,8 @@ describe("adjustSubcategory preserves revenue", () => {
     // Revenue fields should be preserved
     expect(expenseState.totalRevenue).toBe(revenueState.totalRevenue);
     expect(expenseState.originalRevenue).toBe(revenueState.originalRevenue);
-    expect(expenseState.untrackedRevenue).toBe(3_000_000_000);
+    // untrackedRevenue = total_appropriations (2B) - total_revenue (1B) = 1B
+    expect(expenseState.untrackedRevenue).toBe(1_000_000_000);
     // Revenue adjustment preserved
     expect(expenseState.adjustments["revenue-property-tax-subcat-0"]).toBe(1.2);
   });
@@ -1052,6 +1083,7 @@ describe("getRevenueExpenseBalance", () => {
       totalRevenue: 10_000_000_000,
       originalRevenue: 10_000_000_000,
       untrackedRevenue: 3_000_000_000,
+      grantRevenue: 0,
     };
 
     // (10B + 3B) - 12B = 1B
@@ -1066,6 +1098,7 @@ describe("getRevenueExpenseBalance", () => {
       totalRevenue: 10_000_000_000,
       originalRevenue: 10_000_000_000,
       untrackedRevenue: 3_000_000_000,
+      grantRevenue: 0,
     };
 
     // (10B + 3B) - 15B = -2B
@@ -1080,6 +1113,7 @@ describe("getRevenueExpenseBalance", () => {
       totalRevenue: 10_000_000_000,
       originalRevenue: 10_000_000_000,
       untrackedRevenue: 3_000_000_000,
+      grantRevenue: 0,
     };
 
     expect(getRevenueExpenseBalance(state)).toBe(0);
@@ -1093,6 +1127,7 @@ describe("getRevenueExpenseBalance", () => {
       totalRevenue: 10_000_000_000,
       originalRevenue: 10_000_000_000,
       untrackedRevenue: 0,
+      grantRevenue: 0,
     };
 
     expect(getRevenueExpenseBalance(state)).toBe(0);
@@ -1204,6 +1239,8 @@ describe("resetSimulation with revenue", () => {
 
     expect(resetState.totalRevenue).toBe(1_000_000_000);
     expect(resetState.originalRevenue).toBe(1_000_000_000);
-    expect(resetState.untrackedRevenue).toBe(3_000_000_000);
+    // untrackedRevenue = total_appropriations (2B) - total_revenue (1B) = 1B
+    expect(resetState.untrackedRevenue).toBe(1_000_000_000);
+    expect(resetState.grantRevenue).toBe(3_000_000_000);
   });
 });

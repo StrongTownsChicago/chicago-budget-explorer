@@ -83,7 +83,7 @@ function RevenueBalanceDisplay({ state }: { state: SimulationState }) {
           )}
           {state.untrackedRevenue > 0 && (
             <div className="text-xs text-gray-500 mt-1">
-              Includes {formatCurrency(state.untrackedRevenue)} est. grants
+              Includes {formatCurrency(state.untrackedRevenue)} est. grants &amp; other revenue
             </div>
           )}
         </div>

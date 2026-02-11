@@ -113,6 +113,7 @@ const RevenueSourceAccordion = React.memo(function RevenueSourceAccordion({
               simulationConfig={REVENUE_SIMULATION_CONFIG}
               multiplier={state.adjustments[sub.id] ?? 1.0}
               onAdjust={onAdjustSubcategory}
+              reverseColors
             />
           ))}
         </div>

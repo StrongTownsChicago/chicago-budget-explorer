@@ -7,6 +7,8 @@ export interface Props {
   simulationConfig: SimulationConfig;
   multiplier: number;
   onAdjust: (subcategoryId: string, multiplier: number) => void;
+  /** When true, positive delta is green (revenue: increase = good). Default: expense coloring. */
+  reverseColors?: boolean;
 }
 
 /**
@@ -19,9 +21,15 @@ const SubcategorySlider = React.memo(function SubcategorySlider({
   simulationConfig,
   multiplier,
   onAdjust,
+  reverseColors = false,
 }: Props) {
   const adjustedAmount = Math.round(subcategory.amount * multiplier);
   const delta = adjustedAmount - subcategory.amount;
+
+  // Expenses: increase = red (bad), decrease = green (good)
+  // Revenue (reverseColors): increase = green (good), decrease = red (bad)
+  const positiveColor = reverseColors ? "text-green-600" : "text-red-600";
+  const negativeColor = reverseColors ? "text-red-600" : "text-green-600";
 
   return (
     <div className="py-3 px-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50/50 transition-colors">
@@ -43,7 +51,7 @@ const SubcategorySlider = React.memo(function SubcategorySlider({
           </div>
           {delta !== 0 && (
             <div
-              className={`text-xs font-semibold ${delta > 0 ? "text-red-600" : "text-green-600"}`}
+              className={`text-xs font-semibold ${delta > 0 ? positiveColor : negativeColor}`}
             >
               {delta > 0 ? "+" : ""}
               {formatCurrency(delta)}
