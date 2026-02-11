@@ -8,12 +8,21 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import type { Department } from "@/lib/types";
+import type { TrendPoint } from "@/lib/types";
 import { formatCurrency, formatCompact } from "@/lib/format";
 import { getDepartmentColor } from "@/lib/colors";
 
+/** Minimal interface for any item that can be displayed on a trend chart. */
+export interface TrendItem {
+  id: string;
+  name: string;
+  amount: number;
+  trend?: TrendPoint[];
+}
+
 export interface Props {
-  departments: Department[];
+  items: TrendItem[];
+  label?: string;
   maxDefaultSelected?: number;
 }
 
@@ -25,46 +34,48 @@ function formatFiscalYear(fy: string): string {
 }
 
 /**
- * Line chart showing department budget trends across fiscal years.
- * Users can select which departments to compare on the chart.
- * Default: top N departments by current-year amount.
+ * Line chart showing budget trends across fiscal years.
+ * Works for both departments and revenue sources (any item with trend data).
+ * Users can select which items to compare on the chart.
+ * Default: top N items by current-year amount.
  */
 export default function TrendChart({
-  departments,
+  items,
+  label = "departments",
   maxDefaultSelected = 5,
 }: Props) {
-  // Filter departments that have trend data
-  const departmentsWithTrends = useMemo(
-    () => departments.filter((d) => d.trend && d.trend.length > 0),
-    [departments],
+  // Filter items that have trend data
+  const itemsWithTrends = useMemo(
+    () => items.filter((d) => d.trend && d.trend.length > 0),
+    [items],
   );
 
   // Default selection: top N by amount
   const defaultSelected = useMemo(
     () =>
       new Set(
-        [...departmentsWithTrends]
+        [...itemsWithTrends]
           .sort((a, b) => b.amount - a.amount)
           .slice(0, maxDefaultSelected)
           .map((d) => d.id),
       ),
-    [departmentsWithTrends, maxDefaultSelected],
+    [itemsWithTrends, maxDefaultSelected],
   );
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(defaultSelected);
 
-  // Build chart data: one entry per fiscal year, with department amounts as keys
+  // Build chart data: one entry per fiscal year, with item amounts as keys
   const chartData = useMemo(() => {
-    const selectedDepts = departmentsWithTrends.filter((d) =>
+    const selectedItems = itemsWithTrends.filter((d) =>
       selectedIds.has(d.id),
     );
 
-    if (selectedDepts.length === 0) return [];
+    if (selectedItems.length === 0) return [];
 
-    // Collect all fiscal years across selected departments
+    // Collect all fiscal years across selected items
     const allYears = new Set<string>();
-    for (const dept of selectedDepts) {
-      for (const point of dept.trend!) {
+    for (const item of selectedItems) {
+      for (const point of item.trend!) {
         allYears.add(point.fiscal_year);
       }
     }
@@ -77,34 +88,34 @@ export default function TrendChart({
       const entry: Record<string, string | number> = {
         fiscal_year: formatFiscalYear(fy),
       };
-      for (const dept of selectedDepts) {
-        const point = dept.trend!.find((p) => p.fiscal_year === fy);
+      for (const item of selectedItems) {
+        const point = item.trend!.find((p) => p.fiscal_year === fy);
         if (point) {
-          entry[dept.name] = point.amount;
+          entry[item.name] = point.amount;
         }
       }
       return entry;
     });
-  }, [departmentsWithTrends, selectedIds]);
+  }, [itemsWithTrends, selectedIds]);
 
-  const selectedDepts = useMemo(
-    () => departmentsWithTrends.filter((d) => selectedIds.has(d.id)),
-    [departmentsWithTrends, selectedIds],
+  const selectedItems = useMemo(
+    () => itemsWithTrends.filter((d) => selectedIds.has(d.id)),
+    [itemsWithTrends, selectedIds],
   );
 
-  const toggleDepartment = (deptId: string) => {
+  const toggleItem = (itemId: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(deptId)) {
-        next.delete(deptId);
+      if (next.has(itemId)) {
+        next.delete(itemId);
       } else {
-        next.add(deptId);
+        next.add(itemId);
       }
       return next;
     });
   };
 
-  if (departmentsWithTrends.length === 0) {
+  if (itemsWithTrends.length === 0) {
     return (
       <p className="text-gray-500 text-sm">
         No historical trend data available.
@@ -138,11 +149,11 @@ export default function TrendChart({
               }}
             />
             <Legend />
-            {selectedDepts.map((dept, index) => (
+            {selectedItems.map((item, index) => (
               <Line
-                key={dept.id}
+                key={item.id}
                 type="monotone"
-                dataKey={dept.name}
+                dataKey={item.name}
                 stroke={getDepartmentColor(index)}
                 strokeWidth={2}
                 dot={{ r: 4 }}
@@ -153,20 +164,20 @@ export default function TrendChart({
         </ResponsiveContainer>
       )}
 
-      {/* Department selection */}
+      {/* Item selection */}
       <div>
         <h4 className="text-sm font-semibold text-gray-700 mb-2">
-          Select departments to compare:
+          Select {label} to compare:
         </h4>
         <div className="flex flex-wrap gap-2">
-          {departmentsWithTrends
+          {itemsWithTrends
             .sort((a, b) => b.amount - a.amount)
-            .map((dept) => {
-              const isSelected = selectedIds.has(dept.id);
+            .map((item) => {
+              const isSelected = selectedIds.has(item.id);
               return (
                 <button
-                  key={dept.id}
-                  onClick={() => toggleDepartment(dept.id)}
+                  key={item.id}
+                  onClick={() => toggleItem(item.id)}
                   className={`px-3 py-1.5 text-xs rounded-full border transition-all ${
                     isSelected
                       ? "bg-chicago-blue border-chicago-blue text-white shadow-sm"
@@ -174,7 +185,7 @@ export default function TrendChart({
                   }`}
                   style={isSelected ? { boxShadow: "0 1px 3px rgba(0,81,165,0.3)" } : {}}
                 >
-                  {dept.name}
+                  {item.name}
                 </button>
               );
             })}

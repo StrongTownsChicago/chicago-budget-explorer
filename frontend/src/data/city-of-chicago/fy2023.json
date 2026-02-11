@@ -19,7 +19,7 @@
     },
     "data_source": "socrata_api",
     "source_dataset_id": "xbjh-7zvh",
-    "extraction_date": "2026-02-08",
+    "extraction_date": "2026-02-10",
     "pipeline_version": "1.0.0",
     "notes": "Total appropriations include accounting adjustments. Operating appropriations exclude non-operating funds (e.g., airports). Fund categories are entity-specific.",
     "total_revenue": null,
