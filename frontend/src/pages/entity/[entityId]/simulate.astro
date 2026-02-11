@@ -26,14 +26,14 @@ for (const year of entity.available_years) {
 
 <BaseLayout
   title={`${entity.name} Budget Simulator`}
-  description={`Adjust ${entity.name}'s budget and see how it affects the total. Try to keep it balanced!`}
+  description={`Adjust ${entity.name}'s spending and revenue to see how changes affect the budget balance.`}
 >
   <!-- Page Header -->
   <section class="gradient-hero text-white -mx-4 -mt-8 px-4 py-10 mb-8">
     <div class="max-w-4xl mx-auto">
       <h1 class="text-4xl font-extrabold tracking-tight">Budget Simulator</h1>
       <p class="text-lg text-white/80 mt-2">
-        Expand departments and adjust individual budget line items to see how changes affect the total.
+        Adjust spending and revenue to explore how changes affect the budget balance.
       </p>
       <a
         href={`/entity/${entityId}`}
@@ -57,11 +57,13 @@ for (const year of entity.available_years) {
     <div class="mt-8 card p-5">
       <h3 class="font-semibold text-gray-900 mb-2">How to use the simulator:</h3>
       <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-        <li>Click on a department to expand it and see individual budget line items</li>
-        <li>Use the sliders to increase or decrease each line item's budget</li>
-        <li>Watch the budget balance indicator update in real-time</li>
-        <li>Green = balanced, Red = over budget, Yellow = under budget</li>
-        <li>Locked departments cannot be adjusted (usually debt service or legal obligations)</li>
+        <li>Use the <strong>Expenses</strong> tab to adjust department spending line items</li>
+        <li>Use the <strong>Revenue</strong> tab to adjust revenue sources (when available)</li>
+        <li>Click on a department or revenue source to expand it and see individual line items</li>
+        <li>Use the sliders to increase or decrease each line item</li>
+        <li>The balance indicator shows whether revenue covers spending in real-time</li>
+        <li>Green = surplus or balanced, Red = deficit (spending exceeds revenue)</li>
+        <li>Locked items cannot be adjusted (debt service, legal obligations, or estimated grants)</li>
         <li>Click "Reset All" to restore the original budget</li>
       </ul>
     </div>

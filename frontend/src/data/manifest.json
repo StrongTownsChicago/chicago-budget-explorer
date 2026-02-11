@@ -3,14 +3,59 @@
     {
       "id": "city-of-chicago",
       "name": "City of Chicago",
-      "entity_type": "municipal",
+      "entity_type": "city",
       "status": "active",
-      "default_year": "fy2025",
-      "available_years": ["fy2025", "fy2024"],
-      "property_tax_share_pct": 15.2,
+      "default_year": "fy2026",
+      "available_years": [
+        "fy2026",
+        "fy2025",
+        "fy2024",
+        "fy2023"
+      ],
+      "property_tax_share_pct": 24.0,
       "color": "#0051A5"
+    },
+    {
+      "id": "chicago-public-schools",
+      "name": "Chicago Public Schools",
+      "entity_type": "school_district",
+      "status": "coming_soon",
+      "default_year": "fy2025",
+      "available_years": [],
+      "property_tax_share_pct": 52.0,
+      "color": "#CE1126"
+    },
+    {
+      "id": "chicago-park-district",
+      "name": "Chicago Park District",
+      "entity_type": "special_district",
+      "status": "coming_soon",
+      "default_year": "fy2025",
+      "available_years": [],
+      "property_tax_share_pct": 8.0,
+      "color": "#2E7D32"
+    },
+    {
+      "id": "chicago-transit-authority",
+      "name": "Chicago Transit Authority",
+      "entity_type": "transit_authority",
+      "status": "coming_soon",
+      "default_year": "fy2025",
+      "available_years": [],
+      "property_tax_share_pct": 0.0,
+      "color": "#0066B3"
+    },
+    {
+      "id": "chicago-city-colleges",
+      "name": "City Colleges of Chicago",
+      "entity_type": "community_college",
+      "status": "coming_soon",
+      "default_year": "fy2025",
+      "available_years": [],
+      "property_tax_share_pct": 6.0,
+      "color": "#FF6F00"
     }
   ],
-  "last_updated": "2026-02-07T00:00:00Z",
+  "last_updated": "2026-02-08T22:18:18.371695",
   "pipeline_version": "1.0.0"
 }
