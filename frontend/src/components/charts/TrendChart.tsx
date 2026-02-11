@@ -138,7 +138,7 @@ export default function TrendChart({
               style={{ fontSize: "12px" }}
             />
             <Tooltip
-              formatter={(value: number) => [formatCurrency(value), ""]}
+              formatter={(value: number, name: string) => [formatCurrency(value), name]}
               labelFormatter={(label) => String(label)}
               contentStyle={{
                 backgroundColor: "white",
