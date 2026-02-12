@@ -12,45 +12,22 @@ export default function BudgetSummary({ metadata }: Props) {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Budget Overview
         </h2>
-        <p className="text-sm text-gray-600 mb-4">
-          The <strong>operating budget</strong> (
-          {formatCurrency(metadata.operating_appropriations || 0)}) excludes
-          self-funded airport operations. The{" "}
-          <strong>total appropriations</strong> include all funds.
-        </p>
       </div>
 
-      {/* Main Totals */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div
-          className="stat-card bg-blue-50/70 p-5 rounded-xl border border-blue-100"
-          style={{ borderTop: "3px solid #0051A5" }}
-        >
-          <h3 className="text-sm font-semibold text-gray-600 mb-1">
-            Operating Budget
-          </h3>
-          <p className="text-3xl font-bold text-blue-900 tracking-tight">
-            {formatCurrency(metadata.operating_appropriations || 0)}
-          </p>
-          <p className="text-xs text-gray-500 mt-1">
-            Excludes airport enterprise funds
-          </p>
-        </div>
-
-        <div
-          className="stat-card bg-gray-50/70 p-5 rounded-xl border border-gray-200"
-          style={{ borderTop: "3px solid #6CACE4" }}
-        >
-          <h3 className="text-sm font-semibold text-gray-600 mb-1">
-            Total Appropriations
-          </h3>
-          <p className="text-3xl font-bold text-gray-900 tracking-tight">
-            {formatCurrency(metadata.total_appropriations)}
-          </p>
-          <p className="text-xs text-gray-500 mt-1">
-            All funds including airports
-          </p>
-        </div>
+      {/* Main Total */}
+      <div
+        className="stat-card bg-blue-50/70 p-5 rounded-xl border border-blue-100"
+        style={{ borderTop: "3px solid #0051A5" }}
+      >
+        <h3 className="text-sm font-semibold text-gray-600 mb-1">
+          Total Appropriations
+        </h3>
+        <p className="text-3xl font-bold text-blue-900 tracking-tight">
+          {formatCurrency(metadata.total_appropriations)}
+        </p>
+        <p className="text-xs text-gray-500 mt-1">
+          All funds including airports
+        </p>
       </div>
 
       {/* Calculation Breakdown */}

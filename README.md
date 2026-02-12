@@ -12,12 +12,10 @@ The Chicago Budget Explorer is a civic tech project that makes Chicago's budget 
 - **Simulate** budget changes to understand trade-offs
 - **Visualize** data with charts, treemaps, and breakdowns
 
-This is the **only free, open, interactive Chicago city budget tool** available.
-
 ## Project Structure
 
 ```
-chicago-budget-tool/
+chicago-budget-explorer/
 ├── pipeline/          # Python data pipeline
 │   ├── src/          # Source code (extractors, transformers, validators)
 │   ├── config/       # Entity and dataset configuration

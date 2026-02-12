@@ -277,11 +277,8 @@ export default function BudgetExplorer({
                 {entityName}
               </h1>
               <p className="text-xl text-white/80 mt-2">
-                {data.metadata.fiscal_year_label} Operating Budget:{" "}
-                {formatCurrency(
-                  data.metadata.operating_appropriations ||
-                    data.metadata.total_appropriations,
-                )}
+                {data.metadata.fiscal_year_label} Total Appropriations:{" "}
+                {formatCurrency(data.metadata.total_appropriations)}
               </p>
             </div>
             <YearSelector

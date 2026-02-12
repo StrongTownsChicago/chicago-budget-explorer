@@ -336,7 +336,7 @@ describe("BudgetExplorer", () => {
 
   it("displays fiscal year label", () => {
     render(<BudgetExplorer {...defaultProps} />);
-    expect(screen.getByText(/FY2025 Operating Budget/)).toBeInTheDocument();
+    expect(screen.getByText(/FY2025 Total Appropriations/)).toBeInTheDocument();
   });
 
   it("renders data source attribution", () => {
