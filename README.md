@@ -1,6 +1,6 @@
 # Chicago Budget Explorer
 
-An interactive, open-source tool for exploring and simulating the City of Chicago's operating budget.
+An interactive, open-source tool for exploring and simulating the City of Chicago's operating budget. Built for [Strong Towns Chicago](https://www.strongtownschicago.org/chicago-budget-explorer).
 
 ## Overview
 
@@ -142,10 +142,6 @@ Dataset mappings are configured in `pipeline/config/entities.yaml`.
 ## License
 
 MIT License
-
-## Credits
-
-**Maintained by**: Strong Towns Chicago
 
 **Built with**:
 
