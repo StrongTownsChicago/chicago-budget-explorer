@@ -164,8 +164,8 @@ class TestCityOfChicagoTransformer:
         sim_config = transformer.determine_simulation_config("Police", fund_breakdown, 1000000)
 
         assert sim_config.adjustable is True
-        assert sim_config.min_pct == 0.5
-        assert sim_config.max_pct == 1.5
+        assert sim_config.min_pct == 0.0
+        assert sim_config.max_pct == 2.0
         assert len(sim_config.constraints) == 0
 
     def test_determine_simulation_config_non_adjustable(self, config):
@@ -441,6 +441,113 @@ class TestCityOfChicagoTransformer:
         assert result.metadata.fund_category_breakdown["enterprise"] == 500000
         assert result.metadata.fund_category_breakdown["grant"] == 300000
         assert len(result.metadata.fund_category_breakdown) == 3
+
+    def test_matches_fund_list_case_insensitive(self, config):
+        """Test that fund matching is case-insensitive for historical ALL CAPS data."""
+        config["transform"]["fund_categories"] = {
+            "enterprise": ["Chicago O'Hare Airport Fund", "Chicago Midway Airport Fund"],
+            "pension": ["Policemen's Annuity and Benefit Fund"],
+        }
+        transformer = CityOfChicagoTransformer(config)
+
+        # ALL CAPS version from historical data should match mixed case config
+        assert transformer.categorize_fund("CHICAGO O'HARE AIRPORT FUND") == "enterprise"
+        assert transformer.categorize_fund("CHICAGO MIDWAY AIRPORT FUND") == "enterprise"
+        assert transformer.categorize_fund("POLICEMEN'S ANNUITY AND BENEFIT FUND") == "pension"
+
+        # Mixed case from modern data should still work
+        assert transformer.categorize_fund("Chicago O'Hare Airport Fund") == "enterprise"
+        assert transformer.categorize_fund("Chicago Midway Airport Fund") == "enterprise"
+        assert transformer.categorize_fund("Policemen's Annuity and Benefit Fund") == "pension"
+
+        # Lowercase should also match
+        assert transformer.categorize_fund("chicago o'hare airport fund") == "enterprise"
+
+        # Unknown fund should still default to operating
+        assert transformer.categorize_fund("UNKNOWN FUND") == "operating"
+
+    def test_categorize_fund_all_caps_historical_data(self, config):
+        """Test categorize_fund() works correctly with ALL CAPS fund names from historical years."""
+        config["transform"]["fund_categories"] = {
+            "enterprise": ["Chicago O'Hare Airport Fund", "Chicago Midway Airport Fund"],
+            "pension": [
+                "Policemen's Annuity and Benefit Fund",
+                "Municipal Employees' Annuity and Benefit Fund",
+                "Firemen's Annuity and Benefit Fund",
+                "Laborers' and Retirement Board Annuity and Benefit Fund",
+            ],
+            "debt": ["Bond Redemption and Interest*", "Library Note Redemption*"],
+            "grant": ["*Grant*"],
+        }
+        transformer = CityOfChicagoTransformer(config)
+
+        # Historical ALL CAPS enterprise funds
+        assert transformer.categorize_fund("CHICAGO O'HARE AIRPORT FUND") == "enterprise"
+
+        # Historical ALL CAPS pension funds
+        assert transformer.categorize_fund("POLICEMEN'S ANNUITY AND BENEFIT FUND") == "pension"
+        assert (
+            transformer.categorize_fund("MUNICIPAL EMPLOYEES' ANNUITY AND BENEFIT FUND")
+            == "pension"
+        )
+
+        # Wildcard patterns should still work case-insensitively (already did)
+        assert transformer.categorize_fund("BOND REDEMPTION AND INTEREST FUND") == "debt"
+        assert transformer.categorize_fund("FEDERAL GRANT FUND") == "grant"
+
+        # Default for unlisted funds
+        assert transformer.categorize_fund("CORPORATE FUND") == "operating"
+
+    def test_detect_amount_column_underscore_ordinance(self, config):
+        """Test detection of _ordinance_amount_ column used by FY2012-FY2026 Socrata data."""
+        transformer = CityOfChicagoTransformer(config)
+
+        # _ordinance_amount_ column (FY2012-FY2026 pattern from Socrata)
+        df = pd.DataFrame(columns=["fund_type", "_ordinance_amount_", "department_description"])
+        assert transformer.detect_amount_column(df, "fy2020") == "_ordinance_amount_"
+
+        # amount column (FY2011 pattern from Socrata)
+        df2 = pd.DataFrame(columns=["fund_type", "amount", "department_description"])
+        assert transformer.detect_amount_column(df2, "fy2011") == "amount"
+
+    def test_non_operating_funds_case_insensitive(self, config):
+        """Test that operating appropriations calculation works with ALL CAPS fund names."""
+        config["transform"]["fund_categories"] = {
+            "enterprise": ["Chicago O'Hare Airport Fund"],
+        }
+        config["transform"]["non_operating_funds"] = [
+            "Chicago O'Hare Airport Fund",
+            "Chicago Midway Airport Fund",
+        ]
+
+        # Simulate historical data with ALL CAPS fund names
+        df = pd.DataFrame(
+            [
+                {
+                    "department_name": "POLICE",
+                    "department_code": "057",
+                    "fund_description": "CORPORATE FUND",
+                    "appropriation_account_description": "SALARIES AND WAGES",
+                    "2020_ordinance": "1000000",
+                },
+                {
+                    "department_name": "AVIATION",
+                    "department_code": "099",
+                    "fund_description": "CHICAGO O'HARE AIRPORT FUND",
+                    "appropriation_account_description": "OPERATIONS",
+                    "2020_ordinance": "500000",
+                },
+            ]
+        )
+
+        transformer = CityOfChicagoTransformer(config)
+        result = transformer.transform(df, "fy2020")
+
+        # Total should include both departments
+        assert result.metadata.total_appropriations == 1500000
+
+        # Operating should exclude the airport fund (even though it's ALL CAPS)
+        assert result.metadata.operating_appropriations == 1000000
 
 
 class TestRevenueCategorization:

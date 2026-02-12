@@ -74,6 +74,7 @@ class CityOfChicagoTransformer(BaseTransformer):
             f"{year_num}_ordinance",
             f"ordinance_amount_{year_num}",
             f"{year_num}_recommendation",
+            "appropriation_ordinance",
             "ordinance_amount",
             "estimated_revenue",
             "amount",
@@ -140,7 +141,7 @@ class CityOfChicagoTransformer(BaseTransformer):
                 pattern_text = pattern.strip("*").lower()
                 if pattern_text in fund_name.lower():
                     return True
-            elif fund_name == pattern:
+            elif fund_name.lower() == pattern.lower():
                 return True
         return False
 
@@ -367,6 +368,7 @@ class CityOfChicagoTransformer(BaseTransformer):
                         id=slugify(f"{category}-{source_name}"),
                         name=str(source_name),
                         amount=source_amount,
+                        trend=None,
                     )
                 )
 
@@ -378,6 +380,7 @@ class CityOfChicagoTransformer(BaseTransformer):
                     revenue_type=revenue_type,
                     subcategories=sorted(subcategories, key=lambda x: x.amount, reverse=True),
                     fund_breakdown=sorted(fund_breakdown, key=lambda x: x.amount, reverse=True),
+                    trend=None,
                 )
             )
 
@@ -473,6 +476,7 @@ class CityOfChicagoTransformer(BaseTransformer):
                         id=slugify(f"{dept_name}-{acct_desc}"),
                         name=str(acct_desc),
                         amount=acct_amount,
+                        trend=None,
                     )
                 )
 

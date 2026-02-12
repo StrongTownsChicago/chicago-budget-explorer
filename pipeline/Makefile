@@ -1,38 +1,30 @@
-.PHONY: fetch transform enrich validate manifest all clean test lint format install help copy
+.PHONY: enrich validate manifest all clean test lint format install help copy
 
 help:
 	@echo "Chicago Budget Pipeline"
 	@echo ""
 	@echo "Commands:"
 	@echo "  make install   - Install dependencies"
-	@echo "  make fetch     - Fetch data from Socrata API"
-	@echo "  make transform - Transform raw data to JSON"
+	@echo "  make all       - Run full pipeline (fetch + transform + enrich + manifest + validate + copy)"
 	@echo "  make enrich    - Enrich JSON with cross-year trend data"
 	@echo "  make validate  - Validate transformed data"
 	@echo "  make manifest  - Generate manifest.json"
 	@echo "  make copy      - Copy generated JSON to frontend"
-	@echo "  make all       - Run full pipeline (fetch + transform + enrich + manifest + validate + copy)"
 	@echo "  make clean     - Remove generated files"
 	@echo "  make test      - Run tests with coverage"
 	@echo "  make lint      - Run linting (ruff + mypy)"
 	@echo "  make format    - Format code with ruff"
+	@echo ""
+	@echo "Individual year commands (for development):"
+	@echo "  uv run python -m src.cli fetch city-of-chicago --year fy2025"
+	@echo "  uv run python -m src.cli transform city-of-chicago --year fy2025 --prior-year fy2024"
 
 install:
 	uv pip install -e ".[dev]"
 
-all: fetch transform enrich manifest validate copy
-
-fetch:
-	uv run python -m src.cli fetch city-of-chicago --year fy2026
-	uv run python -m src.cli fetch city-of-chicago --year fy2025
-	uv run python -m src.cli fetch city-of-chicago --year fy2024
-	uv run python -m src.cli fetch city-of-chicago --year fy2023
-
-transform:
-	uv run python -m src.cli transform city-of-chicago --year fy2023
-	uv run python -m src.cli transform city-of-chicago --year fy2024 --prior-year fy2023
-	uv run python -m src.cli transform city-of-chicago --year fy2025 --prior-year fy2024
-	uv run python -m src.cli transform city-of-chicago --year fy2026 --prior-year fy2025
+all:
+	uv run python -m src.cli all
+	$(MAKE) copy
 
 enrich:
 	uv run python -m src.cli enrich city-of-chicago

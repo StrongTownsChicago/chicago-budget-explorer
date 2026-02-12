@@ -23,6 +23,30 @@ entities:
           revenue: "rmi8-cugu"  # Budget - 2024 Budget Ordinance - Revenue
         fy2023:
           appropriations: "xbjh-7zvh"  # Budget - 2023 Budget Ordinance - Appropriations
+        fy2022:
+          appropriations: "2cr6-8u6w"
+        fy2021:
+          appropriations: "6tbx-h7y2"
+        fy2020:
+          appropriations: "fyin-2vyd"
+        fy2019:
+          appropriations: "h9rt-tsn7"
+        fy2018:
+          appropriations: "6g7p-xnsy"
+        fy2017:
+          appropriations: "7jem-9wyw"
+        fy2016:
+          appropriations: "36y7-5nnf"
+        fy2015:
+          appropriations: "qnek-cfpp"
+        fy2014:
+          appropriations: "ub6s-xy6e"
+        fy2013:
+          appropriations: "b24i-nwag"
+        fy2012:
+          appropriations: "8ix6-nb7q"
+        fy2011:
+          appropriations: "drv3-jzqp"
 
     transform:
       department_column: "department_description"

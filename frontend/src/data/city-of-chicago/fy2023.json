@@ -19,7 +19,7 @@
     },
     "data_source": "socrata_api",
     "source_dataset_id": "xbjh-7zvh",
-    "extraction_date": "2026-02-10",
+    "extraction_date": "2026-02-12",
     "pipeline_version": "1.0.0",
     "notes": "Total appropriations include accounting adjustments. Operating appropriations exclude non-operating funds (e.g., airports). Fund categories are entity-specific.",
     "total_revenue": null,
@@ -32,8 +32,8 @@
         "name": "Finance General",
         "code": "99",
         "amount": 7761542137,
-        "prior_year_amount": null,
-        "change_pct": null,
+        "prior_year_amount": 6826778867,
+        "change_pct": 13.692596291913844,
         "fund_breakdown": [
           {
             "fund_id": "corporate-fund",
@@ -242,6 +242,38 @@
             "amount": 541354000,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 117993615
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 153007000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 142282000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 155178000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 172162000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 183260000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 172443000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 470600000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 541354000
               },
@@ -264,6 +296,18 @@
             "name": "For the Costs of Claims and Administration for Hospital and Medical Care Provided to Eligible Employees  Provided However  That All Payments to the In...",
             "amount": 353361571,
             "trend": [
+              {
+                "fiscal_year": "fy2020",
+                "amount": 316322008
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 274901723
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 292912987
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 353361571
@@ -357,6 +401,38 @@
             "amount": 133695039,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 278430959
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 197015196
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 188694966
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 143528903
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 110384991
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 169936495
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 105643448
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 33100000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 133695039
               },
@@ -448,6 +524,18 @@
             "name": "Emergency Medical Transportation",
             "amount": 96000000,
             "trend": [
+              {
+                "fiscal_year": "fy2020",
+                "amount": 143000000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 77400000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 77400000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 96000000
@@ -610,6 +698,38 @@
             "amount": 65577977,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 13124759
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 13175000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 14378000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 15383000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 25428000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 114181000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 33605000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 47570000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 65577977
               },
@@ -632,6 +752,38 @@
             "name": "Laborers' Fund Pension Allocation",
             "amount": 58252000,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 12948970
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 17466000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 24930000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 36930000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 48930000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 60930000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 30720000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 62827000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 58252000
@@ -678,6 +830,30 @@
             "name": "Scheduled Wage Adjustments",
             "amount": 48144700,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 3491109
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 2385659
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 14848849
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 96103914
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 105799515
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 4888033
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 48144700
@@ -770,6 +946,38 @@
             "name": "Policemen's Fund Pension Allocation",
             "amount": 41356023,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 54041557
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 8646000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 9315000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 10378000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 32378000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 144866000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 37461000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 18470000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 41356023
@@ -976,7 +1184,16 @@
             "id": "finance-general-arts-and-cultural-initiatives",
             "name": "Arts and Cultural Initiatives",
             "amount": 10000000,
-            "trend": null
+            "trend": [
+              {
+                "fiscal_year": "fy2022",
+                "amount": 10000000
+              },
+              {
+                "fiscal_year": "fy2023",
+                "amount": 10000000
+              }
+            ]
           },
           {
             "id": "finance-general-special-programs-costs",
@@ -1210,6 +1427,54 @@
             "amount": 4465200,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 4505000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 5027500
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 5027500
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 5027500
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 4607500
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 4747000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 5357800
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 5257800
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 4655000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 4665200
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 4370200
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 4385200
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 4465200
               },
@@ -1232,6 +1497,54 @@
             "name": "Legal Expenses",
             "amount": 4277000,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 3721500
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 3721500
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 3721500
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 3071500
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 3071500
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 3075500
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 5150500
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 6167000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 7227000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 7227000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 7777000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 7777000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 4277000
@@ -1301,6 +1614,18 @@
             "name": "For Paying the Salary of Any Sworn Member of the Police or Fire Department Killed in the Line of Duty for a Period of One Year Commencing From the Dat...",
             "amount": 4000000,
             "trend": [
+              {
+                "fiscal_year": "fy2020",
+                "amount": 280000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 500000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 500000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 4000000
@@ -1416,6 +1741,38 @@
             "name": "Interest on Library Financing",
             "amount": 2200000,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 725932
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 1500000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1700000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 1200000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 1755000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 2200000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 2200000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 2200000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 2200000
@@ -1569,6 +1926,18 @@
             "name": "For the Health Maintenance Organization Premiums or Cost of Claims and Administration for Hospital and Medical Care Provided to Police and Fire Depart...",
             "amount": 1349999,
             "trend": [
+              {
+                "fiscal_year": "fy2020",
+                "amount": 1124455
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 1385999
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 1349999
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1349999
@@ -1731,6 +2100,42 @@
             "amount": 750000,
             "trend": [
               {
+                "fiscal_year": "fy2014",
+                "amount": 4959372
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 1332396
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 578800
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 115200
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 115200
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 115000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 55000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 55000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 810500
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 750000
               },
@@ -1753,6 +2158,38 @@
             "name": "Transfer for Contractual Services",
             "amount": 625000,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 625000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 625000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 625000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 625000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 625000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 625000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 625000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 625000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 625000
@@ -1800,6 +2237,22 @@
             "amount": 600000,
             "trend": [
               {
+                "fiscal_year": "fy2019",
+                "amount": 600000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 600000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 600000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 600000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 600000
               },
@@ -1814,6 +2267,10 @@
             "name": "Postage",
             "amount": 585208,
             "trend": [
+              {
+                "fiscal_year": "fy2022",
+                "amount": 585208
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 585208
@@ -1945,6 +2402,26 @@
             "amount": 320000,
             "trend": [
               {
+                "fiscal_year": "fy2018",
+                "amount": 1400000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 402500
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 950625
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 950625
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 350000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 320000
               },
@@ -1968,6 +2445,14 @@
             "amount": 305000,
             "trend": [
               {
+                "fiscal_year": "fy2021",
+                "amount": 340000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 305000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 305000
               },
@@ -1990,6 +2475,30 @@
             "name": "Vehicles",
             "amount": 160000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 100000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 100000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 100000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 110000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 110000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 160000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 160000
@@ -2060,6 +2569,26 @@
             "amount": 125000,
             "trend": [
               {
+                "fiscal_year": "fy2018",
+                "amount": 125000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 3125000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 125000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 125000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 125000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 125000
               },
@@ -2129,6 +2658,54 @@
             "amount": 85000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2021",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2022",
+                "amount": 55000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 85000
               },
@@ -2151,6 +2728,10 @@
             "name": "Miscellaneous Supplies",
             "amount": 80000,
             "trend": [
+              {
+                "fiscal_year": "fy2022",
+                "amount": 80000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 80000
@@ -2273,6 +2854,54 @@
           "description": "This department cannot be adjusted due to legal obligations."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 2901120029
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 3085912201
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 3231890878
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 3549570670
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 3940708377
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 4444730619
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 4750898266
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 4836883635
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 4947717643
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 5914554145
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 5681317598
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 6826778867
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 7761542137
@@ -2567,6 +3196,10 @@
             "amount": 1331084089,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 1172330501
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1331084089
               },
@@ -2589,6 +3222,10 @@
             "name": "Overtime",
             "amount": 106940102,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 79017000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 106940102
@@ -2659,6 +3296,10 @@
             "amount": 53979764,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 6222343
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 53979764
               },
@@ -2681,6 +3322,10 @@
             "name": "Duty Availability",
             "amount": 46500000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 41316724
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 46500000
@@ -2724,6 +3369,10 @@
             "amount": 25695000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 16325245
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 25695000
               },
@@ -2746,6 +3395,10 @@
             "name": "Uniform Allowance",
             "amount": 24283000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 22530100
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 24283000
@@ -2816,6 +3469,10 @@
             "amount": 17143000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 15296464
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 17143000
               },
@@ -2838,6 +3495,10 @@
             "name": "Reimbursable Overtime",
             "amount": 14500000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 6000000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 14500000
@@ -2862,6 +3523,10 @@
             "amount": 13180000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 9642761
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 13180000
               },
@@ -2885,6 +3550,10 @@
             "amount": 12810984,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 7156708
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 12810984
               },
@@ -2907,6 +3576,10 @@
             "name": "Schedule Salary Adjustments",
             "amount": 10242896,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 5883370
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 10242896
@@ -2953,6 +3626,10 @@
             "name": "Sworn/Civilian Holiday Premium Pay",
             "amount": 8047500,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 4238735
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 8047500
@@ -3022,6 +3699,10 @@
             "name": "Fringe Benefits",
             "amount": 5779752,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 2094610
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 5779752
@@ -3098,6 +3779,10 @@
             "amount": 749671,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 135565
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 749671
               },
@@ -3120,6 +3805,10 @@
             "name": "Repair Parts and Material",
             "amount": 639654,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 568494
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 639654
@@ -3166,6 +3855,10 @@
             "name": "Indirect Costs",
             "amount": 528454,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 162000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 528454
@@ -3242,6 +3935,10 @@
             "amount": 358500,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 189858
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 358500
               },
@@ -3303,6 +4000,10 @@
             "amount": 230000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 2400
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 230000
               },
@@ -3325,6 +4026,10 @@
             "name": "Reimbursement to Travelers",
             "amount": 216519,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 363570
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 216519
@@ -3349,6 +4054,10 @@
             "amount": 125000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 2150000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 125000
               },
@@ -3363,6 +4072,10 @@
             "name": "Apparatus and Instruments",
             "amount": 106708,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 20111
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 106708
@@ -3386,6 +4099,10 @@
             "name": "Livestock",
             "amount": 96048,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 36250
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 96048
@@ -3456,6 +4173,10 @@
             "amount": 58937,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 29200
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 58937
               },
@@ -3494,6 +4215,10 @@
             "amount": 36900,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 5000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 36900
               },
@@ -3517,6 +4242,10 @@
             "amount": 23462,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 9966
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 23462
               },
@@ -3539,6 +4268,10 @@
             "name": "Books and Related Material",
             "amount": 19003,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 24992
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 19003
@@ -3592,6 +4325,10 @@
             "amount": 10000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 24000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 10000
               },
@@ -3638,6 +4375,10 @@
             "amount": 1000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 381
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1000
               },
@@ -3661,6 +4402,10 @@
             "amount": 750,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 750
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 750
               },
@@ -3683,6 +4428,10 @@
             "name": "Office and Building Services",
             "amount": 591,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 500
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 591
@@ -3711,6 +4460,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 1411811712
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 1336617449
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 1343366935
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 1371511049
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 1452053309
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 1452499521
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 1494128777
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 1575588780
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 1656002057
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 1762078349
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 1698735503
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 1899239537
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 1943242055
@@ -4826,6 +5623,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 637825658
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 636610958
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 642799621
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 673245833
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 598286083
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 581356067
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 621377879
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 459129158
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 543060487
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 467971706
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 770356074
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 1276497782
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 1399244996
@@ -6218,6 +7063,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 598978417
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 639569023
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 813128973
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 818569128
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 738326816
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 725573121
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 832326662
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 823090246
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 911289787
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 871219092
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 1141154450
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 1151260371
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 1201844333
           },
@@ -7441,6 +8334,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 187357193
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 169244690
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 160148800
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 152144471
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 149910825
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 152480987
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 151975450
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 158907978
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 177264833
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 221654005
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 518606427
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 1001647288
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 972398008
@@ -8751,6 +9692,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 437075786
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 365298181
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 298254807
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 324690043
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 332332659
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 349408618
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 403758963
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 398318084
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 633571744
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 686392402
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 780489814
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 910616641
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 926780352
           },
@@ -8874,6 +9863,10 @@
             "amount": 531448682,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 488664588
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 531448682
               },
@@ -8920,6 +9913,10 @@
             "amount": 46248200,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 30984200
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 46248200
               },
@@ -8942,6 +9939,10 @@
             "name": "Sworn/Civilian Holiday Premium Pay",
             "amount": 24695000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 20745552
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 24695000
@@ -8966,6 +9967,10 @@
             "amount": 19552553,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 19266730
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 19552553
               },
@@ -8988,6 +9993,10 @@
             "name": "Duty Availability",
             "amount": 19171000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 16803031
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 19171000
@@ -9058,6 +10067,10 @@
             "amount": 7567500,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 5225000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 7567500
               },
@@ -9104,6 +10117,10 @@
             "amount": 5315000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 4807450
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 5315000
               },
@@ -9126,6 +10143,10 @@
             "name": "Cooperative Education Program",
             "amount": 4842965,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 4524000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 4842965
@@ -9165,6 +10186,10 @@
             "amount": 3456385,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 2193051
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 3456385
               },
@@ -9187,6 +10212,10 @@
             "name": "Material and Supplies",
             "amount": 1925787,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1276009
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1925787
@@ -9211,6 +10240,10 @@
             "amount": 1607993,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 764005
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1607993
               },
@@ -9233,6 +10266,10 @@
             "name": "Fitness Benefit",
             "amount": 934000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 944700
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 934000
@@ -9257,6 +10294,10 @@
             "amount": 914170,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 549858
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 914170
               },
@@ -9279,6 +10320,10 @@
             "name": "Compensatory Time Payment",
             "amount": 850000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 940000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 850000
@@ -9340,6 +10385,10 @@
             "name": "Apparatus and Instruments",
             "amount": 527788,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 348000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 527788
@@ -9425,6 +10474,10 @@
             "amount": 284478,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 256000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 284478
               },
@@ -9447,6 +10500,10 @@
             "name": "Required Certifications",
             "amount": 78000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 117000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 78000
@@ -9471,6 +10528,10 @@
             "amount": 73915,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 5343
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 73915
               },
@@ -9493,6 +10554,10 @@
             "name": "Transportation and Expense Allowance",
             "amount": 39375,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 43000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 39375
@@ -9540,6 +10605,10 @@
             "amount": 11035,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 6505
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 11035
               },
@@ -9568,6 +10637,10 @@
             "name": "Stationery and Office Supplies",
             "amount": 10000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 106080
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 10000
@@ -9615,6 +10688,10 @@
             "amount": 6000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 6000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 6000
               },
@@ -9638,6 +10715,10 @@
             "amount": 4000,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 355556
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 4000
               },
@@ -9652,6 +10733,10 @@
             "name": "Other Fuel",
             "amount": 3850,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 6000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 3850
@@ -9676,6 +10761,10 @@
             "amount": 1900,
             "trend": [
               {
+                "fiscal_year": "fy2017",
+                "amount": 1900
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1900
               },
@@ -9699,6 +10788,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 526486463
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 567196259
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 564170992
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 578003265
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 596910021
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 621067818
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 636685110
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 642620615
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 652282316
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 674228297
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 738357735
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 779018476
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 771041777
@@ -10141,6 +11278,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 204749515
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 314626104
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 321363072
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 332282548
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 341656904
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 333320967
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 343948909
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 351521694
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 396771258
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 435799345
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 441494205
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 514125731
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 559915375
@@ -11161,6 +12346,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 252708376
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 255646096
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 263158827
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 272763920
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 312816922
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 318862487
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 314718034
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 294895925
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 310450401
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 315071281
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 321523152
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 346810100
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 384350460
           },
@@ -11827,6 +13060,22 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2019",
+            "amount": 148425952
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 198896756
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 190769087
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 380117919
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 332094168
@@ -12696,6 +13945,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 240870361
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 240674676
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 260795393
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 258155839
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 259115234
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 256230409
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 256950967
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 263418415
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 268026340
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 273635333
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 283104001
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 308021905
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 311515608
           },
@@ -13152,6 +14449,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 8045425
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 15305479
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 16988828
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 9063442
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 28516405
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 16817722
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 11330687
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 9561828
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 8827382
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 7408590
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 127008429
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 1645234288
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 246578693
@@ -13918,6 +15263,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 333073840
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 316747295
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 191758176
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 153802652
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 153857993
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 141215286
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 176057445
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 189268495
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 35082318
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 65034959
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 97532008
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 162618863
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 208372201
@@ -15011,6 +16404,18 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2020",
+            "amount": 33445047
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 135591779
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 172894734
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 180016152
           },
@@ -15068,6 +16473,34 @@
             "name": "Salaries and Wages - on Payroll",
             "amount": 72530479,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 55199330
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 50583914
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 51668406
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 51637117
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 54658695
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 56307488
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 57295828
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 72530479
@@ -15130,6 +16563,18 @@
             "amount": 8804497,
             "trend": [
               {
+                "fiscal_year": "fy2014",
+                "amount": 1332
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 1332
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 594
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 8804497
               },
@@ -15144,6 +16589,34 @@
             "name": "Fringe Benefits",
             "amount": 3443005,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 2687565
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 1970629
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 1980615
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 1906766
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 1964725
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 2259558
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 2196985
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 3443005
@@ -15190,6 +16663,34 @@
             "name": "Data Circuits",
             "amount": 1110885,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 710000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 710000
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 710000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 710000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 710000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 1110885
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1070885
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1110885
@@ -15260,6 +16761,18 @@
             "amount": 560291,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 516370
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 500000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 560291
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 560291
               },
@@ -15282,6 +16795,26 @@
             "name": "Overtime",
             "amount": 400000,
             "trend": [
+              {
+                "fiscal_year": "fy2013",
+                "amount": 100000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 420000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 420000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 400000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 400000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 400000
@@ -15328,6 +16861,18 @@
             "name": "Schedule Salary Adjustments",
             "amount": 371516,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 245664
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 228308
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 73637
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 371516
@@ -15427,6 +16972,34 @@
             "amount": 112988,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 40416
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 37988
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 37988
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 37988
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 37988
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 37988
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 37988
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 112988
               },
@@ -15471,13 +17044,74 @@
             "id": "chicago-public-library-advertising",
             "name": "Advertising",
             "amount": 63092,
-            "trend": null
+            "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 127000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 64380
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 64380
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 64380
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 64380
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 63092
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 63092
+              },
+              {
+                "fiscal_year": "fy2023",
+                "amount": 63092
+              }
+            ]
           },
           {
             "id": "chicago-public-library-bookbinding",
             "name": "Bookbinding",
             "amount": 56107,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 87850
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 77576
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 56612
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 56612
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 56675
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 56107
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 56107
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 56107
@@ -15501,6 +17135,10 @@
             "name": "Technical Meeting Costs",
             "amount": 28000,
             "trend": [
+              {
+                "fiscal_year": "fy2017",
+                "amount": 30000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 28000
@@ -15548,6 +17186,34 @@
             "amount": 20000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 90000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 84600
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 84600
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 5076
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 5130
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 4104
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 4104
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 20000
               },
@@ -15570,6 +17236,14 @@
             "name": "Reimbursement to Travelers",
             "amount": 17880,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 23880
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 17880
@@ -15669,6 +17343,18 @@
             "amount": 4001,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 5334
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 4001
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 4001
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 4001
               },
@@ -15692,6 +17378,18 @@
             "amount": 1312,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 1312
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 1312
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1312
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1312
               },
@@ -15714,6 +17412,34 @@
             "name": "Electrical Supplies",
             "amount": 1220,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 1302
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 1220
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 1220
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 1220
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 1220
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 1220
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1220
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1220
@@ -15742,6 +17468,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 74335971
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 67995789
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 68146594
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 68549837
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 73294670
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 75789291
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 75599810
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 77453977
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 71420108
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 84521915
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 110971841
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 129622327
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 113371472
@@ -16372,6 +18146,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 280064868
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 269485119
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 231216968
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 202520639
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 202492901
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 229948877
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 242501348
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 296821019
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 233860841
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 204747050
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 133947766
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 121287347
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 109129306
           },
@@ -16460,6 +18282,10 @@
             "amount": 46164461,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 14763207
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 46164461
               },
@@ -16528,6 +18354,10 @@
             "name": "Postage",
             "amount": 1716000,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 160628
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1716000
@@ -16598,6 +18428,10 @@
             "amount": 911186,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 480000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 911186
               },
@@ -16620,6 +18454,10 @@
             "name": "Fringe Benefits",
             "amount": 831785,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 488557
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 831785
@@ -16689,6 +18527,10 @@
             "name": "Overtime",
             "amount": 185515,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 29700
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 185515
@@ -16804,6 +18646,10 @@
             "name": "Technical Meeting Costs",
             "amount": 68544,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 12437
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 68544
@@ -17041,6 +18887,10 @@
             "amount": 15000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 9800
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 15000
               },
@@ -17263,6 +19113,10 @@
             "amount": 670,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 12475
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 670
               },
@@ -17313,6 +19167,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 16522245
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 68344927
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 77879257
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 78854473
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 85803502
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 82948044
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 85924893
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 85682124
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 85318711
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 97534031
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 84617522
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 96175527
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 99227998
@@ -18134,6 +20036,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 15304028
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 14946776
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 18800661
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 19671485
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 19322701
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 19528793
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 19676601
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 20306192
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 22199674
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 28541142
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 27352831
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 76259143
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 86469596
           },
@@ -18908,6 +20858,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 37729134
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 29918856
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 33565927
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 34078133
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 32578499
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 32681902
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 33318551
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 33147199
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 36327399
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 43697506
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 25510269
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 71233120
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 71399885
           },
@@ -19595,6 +21593,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 19222276
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 14322733
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 8722360
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 11875547
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 25555957
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 14763549
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 11624299
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 15606377
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 34186369
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 18377300
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 19175482
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 25828604
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 56602820
           },
@@ -19668,6 +21714,34 @@
             "amount": 39769648,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 32411129
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 31999229
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 31848878
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 31868001
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 32079135
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 32877739
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 33884683
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 39769648
               },
@@ -19690,6 +21764,34 @@
             "name": "Fringe Benefits",
             "amount": 1502673,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 499845
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 493022
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 501950
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 484271
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 474743
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 536414
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 539404
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1502673
@@ -19732,6 +21834,34 @@
             "name": "Court Reporting",
             "amount": 937000,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 1290229
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 1394501
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 1214002
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 1121276
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 1080820
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 999693
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1142135
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 937000
@@ -19802,6 +21932,34 @@
             "amount": 171740,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 50416
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 41738
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 54050
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 51051
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 34829
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 30030
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 30762
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 171740
               },
@@ -19824,6 +21982,18 @@
             "name": "Schedule Salary Adjustments",
             "amount": 167659,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 63055
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 32458
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 24580
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 167659
@@ -19871,6 +22041,34 @@
             "amount": 125000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 195521
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 188022
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 148839
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 157497
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 173788
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 151321
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 155229
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 125000
               },
@@ -19894,6 +22092,18 @@
             "amount": 70089,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 149435
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 134231
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 120463
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 70089
               },
@@ -19916,6 +22126,34 @@
             "name": "Technical Meeting Costs",
             "amount": 69445,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 60000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 56478
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 52643
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 50225
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 45000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 38943
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 38000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 69445
@@ -19963,6 +22201,18 @@
             "amount": 50000,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 63745
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 64748
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 73248
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 50000
               },
@@ -19985,6 +22235,34 @@
             "name": "Local Transportation",
             "amount": 37500,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 118021
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 50600
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 72407
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 66771
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 46970
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 39217
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 40445
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 37500
@@ -20031,6 +22309,34 @@
             "name": "Appraisals",
             "amount": 25000,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 4895
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 4995
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 10000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 10000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 10000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 6570
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 10000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 25000
@@ -20084,6 +22390,18 @@
             "amount": 9500,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 17579
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 13051
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 13561
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 9500
               },
@@ -20107,6 +22425,34 @@
             "amount": 6430,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 4519
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 2862
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 5692
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 45386
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 40602
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 36120
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 20100
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 6430
               },
@@ -20129,6 +22475,18 @@
             "name": "Transportation and Expense Allowance",
             "amount": 5000,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 10927
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 10260
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 8101
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 5000
@@ -20176,6 +22534,18 @@
             "amount": 2500,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 24698
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 23675
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 22248
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 2500
               },
@@ -20203,6 +22573,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 35156069
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 36999754
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 36552006
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 36464627
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 36628293
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 37045393
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 38139519
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 38716977
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 40306777
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 41365309
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 40560261
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 43224244
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 45641696
@@ -20267,6 +22685,14 @@
             "amount": 30487954,
             "trend": [
               {
+                "fiscal_year": "fy2016",
+                "amount": 26805190
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 28214405
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 30487954
               },
@@ -20311,13 +22737,34 @@
             "id": "department-of-buildings-fringe-benefits",
             "name": "Fringe Benefits",
             "amount": 2928384,
-            "trend": null
+            "trend": [
+              {
+                "fiscal_year": "fy2016",
+                "amount": 1887331
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 2011605
+              },
+              {
+                "fiscal_year": "fy2023",
+                "amount": 2928384
+              }
+            ]
           },
           {
             "id": "department-of-buildings-transportation-and-expense-allowance",
             "name": "Transportation and Expense Allowance",
             "amount": 364000,
             "trend": [
+              {
+                "fiscal_year": "fy2016",
+                "amount": 300650
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 300650
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 364000
@@ -20342,6 +22789,14 @@
             "amount": 335958,
             "trend": [
               {
+                "fiscal_year": "fy2016",
+                "amount": 100000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 100000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 335958
               },
@@ -20364,6 +22819,14 @@
             "name": "Reimbursable Overtime",
             "amount": 300000,
             "trend": [
+              {
+                "fiscal_year": "fy2016",
+                "amount": 250000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 250000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 300000
@@ -20434,6 +22897,14 @@
             "amount": 85341,
             "trend": [
               {
+                "fiscal_year": "fy2016",
+                "amount": 123899
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 37828
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 85341
               },
@@ -20480,6 +22951,14 @@
             "amount": 52000,
             "trend": [
               {
+                "fiscal_year": "fy2016",
+                "amount": 39644
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 39644
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 52000
               },
@@ -20524,13 +23003,34 @@
             "id": "department-of-buildings-mobile-communication-services",
             "name": "Mobile Communication Services",
             "amount": 38250,
-            "trend": null
+            "trend": [
+              {
+                "fiscal_year": "fy2016",
+                "amount": 217454
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 205524
+              },
+              {
+                "fiscal_year": "fy2023",
+                "amount": 38250
+              }
+            ]
           },
           {
             "id": "department-of-buildings-postage",
             "name": "Postage",
             "amount": 34000,
             "trend": [
+              {
+                "fiscal_year": "fy2016",
+                "amount": 29609
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 22227
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 34000
@@ -20577,6 +23077,14 @@
             "name": "Clothing",
             "amount": 10000,
             "trend": [
+              {
+                "fiscal_year": "fy2016",
+                "amount": 10000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 10000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 10000
@@ -20668,6 +23176,14 @@
             "amount": 250,
             "trend": [
               {
+                "fiscal_year": "fy2016",
+                "amount": 250
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 250
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 250
               },
@@ -20695,6 +23211,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 34394825
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 31027244
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 32190902
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 32400152
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 36860857
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 38426789
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 38295022
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 37417249
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 38119079
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 37127233
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 33404387
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 34875735
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 38606461
@@ -20755,6 +23319,46 @@
             "amount": 7724988,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 7779701
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 7951243
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 8015890
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 8286567
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 8375445
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 8370000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 8397702
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 8526809
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 8737435
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 6971436
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 7724988
               },
@@ -20778,6 +23382,10 @@
             "amount": 6100000,
             "trend": [
               {
+                "fiscal_year": "fy2020",
+                "amount": 6100000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 6100000
               },
@@ -20796,6 +23404,46 @@
             "name": "Personnel Services",
             "amount": 5369786,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 3758882
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 3521376
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 3514248
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 3408583
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 3408583
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 3573937
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 3631061
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 3631061
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 3745592
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 4880015
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 5369786
@@ -20849,6 +23497,46 @@
             "amount": 190880,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 77844
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 111144
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 99144
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 181750
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 171750
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 103200
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 115006
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 115006
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 124506
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 189900
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 190880
               },
@@ -20894,6 +23582,46 @@
             "name": "Commodities and Materials",
             "amount": 88820,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 125950
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 107900
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 107900
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 114620
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 124620
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 132220
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 132220
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 132220
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 118220
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 91820
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 88820
@@ -20941,6 +23669,46 @@
             "amount": 60000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 20000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 20000
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 20000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 20000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 20000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 20000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 72000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 72000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 72000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 60000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 60000
               },
@@ -20964,6 +23732,46 @@
             "amount": 58894,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 78000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 67000
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 67000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 90000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 90000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 87850
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 90010
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 90010
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 89510
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 53410
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 58894
               },
@@ -20986,6 +23794,46 @@
             "name": "Material and Supplies",
             "amount": 55500,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 3500
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 10500
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 55500
@@ -21056,6 +23904,10 @@
             "amount": 35500,
             "trend": [
               {
+                "fiscal_year": "fy2020",
+                "amount": 35500
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 35500
               },
@@ -21078,6 +23930,30 @@
             "name": "Stationery and Office Supplies",
             "amount": 35000,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 45000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 45000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 45000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 45000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 45000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 35000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 35000
@@ -21102,6 +23978,46 @@
             "amount": 9500,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 13035
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 9500
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 9500
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 9500
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 9500
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 9500
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 9500
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 9500
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 9500
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 9500
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 9500
               },
@@ -21124,6 +24040,10 @@
             "name": "Contingent and Other Expenses for Corporate Purposes Not Otherwise Provided For. To Be Expended Under the Direction of the President Pro Tempore ...",
             "amount": 4000,
             "trend": [
+              {
+                "fiscal_year": "fy2020",
+                "amount": 4000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 4000
@@ -21148,6 +24068,30 @@
             "amount": 4000,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 8000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 8000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 8000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 8000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 8000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 4000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 4000
               },
@@ -21170,6 +24114,30 @@
             "name": "Books and Related Material",
             "amount": 3000,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 3000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 3000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 3000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 3000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 3000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 3000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 3000
@@ -21217,6 +24185,46 @@
             "amount": 3000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 20000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 16000
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 16000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 16000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 16000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 16000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 16000
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 16000
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 16000
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 3000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 3000
               },
@@ -21262,6 +24270,46 @@
             "name": "Technical Meeting Costs",
             "amount": 1500,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 5000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 2500
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 2500
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 2500
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 2500
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 2500
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 2500
+              },
+              {
+                "fiscal_year": "fy2018",
+                "amount": 2500
+              },
+              {
+                "fiscal_year": "fy2019",
+                "amount": 2500
+              },
+              {
+                "fiscal_year": "fy2020",
+                "amount": 1500
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1500
@@ -21309,6 +24357,10 @@
             "amount": 1000,
             "trend": [
               {
+                "fiscal_year": "fy2020",
+                "amount": 1000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1000
               },
@@ -21336,6 +24388,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 25802352
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 26406275
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 26722154
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 26834029
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 26922907
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 27324660
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 27263008
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 27427115
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 28019677
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 28533636
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 28519751
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 34607399
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 35556215
@@ -21400,6 +24500,34 @@
             "amount": 12736325,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 6276678
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 6772151
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 7052991
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 7441057
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 7655387
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 7022269
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 7136228
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 12736325
               },
@@ -21422,6 +24550,30 @@
             "name": "Fringe Benefits",
             "amount": 1215310,
             "trend": [
+              {
+                "fiscal_year": "fy2012",
+                "amount": 477998
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 476605
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 424629
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 496315
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 220364
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 226999
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1215310
@@ -21561,6 +24713,18 @@
             "amount": 100000,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 28280
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 28280
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 30780
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 100000
               },
@@ -21630,6 +24794,18 @@
             "amount": 30000,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 50000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 46000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 30000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 30000
               },
@@ -21676,6 +24852,34 @@
             "amount": 6000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 5286
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 5286
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 10286
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 5286
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 5286
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 5286
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 5286
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 6000
               },
@@ -21699,6 +24903,34 @@
             "amount": 5500,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 30918
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 23400
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 18250
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 10000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 5019
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 5693
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 5000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 5500
               },
@@ -21721,6 +24953,34 @@
             "name": "Local Transportation",
             "amount": 3000,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 872
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 872
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 1372
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 872
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 872
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 872
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1050
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 3000
@@ -21760,6 +25020,34 @@
             "amount": 1600,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 1310
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 1200
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 1200
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 1200
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 1000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 1000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1200
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1600
               },
@@ -21798,6 +25086,18 @@
             "amount": 1000,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 680
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 680
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1000
               },
@@ -21817,6 +25117,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 6134538
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 13362507
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 8997465
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 9261592
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 9534180
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 9520240
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 7789560
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 7704181
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 9024863
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 11803914
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 11331422
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 12009266
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 15285353
@@ -22240,6 +25588,30 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2017",
+            "amount": 7317232
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 13289393
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 13851285
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 13753178
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 13314826
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 14728193
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 15036021
@@ -22841,6 +26213,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 5886143
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 5879430
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 5769239
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 5769239
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 5956603
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 6010913
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 8641428
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 8889857
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 9563464
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 9807374
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 10962647
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 14999561
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 13036466
           },
@@ -23393,6 +26813,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 5728203
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 7152161
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 7762551
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 7861107
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 7974704
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 7859038
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 8698219
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 8908659
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 9422624
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 9132947
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 8470855
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 10284041
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 12560485
           },
@@ -23930,6 +27398,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 9063387
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 9021630
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 8978015
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 10000843
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 9985202
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 10047352
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 10021699
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 10696620
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 10756887
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 11262733
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 10519042
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 11872734
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 12319291
           },
@@ -23997,6 +27513,34 @@
             "name": "Salaries and Wages - on Payroll",
             "amount": 10426683,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 4982625
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 4840039
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 4828522
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 4992058
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 4999447
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 5746932
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 6404616
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 10426683
@@ -24067,6 +27611,34 @@
             "amount": 103000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 13030
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 6980
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 5480
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 6980
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 15480
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 9000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 6500
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 103000
               },
@@ -24113,6 +27685,34 @@
             "amount": 75600,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 46078
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 25423
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 11000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 11000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 15178
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 4200
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 5762
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 75600
               },
@@ -24136,6 +27736,18 @@
             "amount": 74169,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 49457
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 38448
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 40566
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 74169
               },
@@ -24158,6 +27770,34 @@
             "name": "Court Reporting",
             "amount": 55993,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 97580
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 97580
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 88000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 78000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 78000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 78000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 78000
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 55993
@@ -24270,6 +27910,34 @@
             "amount": 21000,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 87816
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 21000
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 21000
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 21000
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 21000
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 21000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 21000
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 21000
               },
@@ -24292,6 +27960,34 @@
             "name": "Material and Supplies",
             "amount": 18475,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 20842
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 24068
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 17158
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 20068
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 20068
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 13968
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 18475
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 18475
@@ -24316,6 +28012,34 @@
             "amount": 13395,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 9752
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 9132
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 9132
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 9132
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 8886
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 7967
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 4795
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 13395
               },
@@ -24338,6 +28062,18 @@
             "name": "Stationery and Office Supplies",
             "amount": 11508,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 23907
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 15008
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 11508
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 11508
@@ -24391,6 +28127,34 @@
             "amount": 2560,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 3610
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 3460
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 3460
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 3310
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 3560
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 3175
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 2560
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 2560
               },
@@ -24413,6 +28177,18 @@
             "name": "Freight and Express Charges",
             "amount": 500,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 2250
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 1000
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 500
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 500
@@ -24441,6 +28217,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 5914900
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 6002579
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 6060229
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 5847162
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 5921979
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 6603819
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 7258896
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 7403234
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 7546282
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 7365140
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 6810130
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 7811507
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 12051198
@@ -24921,6 +28745,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 4904509
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 4848292
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 4932031
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 5328777
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 5129106
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 5525100
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 5348697
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 5407274
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 5840085
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 7632109
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 7760748
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 7877273
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 9844715
           },
@@ -25360,6 +29232,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 7279375
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 7279375
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 7335668
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 7835668
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 7965375
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 8188136
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 8591069
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 8532654
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 8412662
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 8259831
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 7766362
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 8233681
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 8447480
@@ -25908,6 +29828,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 4184304
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 4229272
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 4992064
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 7378749
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 5596839
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 5703307
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 6340736
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 6479324
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 6843307
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 7006449
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 7022025
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 7173854
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 7025418
           },
@@ -26364,6 +30332,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 2181879
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 2377149
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 2414890
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 2497474
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 2528177
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 4188955
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 4071831
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 4161578
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 4134722
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 4124036
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 4040902
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 4806567
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 5712960
@@ -26850,6 +30866,10 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2022",
+            "amount": 3433907
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 3184119
           },
@@ -27274,6 +31294,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 3191940
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 2552032
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 2356129
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 2174765
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 2266189
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 2313408
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 2434265
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 2438623
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 2470198
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 2955975
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 2796074
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 2949142
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 3169003
           },
@@ -27311,6 +31379,34 @@
             "name": "Salaries and Wages - on Payroll",
             "amount": 855552,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 562800
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 662623
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 672828
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 678984
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 750852
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 780276
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 756420
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 855552
@@ -27357,6 +31453,34 @@
             "name": "Postage",
             "amount": 8450,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 6169
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 4000
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 3530
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 3530
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 3739
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 4547
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 3100
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 8450
@@ -27450,6 +31574,18 @@
             "amount": 3644,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 3644
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 3644
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 3644
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 3644
               },
@@ -27472,6 +31608,18 @@
             "name": "Reimbursement to Travelers",
             "amount": 3500,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 4160
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 2560
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 2240
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 3500
@@ -27496,6 +31644,18 @@
             "amount": 3216,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 2615
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 2615
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 2615
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 3216
               },
@@ -27518,6 +31678,14 @@
             "name": "Schedule Salary Adjustments",
             "amount": 1896,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 2685
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 2076
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1896
@@ -27542,6 +31710,34 @@
             "amount": 1800,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 540
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 570
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 1284
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 1284
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 1284
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 1150
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1161
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 1800
               },
@@ -27564,6 +31760,34 @@
             "name": "Local Transportation",
             "amount": 1500,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 2400
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 2400
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 2400
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 2400
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 2400
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 2400
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 1500
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 1500
@@ -27588,6 +31812,18 @@
             "amount": 594,
             "trend": [
               {
+                "fiscal_year": "fy2015",
+                "amount": 595
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 595
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 595
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 594
               },
@@ -27610,6 +31846,18 @@
             "name": "Transportation and Expense Allowance",
             "amount": 167,
             "trend": [
+              {
+                "fiscal_year": "fy2015",
+                "amount": 165
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 165
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 165
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 167
@@ -27638,6 +31886,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 598894
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 791164
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 770177
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 775383
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 845937
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 857827
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 825807
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 833803
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 866882
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 873629
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 869535
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 919914
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 916559
@@ -27687,6 +31983,10 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 52845075
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 676942
@@ -28009,6 +32309,54 @@
         },
         "trend": [
           {
+            "fiscal_year": "fy2011",
+            "amount": 422633
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 396939
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 434130
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 434083
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 428955
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 396841
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 473644
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 473519
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 465978
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 1101910
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 564945
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 579608
+          },
+          {
             "fiscal_year": "fy2023",
             "amount": 588184
           },
@@ -28046,6 +32394,34 @@
             "name": "Salaries and Wages - on Payroll",
             "amount": 102732,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 63276
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 63276
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 64548
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 65436
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 66684
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 71292
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 76932
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 102732
@@ -28092,6 +32468,34 @@
             "name": "Court Reporting",
             "amount": 10000,
             "trend": [
+              {
+                "fiscal_year": "fy2011",
+                "amount": 30000
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 25000
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 22500
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 17500
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 17500
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 17500
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 17500
+              },
               {
                 "fiscal_year": "fy2023",
                 "amount": 10000
@@ -28151,6 +32555,34 @@
             "amount": 72,
             "trend": [
               {
+                "fiscal_year": "fy2011",
+                "amount": 359
+              },
+              {
+                "fiscal_year": "fy2012",
+                "amount": 238
+              },
+              {
+                "fiscal_year": "fy2013",
+                "amount": 243
+              },
+              {
+                "fiscal_year": "fy2014",
+                "amount": 195
+              },
+              {
+                "fiscal_year": "fy2015",
+                "amount": 177
+              },
+              {
+                "fiscal_year": "fy2016",
+                "amount": 147
+              },
+              {
+                "fiscal_year": "fy2017",
+                "amount": 147
+              },
+              {
                 "fiscal_year": "fy2023",
                 "amount": 72
               },
@@ -28178,6 +32610,54 @@
           "description": "This department can be adjusted within standard constraints."
         },
         "trend": [
+          {
+            "fiscal_year": "fy2011",
+            "amount": 186747
+          },
+          {
+            "fiscal_year": "fy2012",
+            "amount": 169341
+          },
+          {
+            "fiscal_year": "fy2013",
+            "amount": 168295
+          },
+          {
+            "fiscal_year": "fy2014",
+            "amount": 168295
+          },
+          {
+            "fiscal_year": "fy2015",
+            "amount": 169617
+          },
+          {
+            "fiscal_year": "fy2016",
+            "amount": 176640
+          },
+          {
+            "fiscal_year": "fy2017",
+            "amount": 179427
+          },
+          {
+            "fiscal_year": "fy2018",
+            "amount": 186667
+          },
+          {
+            "fiscal_year": "fy2019",
+            "amount": 185067
+          },
+          {
+            "fiscal_year": "fy2020",
+            "amount": 188346
+          },
+          {
+            "fiscal_year": "fy2021",
+            "amount": 191115
+          },
+          {
+            "fiscal_year": "fy2022",
+            "amount": 197804
+          },
           {
             "fiscal_year": "fy2023",
             "amount": 198042
