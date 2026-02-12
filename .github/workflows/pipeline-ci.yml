@@ -1,0 +1,45 @@
+name: Pipeline CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "pipeline/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "pipeline/**"
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pipeline
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync --locked --dev
+
+      - name: Run Ruff Linter
+        run: uv run --locked ruff check src/ tests/
+
+      - name: Run Ruff Formatter Check
+        run: uv run --locked ruff format --check src/ tests/
+
+      - name: Run mypy Type Checker
+        run: uv run --locked mypy src/
+
+      - name: Run Tests
+        run: uv run --locked pytest tests/ -v --cov
