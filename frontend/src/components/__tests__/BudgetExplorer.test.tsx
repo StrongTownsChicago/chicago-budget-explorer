@@ -88,7 +88,7 @@ const createMockBudgetData = (year: string, total: number): BudgetData => ({
     revenue_surplus_deficit: null,
     data_source: "City of Chicago Open Data Portal",
     source_dataset_id: "test-dataset",
-    extraction_date: "2026-02-07T00:00:00Z",
+    extraction_date: "2026-02-07T12:00:00Z",
     pipeline_version: "1.0.0",
     notes: null,
   },
@@ -369,7 +369,7 @@ describe("BudgetExplorer", () => {
 
   it("formats extraction date correctly", () => {
     render(<BudgetExplorer {...defaultProps} />);
-    expect(screen.getByText(/Extracted: 2\/6\/2026/)).toBeInTheDocument();
+    expect(screen.getByText(/Extracted: 2\/7\/2026/)).toBeInTheDocument();
   });
 
   it("does not render revenue section when revenue is absent", () => {

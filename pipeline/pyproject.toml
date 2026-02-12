@@ -12,14 +12,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=8.0.0",
-    "pytest-cov>=4.1.0",
-    "ruff>=0.2.0",
-    "mypy>=1.8.0",
-    "pandas-stubs>=2.0.0",
-    "types-PyYAML>=6.0.0",
-]
 
 [build-system]
 requires = ["setuptools>=61.0"]
@@ -52,5 +44,10 @@ addopts = "-v --cov=src --cov-report=html --cov-report=term"
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.0",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.2.0",
+    "mypy>=1.8.0",
+    "pandas-stubs>=2.0.0",
+    "types-PyYAML>=6.0.0",
 ]
