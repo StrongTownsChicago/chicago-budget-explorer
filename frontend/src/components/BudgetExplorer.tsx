@@ -297,6 +297,12 @@ export default function BudgetExplorer({
               Try the Simulator &rarr;
             </a>
             <a
+              href={`/entity/${entityId}/compare`}
+              className="inline-block px-6 py-3 bg-white/15 text-white rounded-lg hover:bg-white/25 transition-all font-semibold border border-white/30"
+            >
+              Compare Years
+            </a>
+            <a
               href="/"
               className="inline-block px-6 py-3 bg-white/15 text-white rounded-lg hover:bg-white/25 transition-all font-semibold border border-white/30"
             >
