@@ -1,0 +1,39 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { loadBudgetData, getManifest } from "@/lib/data-loader";
+import BudgetComparison from "@/components/BudgetComparison";
+import type { BudgetData } from "@/lib/types";
+
+export async function getStaticPaths() {
+  const manifest = getManifest();
+  return manifest.entities
+    .filter((e) => e.status === "active")
+    .map((entity) => ({
+      params: { entityId: entity.id },
+      props: { entity },
+    }));
+}
+
+const { entityId } = Astro.params;
+const { entity } = Astro.props;
+
+// Load budget data for all available years (same pattern as entity overview page)
+const budgetDataByYear: Record<string, BudgetData> = {};
+for (const year of entity.available_years) {
+  budgetDataByYear[year] = await loadBudgetData(entityId, year);
+}
+---
+
+<BaseLayout
+  title={`${entity.name} Budget Comparison`}
+  description={`Compare ${entity.name}'s budget across fiscal years. See how spending and revenue changed between any two years.`}
+>
+  <BudgetComparison
+    entityId={entityId}
+    entityName={entity.name}
+    budgetDataByYear={budgetDataByYear}
+    availableYears={entity.available_years}
+    defaultYear={entity.default_year}
+    client:load
+  />
+</BaseLayout>

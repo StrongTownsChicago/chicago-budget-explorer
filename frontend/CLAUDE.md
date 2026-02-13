@@ -56,10 +56,12 @@ frontend/src/
 │   ├── types.ts               # TypeScript types matching JSON schema
 │   ├── data-loader.ts         # Load JSON files
 │   ├── simulation-engine.ts   # Pure simulation logic
+│   ├── comparison-engine.ts   # Pure comparison logic (year-over-year deltas)
 │   ├── format.ts              # Currency/percent formatting
 │   └── colors.ts              # Color palette
 ├── components/                # Astro and React components
 │   ├── BudgetExplorer.tsx     # Main budget explorer with year selection
+│   ├── BudgetComparison.tsx   # Year-over-year comparison container
 │   ├── BudgetSummary.tsx      # Budget overview with metadata
 │   ├── charts/                # Recharts + D3 components (React)
 │   │   ├── EntityPicker.tsx   # Entity selector
@@ -72,8 +74,13 @@ frontend/src/
 │   │   ├── RevenueVsSpending.tsx     # Revenue vs spending comparison
 │   │   ├── AppropriationBreakdown.tsx # Appropriations breakdown
 │   │   └── TransparencyCallout.tsx   # Data quality callout
+│   ├── comparison/            # Comparison page components (React)
+│   │   ├── ComparisonSummary.tsx          # Top-level budget comparison metrics
+│   │   ├── DepartmentComparisonTable.tsx  # Sortable department table with drill-down
+│   │   ├── LineItemComparison.tsx         # Subcategory comparison within department
+│   │   └── RevenueComparison.tsx          # Revenue source comparison grouped by type
 │   ├── simulator/             # Simulator components (React)
-│   └── ui/                    # Shared UI components (YearSelector, Tabs)
+│   └── ui/                    # Shared UI components (YearSelector, YearPairSelector, Tabs)
 ├── layouts/
 │   └── BaseLayout.astro       # Page wrapper with header/footer
 ├── pages/                     # Routes (file-based routing)
@@ -82,7 +89,8 @@ frontend/src/
 │   └── entity/
 │       └── [entityId]/
 │           ├── index.astro    # Entity overview (charts)
-│           └── simulate.astro # Simulator page
+│           ├── simulate.astro # Simulator page
+│           └── compare.astro  # Year-over-year comparison page
 └── styles/
     └── global.css             # Tailwind + custom styles
 ```
@@ -174,6 +182,25 @@ const handleAdjustRevenue = useCallback(
 ```
 
 `SimulationState` tracks both expense totals (`totalBudget`, `originalBudget`) and revenue totals (`totalRevenue`, `originalRevenue`, `untrackedRevenue`). The `adjustments` map holds multipliers for both expense and revenue subcategories (IDs are naturally namespaced: `dept-*` vs `revenue-*`). See `simulation-engine.ts` for balance calculation via `getRevenueExpenseBalance()`.
+
+### Comparison Engine (Year-over-Year)
+
+Pure functions in `comparison-engine.ts` compute deltas between two `BudgetData` objects. Follows the same pattern as `simulation-engine.ts`:
+
+```tsx
+import { compareBudgets, compareDepartments, compareRevenueSources } from "@/lib/comparison-engine";
+
+// Top-level summary (total appropriations, revenue, fund categories)
+const summary = compareBudgets(baseData, targetData);
+
+// Department-by-department comparison (matched by stable ID)
+const departments = compareDepartments(baseData, targetData);
+
+// Revenue source comparison (null if either year lacks revenue)
+const revenueSources = compareRevenueSources(baseData, targetData);
+```
+
+`ComparisonItem` is the core return type: `{ id, name, baseAmount, targetAmount, delta, deltaPct, status }`. Status is `"common"`, `"added"`, or `"removed"` depending on which years contain the item.
 
 ## Styling
 
