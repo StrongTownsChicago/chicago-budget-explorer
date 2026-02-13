@@ -30,7 +30,7 @@ function createMockDepartment(
   return {
     id,
     name,
-    code: id.substring(0, 3).toUpperCase(),
+    code: id,
     amount,
     prior_year_amount: null,
     change_pct: null,

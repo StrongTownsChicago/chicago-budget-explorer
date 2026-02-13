@@ -26,6 +26,9 @@ const fiscalYear = data.metadata.fiscal_year_label;
         <a href="/entity/city-of-chicago" class="px-8 py-3 bg-white text-chicago-blue rounded-lg font-semibold hover:bg-gray-100 transition-all shadow-lg">
           Explore the Budget
         </a>
+        <a href="/entity/city-of-chicago/compare" class="px-8 py-3 bg-white/15 text-white rounded-lg font-semibold hover:bg-white/25 transition-all border border-white/30">
+          Compare Years
+        </a>
         <a href="/entity/city-of-chicago/simulate" class="px-8 py-3 bg-white/15 text-white rounded-lg font-semibold hover:bg-white/25 transition-all border border-white/30">
           Try the Simulator
         </a>
@@ -51,11 +54,16 @@ const fiscalYear = data.metadata.fiscal_year_label;
 
     <!-- Feature Highlights -->
     <section class="py-12 border-t border-border-subtle">
-      <div class="grid md:grid-cols-2 gap-6">
+      <div class="grid md:grid-cols-3 gap-6">
         <a href="/entity/city-of-chicago" class="card-hover p-6 text-center group">
           <div class="text-3xl mb-3">&#x1F4CA;</div>
           <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-chicago-blue transition-colors">Analyze</h3>
           <p class="text-sm text-gray-600">Analyze budgets across fiscal years and track department spending trends.</p>
+        </a>
+        <a href="/entity/city-of-chicago/compare" class="card-hover p-6 text-center group">
+          <div class="text-3xl mb-3">&#x2696;</div>
+          <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-chicago-blue transition-colors">Compare</h3>
+          <p class="text-sm text-gray-600">Compare budgets between any two fiscal years and see what changed department by department.</p>
         </a>
         <a href="/entity/city-of-chicago/simulate" class="card-hover p-6 text-center group">
           <div class="text-3xl mb-3">&#x2699;</div>

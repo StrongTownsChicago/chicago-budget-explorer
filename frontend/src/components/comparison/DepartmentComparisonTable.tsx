@@ -248,10 +248,10 @@ function DepartmentRow({
   const subcategories = useMemo(() => {
     if (!isExpanded) return [];
     const baseDept = baseBudgetData.appropriations.by_department.find(
-      (d) => d.id === department.id,
+      (d) => d.code === department.id,
     );
     const targetDept = targetBudgetData.appropriations.by_department.find(
-      (d) => d.id === department.id,
+      (d) => d.code === department.id,
     );
     return compareSubcategories(baseDept, targetDept);
   }, [isExpanded, department.id, baseBudgetData, targetBudgetData]);

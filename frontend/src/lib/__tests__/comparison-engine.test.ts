@@ -19,7 +19,7 @@ function createMockDepartment(
   return {
     id,
     name,
-    code: id.toUpperCase().substring(0, 3),
+    code: id,
     amount,
     prior_year_amount: null,
     change_pct: null,
@@ -215,7 +215,7 @@ describe("compareBudgets", () => {
 // -- compareDepartments tests --
 
 describe("compareDepartments", () => {
-  it("matches departments by ID and computes deltas", () => {
+  it("matches departments by code and computes deltas", () => {
     const base = createMockBudgetData("fy2024", {
       departments: [
         createMockDepartment("dept-police", "Police", 1_900_000_000),
@@ -346,6 +346,24 @@ describe("compareDepartments", () => {
 
     const result = compareDepartments(base, target);
     expect(result[0]!.name).toBe("New Name");
+  });
+
+  it("matches departments with different id but same code as common", () => {
+    const baseDept = createMockDepartment("dept-fire-department", "Fire Department", 750_000_000);
+    baseDept.code = "23";
+    const targetDept = createMockDepartment("dept-chicago-fire-department", "Chicago Fire Department", 800_000_000);
+    targetDept.code = "23";
+
+    const base = createMockBudgetData("fy2011", { departments: [baseDept] });
+    const target = createMockBudgetData("fy2026", { departments: [targetDept] });
+
+    const result = compareDepartments(base, target);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]!.status).toBe("common");
+    expect(result[0]!.id).toBe("23");
+    expect(result[0]!.name).toBe("Chicago Fire Department");
+    expect(result[0]!.delta).toBe(50_000_000);
   });
 
   it("includes all departments from both years (full outer join)", () => {

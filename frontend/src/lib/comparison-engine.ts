@@ -2,7 +2,7 @@
  * Pure functions for computing budget comparisons between two fiscal years.
  *
  * All functions are pure (same input = same output) for easy testing.
- * Items are matched by stable `id` fields across years.
+ * Departments are matched by stable `code` (government department number) across years.
  * Follows the same pure-function pattern as simulation-engine.ts.
  */
 
@@ -150,11 +150,15 @@ export function compareBudgets(
 }
 
 /**
- * Compare departments between two years, matched by ID (full outer join).
+ * Compare departments between two years, matched by stable `code` (full outer join).
+ *
+ * Department names can change across years (e.g. "Fire Department" → "Chicago Fire
+ * Department"), but the government department code remains stable. Matching by code
+ * ensures renamed departments are correctly identified as the same entity.
  *
  * @param base - Base year budget data
  * @param target - Target year budget data
- * @returns ComparisonItems for all departments across both years
+ * @returns ComparisonItems for all departments across both years, with `id` set to the department code
  */
 export function compareDepartments(
   base: BudgetData,
@@ -163,21 +167,21 @@ export function compareDepartments(
   const baseDepts = base.appropriations.by_department;
   const targetDepts = target.appropriations.by_department;
 
-  const baseMap = new Map(baseDepts.map((d) => [d.id, d]));
-  const targetMap = new Map(targetDepts.map((d) => [d.id, d]));
+  const baseMap = new Map(baseDepts.map((d) => [d.code, d]));
+  const targetMap = new Map(targetDepts.map((d) => [d.code, d]));
 
-  const allIds = new Set([...baseMap.keys(), ...targetMap.keys()]);
+  const allCodes = new Set([...baseMap.keys(), ...targetMap.keys()]);
   const results: ComparisonItem[] = [];
 
-  for (const id of allIds) {
-    const baseDept = baseMap.get(id);
-    const targetDept = targetMap.get(id);
+  for (const code of allCodes) {
+    const baseDept = baseMap.get(code);
+    const targetDept = targetMap.get(code);
 
     const baseAmount = baseDept?.amount ?? null;
     const targetAmount = targetDept?.amount ?? null;
 
     // Prefer target year name (more current), fall back to base year
-    const name = targetDept?.name ?? baseDept?.name ?? id;
+    const name = targetDept?.name ?? baseDept?.name ?? code;
 
     const bothPresent = baseAmount !== null && targetAmount !== null;
     const delta = bothPresent ? targetAmount - baseAmount : null;
@@ -187,7 +191,7 @@ export function compareDepartments(
     if (!baseDept) status = "added";
     if (!targetDept) status = "removed";
 
-    results.push({ id, name, baseAmount, targetAmount, delta, deltaPct, status });
+    results.push({ id: code, name, baseAmount, targetAmount, delta, deltaPct, status });
   }
 
   return results;
